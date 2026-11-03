@@ -65,6 +65,44 @@ To build an actionable, legally resilient, and operationally viable system, the 
 
 ---
 
+### 1.2 Hard Architectural Invariants & Scope Realignment (from Implementation-2.md & New.md)
+
+1. **Domain Segregation with Shared Intelligence Layer:**
+   - **Domain A (Women Protection Intelligence):** Safety $\to$ Support $\to$ Legal $\to$ Shelter $\to$ Livelihood $\to$ Rehabilitation.
+   - **Domain B (Child Protection Intelligence):** Identification $\to$ Protection $\to$ Statutory Process $\to$ Care $\to$ Rehabilitation $\to$ Reintegration.
+   - Separate state machines, legal references, and role-based permissions.
+   - **Shared Protection Intelligence Layer:** Evidence Engine, Government Knowledge (Policy/Rules), Gap Engine, Investigation Workspace, Intervention Engine, Outcome Verification.
+2. **Family / Household Context Model:**
+   - Woman Case and Child Case remain separate tokens. Linked via junction table with strict RBAC.
+   - A Women Protection officer cannot view sensitive CWC child records without explicit legal warrant; Child Protection officer cannot view woman's DV details.
+3. **Investigation Workspace over Dashboard:**
+   - Kill 20-card vanity dashboards and toxic district leaderboards.
+   - Primary UI is the **Investigation Workspace** answering 5 questions:
+     1. What is happening?
+     2. Where is the system failing?
+     3. Why might it be failing (hypotheses with evidence)?
+     4. What can Government do (interventions)?
+     5. Did the intervention work (outcome verification)?
+   - Core operational loop: `DISCOVER -> INVESTIGATE -> ACT -> VERIFY -> LEARN`.
+4. **Strict Epistemic Classification:**
+   - Every claim, record, and finding must be typed:
+     - `VERIFIED FACT`: Supported by official source/document.
+     - `INFERENCE`: Reasonable interpretation from available evidence.
+     - `HYPOTHESIS`: Possible explanation requiring field verification.
+     - `RECOMMENDATION`: Suggested administrative or policy action.
+     - `DATA NOT AVAILABLE`: Insufficient evidence.
+   - AI is strictly prohibited from promoting hypotheses to facts.
+5. **Strict MVP Scope (Women Protection First):**
+   - MVP activates **Domain A (Women Protection Intelligence)** only.
+   - Child Protection is architecture-ready and synthetic demo only; live integration postponed to Phase 3.
+   - Core MVP test: One real government protection gap discovered, investigated, assigned, acted upon, and measured.
+6. **16-Step Vibe-Coding Build Sequence & 4-Role Agent Loop:**
+   - 16 disciplined steps from Foundation to Verification.
+   - 4-Role Antigravity Agent Protocol: Architect (review design) $\to$ Developer (implement) $\to$ Tester (break & audit) $\to$ Reviewer (spec compliance).
+   - Golden Loop: `Plan -> Implement -> Run -> Test -> Break -> Review -> Fix -> Commit`.
+
+---
+
 ## 2. Unified System Architecture: The Twin-Engine Model
 
 ```
@@ -197,6 +235,50 @@ CREATE TABLE audit_chain (
     previous_block_hash VARCHAR(64) NOT NULL,
     block_hash VARCHAR(64) NOT NULL
 );
+
+-- 5. Evidence Library & Epistemic Classification (Shared Layer)
+CREATE TABLE evidence_library (
+    evidence_id VARCHAR(64) PRIMARY KEY,
+    title VARCHAR(256) NOT NULL,
+    source_org VARCHAR(128) NOT NULL, -- 'MoWCD', 'NCRB', 'CAG', 'NFHS', 'High Court'
+    publication_date DATE NOT NULL,
+    reporting_period VARCHAR(64),
+    document_type VARCHAR(64) NOT NULL, -- 'ACT', 'SOP', 'ANNUAL_REPORT', 'AUDIT', 'DATASET'
+    source_url_or_ref TEXT NOT NULL,
+    credibility_category VARCHAR(32) NOT NULL, -- 'OFFICIAL_GOVERNMENT', 'STATUTORY_BODY', 'INDEPENDENT_AUDIT'
+    applicable_domain VARCHAR(32) NOT NULL, -- 'WOMEN', 'CHILD', 'SHARED'
+    epistemic_class VARCHAR(32) NOT NULL, -- 'VERIFIED_FACT', 'INFERENCE', 'HYPOTHESIS', 'RECOMMENDATION', 'DATA_NOT_AVAILABLE'
+    extracted_claim TEXT NOT NULL,
+    confidence_score NUMERIC(3, 2) DEFAULT 1.0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6. Family / Household Context Junction (Strict Separation)
+CREATE TABLE family_contexts (
+    family_context_id VARCHAR(64) PRIMARY KEY,
+    woman_token_id VARCHAR(64) REFERENCES case_tokens(token_id),
+    child_token_id VARCHAR(64) REFERENCES case_tokens(token_id),
+    relationship_type VARCHAR(64) NOT NULL, -- 'MOTHER_CHILD', 'GUARDIAN_WARD'
+    access_policy VARCHAR(64) DEFAULT 'RESTRICTED_CROSS_DOMAIN',
+    authorized_by_role VARCHAR(64),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. Investigation Workspace Table
+CREATE TABLE gap_investigations (
+    investigation_id VARCHAR(64) PRIMARY KEY,
+    gap_id VARCHAR(64) REFERENCES gap_contracts(contract_id),
+    domain VARCHAR(32) NOT NULL, -- 'WOMEN' or 'CHILD'
+    problem_summary TEXT NOT NULL,
+    verified_facts JSONB NOT NULL DEFAULT '[]'::jsonb,
+    unverified_hypotheses JSONB NOT NULL DEFAULT '[]'::jsonb,
+    data_gaps JSONB NOT NULL DEFAULT '[]'::jsonb,
+    possible_interventions JSONB NOT NULL DEFAULT '[]'::jsonb,
+    legal_references JSONB NOT NULL DEFAULT '[]'::jsonb,
+    assigned_investigator_role VARCHAR(64) NOT NULL,
+    current_status VARCHAR(32) DEFAULT 'UNDER_INVESTIGATION', -- 'CANDIDATE', 'UNDER_INVESTIGATION', 'VALIDATED', 'INTERVENTION_PLANNED', 'VERIFIED'
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ---
@@ -303,19 +385,42 @@ Content-Type: application/json
 
 ---
 
-## 4. Five-Phase Implementation Roadmap
+## 4. Implementation Roadmap & Development Sequence
 
 ```
 +-----------------------------------------------------------------------------------------------------------------+
 |                                    PROJECT ROADMAP & MILESTONES (18 MONTHS)                                     |
 +-----------------------------------------------------------------------------------------------------------------+
 | PHASE 0: FOUNDATION & STATUTORY GRAPH   [Weeks 1-4]    --> Legal audit, DPDP DPIA, 20 pilot Gap Contracts       |
-| PHASE 1: PAPER-TO-DIGITAL PILOT         [Weeks 5-12]   --> Offline PWA, RAG Drafter, 1 District (DV First)      |
+| PHASE 1: LEAN MVP (WOMEN PROTECTION)    [Weeks 5-12]   --> Offline PWA, Evidence Library, Investigation Space   |
 | PHASE 2: EVENT-DRIVEN SENTINEL          [Weeks 13-24]  --> Live Redis timers, auto Show-Cause, District Queue   |
-| PHASE 3: GROUND TRUTH & ESCALATION      [Weeks 25-36]  --> Telephony IVR verification, CWC/POCSO module         |
-| PHASE 4: STATE SCALE & POLICY FEEDBACK  [Weeks 37-52]  --> Multi-district federation, Macro Gap Contracts loop  |
+| PHASE 3: GROUND TRUTH & CWC PILOT       [Weeks 25-36]  --> Telephony IVR verification, Child Protection POC     |
+| PHASE 4: STATE SCALE & GAP CLOSURE      [Weeks 37-52]  --> Multi-district federation, Macro Gap Contracts loop  |
 +-----------------------------------------------------------------------------------------------------------------+
 ```
+
+### 4.1 The 16-Step Vibe-Coding Build Sequence (from Implementation-2.md)
+
+Never prompt 100 files at once. Every step follows the Golden Loop: `Plan -> Implement -> Run -> Test -> Break -> Review -> Fix -> Commit`.
+
+1. **Step 01 - Project Foundation:** Workspace structure, Docker Compose (PostgreSQL 16, Redis 7, Qdrant), linting, TypeScript/Python strict mode.
+2. **Step 02 - Design System:** Accessible, low-bandwidth UI components, Gov.in design tokens, WCAG 2.1 AA compliance.
+3. **Step 03 - Authentication & RBAC:** Role-based access control, tenant isolation by district/department, session tokens.
+4. **Step 04 - Evidence Library:** CRUD for evidence, epistemic tagging (`VERIFIED_FACT`, `INFERENCE`, `HYPOTHESIS`, `RECOMMENDATION`, `DATA_NOT_AVAILABLE`).
+5. **Step 05 - Government Knowledge Base:** Ingestion and indexing of statutory gazettes, SOPs, and guidelines (no RAG yet).
+6. **Step 06 - Gap Intelligence Engine:** Candidate gap detection rules over evidence, human validation gating (`CANDIDATE` to `VALIDATED`).
+7. **Step 07 - Gap Detail & Lifecycle:** State transitions (`CANDIDATE` $\to$ `UNDER_INVESTIGATION` $\to$ `VALIDATED` $\to$ `INTERVENTION_PLANNED` $\to$ `VERIFIED` $\to$ `CLOSED`).
+8. **Step 08 - Investigation Workspace UI:** Primary operational screen (`What is happening`, `Facts`, `Evidence`, `Data Gaps`, `Hypotheses`, `Questions`, `Interventions`).
+9. **Step 09 - AI Investigation Assistant:** Constrained RAG retrieval with mandatory citations and `"DATA NOT AVAILABLE"` fallback.
+10. **Step 10 - Intervention Workspace:** Formulation of actionable Gap Contracts with named role owners, statutory citations, and measurable KPIs.
+11. **Step 11 - Outcome Verification Engine:** Baseline vs. Target measurement tracking (`EFFECTIVE`, `PARTIALLY_EFFECTIVE`, `INEFFECTIVE`, `INSUFFICIENT_DATA`).
+12. **Step 12 - Audit & Explainability:** Tamper-evident cryptographic SHA-256 audit log, complete traceability of all AI suggestions.
+13. **Step 13 - Security Hardening:** Row-Level Security (RLS), field encryption (AES-256), zero-PII sanitization gates.
+14. **Step 14 - Red-Team Testing:** Security and legal audit, boundary testing, stress-testing under simulated network failure.
+15. **Step 15 - Synthetic Government Demo Scenario:** End-to-end demonstration using synthetic district dataset (District X DV backlog).
+16. **Step 16 - Child Protection Evaluation:** Architecture validation and compliance review for Domain B before pilot activation.
+
+---
 
 ### Phase 0: Foundation, Statutory Graph & Compliance (Weeks 1–4)
 * **Objective:** Establish the legal and conceptual baseline; formulate and independently validate 20 real-world Gap Contracts and statutory DAGs before shipping code.
