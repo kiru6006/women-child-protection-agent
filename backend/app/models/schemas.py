@@ -154,3 +154,4 @@ class AuditBlockModel(BaseModel):
     entity_id: str
     details: str
     sha256_hash: str
+

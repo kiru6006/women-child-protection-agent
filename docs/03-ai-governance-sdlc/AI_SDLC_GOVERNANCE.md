@@ -66,3 +66,4 @@ Every output produced by this platform must carry strict epistemic labeling:
 * **Tier 1 (High Risk — Prohibited from Full Automation):** Individual service referrals, DIR generation, child custody recommendations, show-cause notices. **Rule: Mandatory Human Approval.**
 * **Tier 2 (Medium Risk — Decision Support):** Gap contract formulation, district performance comparisons, budget reallocation hypotheses. **Rule: Corroborated with $\ge 2$ independent data sources.**
 * **Tier 3 (Low Risk — Productivity):** Gazette search, OCR indexing, administrative note-sheet formatting. **Rule: Standard logging.**
+

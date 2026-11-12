@@ -102,3 +102,4 @@ def get_audit_ledger():
 @api_router.get("/audit/verify")
 def verify_audit_chain():
     return audit_service.verify_integrity()
+

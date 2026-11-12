@@ -19,3 +19,4 @@ class Settings(BaseSettings):
     DEMO_STATE: str = "Bihar"
 
 settings = Settings()
+

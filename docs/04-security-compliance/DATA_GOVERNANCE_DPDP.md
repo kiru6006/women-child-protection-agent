@@ -62,3 +62,4 @@ CREATE POLICY dm_supervisor_policy ON case_tokens
 1. **Operational Case Tokens:** Retained for statutory limitation period (3 years post-closure for PWDVA, 7 years post-majority for POCSO).
 2. **Audit Ledger:** Cryptographic hash chains retained permanently under WORM (Write Once, Read Many) policies for CAG and parliamentary audits.
 3. **Right to Erasure:** Handled via salt rotation — deleting the localized salt destroys the ability to link any historical token back to physical registers.
+

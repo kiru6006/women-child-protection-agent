@@ -53,3 +53,4 @@ class AuditService:
         return {"valid": True, "total_blocks": len(self.chain)}
 
 audit_service = AuditService()
+

@@ -121,15 +121,13 @@ women-child-protection-agent/
 │   ├── gap_contract.json                   # JSON Schema for Stateful Gap Contract
 │   └── statutory_deadlines.json            # Machine-readable legal deadlines (hours/days)
 │
-├── docs/                                   # Project documentation & compliance
-│   ├── compliance/                         # DPDP Act 2023 DPIA, JJ Act s.74, POCSO s.23 compliance
-│   ├── legal/                              # Legal research, statutory citations, high court precedents
-│   ├── architecture/                       # System diagrams, sequence graphs, data flows
-│   ├── CLAUDE.md                           # Agent guidelines & strict operational rules
-│   ├── IMPLEMENTATION_PLAN.md              # Comprehensive implementation roadmap & architectural blueprint
-│   ├── PLANS.md                            # v1 Strategic Foundation & Gap Taxonomy Archive
-│   ├── PRD.md                              # v2 Self-Critique & Frontline Re-Grounding
-│   └── PRD2.md                             # Master Brief: Gap-Closure OS & Suraksha Sentinel
+├── docs/                                   # Enterprise documentation & compliance suite
+│   ├── README.md                           # Master documentation catalog & index
+│   ├── 00-overview/                        # Operational guides & agent instructions
+│   ├── 01-requirements/                    # PRDs & master requirements dialectic (v1, v2, v2.5, v3)
+│   ├── 02-architecture-design/             # System architecture, build sequence & statutory DAGs
+│   ├── 03-ai-governance-sdlc/              # AI SDLC governance, risk tiering & VAPT harness
+│   └── 04-security-compliance/             # DPDP Act 2023, Zero-PII tokenization & RLS policies
 │
 ├── tests/                                  # Automated test suites & evaluation harness
 │   ├── unit/                               # Unit tests for tokenizers, DAGs, and APIs
@@ -285,7 +283,7 @@ This project is built from the ground up to comply with Indian constitutional, c
 | Phase 4: State Scale & Policy Gap Closure     (Month 13-18) | 5 Districts, Macro Gap Contracts Loop
 +---------------------------------------------------------------------------------------------------+
 ```
-*For the complete, exhaustive roadmap and multi-stakeholder debate, consult [`IMPLEMENTATION_PLAN.md`](./docs/IMPLEMENTATION_PLAN.md).*
+*For the complete documentation directory and multi-stakeholder debate, consult the [Enterprise Documentation Index](./docs/README.md) and [System Architecture Plan](./docs/02-architecture-design/SYSTEM_ARCHITECTURE_PLAN.md).*
 
 ---
 

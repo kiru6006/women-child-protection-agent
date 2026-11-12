@@ -24,3 +24,4 @@ $$R_{\text{SLA}} = \frac{\sum \text{True Statutory Deadline Breaches Detected}}{
 
 #### 2.3 Epistemic Classification Alignment
 $$A_{\text{epistemic}} = \frac{\sum \text{Correctly Classified Claims (Fact vs Hypo)}}{\sum \text{Total Extracted Claims}} \ge 0.95$$
+
