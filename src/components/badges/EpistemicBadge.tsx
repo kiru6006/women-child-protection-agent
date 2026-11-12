@@ -66,3 +66,4 @@ export function EpistemicBadge({ classification, showIcon = true, className }: E
     </span>
   );
 }
+

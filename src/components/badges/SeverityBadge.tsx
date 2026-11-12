@@ -48,3 +48,4 @@ export function SeverityBadge({ severity, className }: SeverityBadgeProps) {
     </span>
   );
 }
+

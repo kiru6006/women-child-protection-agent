@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Card } from '@/components/common/Card';
 import { EpistemicBadge } from '@/components/badges/EpistemicBadge';
-import { Bot, Send, BookOpen } from 'lucide-react';
+import { Bot, Send, BookOpen, Sparkles } from 'lucide-react';
+import { queryRAG } from '@/services/api';
 
 export function KnowledgeAssistantPage() {
   const [query, setQuery] = useState('');
@@ -59,10 +60,23 @@ export function KnowledgeAssistantPage() {
     },
   };
 
-  const handleSearch = (searchQuery: string) => {
+  const handleSearch = async (searchQuery: string) => {
     setQuery(searchQuery);
-    const lower = searchQuery.toLowerCase();
 
+    // Try backend RAG service first
+    const backendResult = await queryRAG(searchQuery);
+    if (backendResult) {
+      setResponse({
+        answer: backendResult.answer,
+        citations: backendResult.citations,
+        epistemicClass: backendResult.epistemic_class,
+        confidence: backendResult.confidence,
+        fromBackend: true
+      });
+      return;
+    }
+
+    const lower = searchQuery.toLowerCase();
     if (lower.includes('medical') || lower.includes('deadline') || lower.includes('hospital')) {
       setResponse(knowledgeBaseResponses['statutory deadline']);
     } else if (lower.includes('police') || lower.includes('mediation') || lower.includes('dir')) {
@@ -138,8 +152,14 @@ export function KnowledgeAssistantPage() {
         <Card className="space-y-4 border-gov-blue/40 shadow-xs">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
-              <Bot className="w-5 h-5 text-gov-blue" />
+              <Bot className="w-5 h-5 text-gov-pink-700" />
               <span className="font-bold text-sm text-slate-900">Statutory Grounded Analysis</span>
+              {response.fromBackend && (
+                <span className="text-[10px] bg-pink-100 text-pink-800 px-2 py-0.5 rounded font-mono font-semibold flex items-center gap-1 border border-pink-300">
+                  <Sparkles className="w-3 h-3 text-pink-600" />
+                  <span>FastAPI Service</span>
+                </span>
+              )}
             </div>
             <EpistemicBadge classification={response.epistemicClass} />
           </div>

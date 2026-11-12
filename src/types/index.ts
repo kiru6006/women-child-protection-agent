@@ -133,6 +133,19 @@ export interface OutcomeRecord {
   evidenceNotes: string;
 }
 
+export interface BreachAlertModel {
+  tokenId: string;
+  offenceType: string;
+  district: string;
+  breachStage: string;
+  responsibleRole: string;
+  statutoryLimitHours: number;
+  hoursOverdue: number;
+  statutoryCitation: string;
+  autoDraftAvailable?: boolean;
+  draftType?: string;
+}
+
 export interface AuditEvent {
   id: string;
   timestamp: string;
@@ -143,3 +156,4 @@ export interface AuditEvent {
   details: string;
   sha256Hash: string;
 }
+

@@ -29,11 +29,11 @@ export function InvestigationPage() {
       <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold bg-gov-navy text-white px-2 py-0.5 rounded">
+            <span className="font-mono text-xs font-bold bg-gov-pink-900 text-white px-2 py-0.5 rounded shadow-xs">
               {inv.id}
             </span>
             <span className="text-xs font-semibold text-slate-500">Linked to:</span>
-            <span className="font-mono text-xs font-bold text-gov-blue">{inv.gapId}</span>
+            <span className="font-mono text-xs font-bold text-gov-pink-700">{inv.gapId}</span>
             <StatusBadge status={inv.status} />
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-500">
@@ -273,3 +273,4 @@ export function InvestigationPage() {
     </div>
   );
 }
+

@@ -8,13 +8,26 @@ export default {
     extend: {
       colors: {
         gov: {
-          navy: "#0b2545",
-          blue: "#134074",
-          light: "#eef4f8",
+          pink: {
+            50: "#fdf2f8",
+            100: "#fce7f3",
+            200: "#fbcfe8",
+            300: "#f9a8d4",
+            400: "#f472b6",
+            500: "#ec4899",
+            600: "#db2777",
+            700: "#be185d",
+            800: "#9d174d",
+            900: "#831843",
+            950: "#500724"
+          },
+          navy: "#500724", // Imperial WCD Deep Pink-Wine
+          blue: "#9d174d", // High Contrast Gov Pink
+          light: "#fdf2f8",
           slate: "#334155",
           accent: "#d97706",
-          alert: "#b91c1c",
-          success: "#15803d"
+          alert: "#be123c",
+          success: "#047857"
         }
       }
     },

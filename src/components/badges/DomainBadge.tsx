@@ -25,3 +25,4 @@ export function DomainBadge({ domain, className }: DomainBadgeProps) {
     </span>
   );
 }
+

@@ -17,3 +17,4 @@
    - No individual risk scoring, no predictive policing, no guilt/credibility determinations.
 5. **Golden Loop**:
    - Plan -> Implement -> Run -> Test -> Break -> Review -> Fix -> Commit.
+

@@ -9,16 +9,21 @@ export function AttentionCentrePage() {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-white border-l-4 border-amber-500 p-4 rounded-r-lg shadow-xs border border-slate-200">
+      <div className="bg-gradient-to-r from-pink-50/60 to-white border-l-4 border-gov-pink-600 p-4 rounded-r-lg shadow-xs border border-pink-200">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">District Protection Attention Centre</h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Active Focus: <span className="font-semibold text-slate-700">{selectedDistrict}, {selectedState}</span>. 
+            <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <span>District Protection Attention Centre</span>
+              <span className="text-[10px] bg-pink-100 text-pink-800 font-mono font-bold px-2 py-0.5 rounded border border-pink-200">
+                Collector Convergence Queue
+              </span>
+            </h1>
+            <p className="text-xs text-slate-600 mt-1">
+              Active Focus: <strong className="text-gov-pink-900 font-semibold">{selectedDistrict}, {selectedState}</strong>. 
               Real-time aggregation of statutory deadline stalls, unacknowledged referrals, and verified systemic gaps.
             </p>
           </div>
-          <span className="text-xs px-2.5 py-1 rounded bg-amber-50 text-amber-800 border border-amber-200 font-mono font-medium">
+          <span className="text-xs px-2.5 py-1 rounded bg-pink-100 text-pink-900 border border-pink-300 font-mono font-bold">
             Next Convergence: Monday 10:00 AM
           </span>
         </div>
@@ -138,3 +143,4 @@ export function AttentionCentrePage() {
     </div>
   );
 }
+
