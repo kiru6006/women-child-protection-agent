@@ -25,6 +25,9 @@ interface AppState {
   setUsingMockFallback: (active: boolean) => void;
   themeMode: 'pink' | 'bw';
   toggleThemeMode: () => void;
+  askAiOpen: boolean;
+  setAskAiOpen: (open: boolean) => void;
+  toggleAskAi: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -50,4 +53,7 @@ export const useAppStore = create<AppState>((set) => ({
       }
       return { themeMode: next };
     }),
+  askAiOpen: false,
+  setAskAiOpen: (open) => set({ askAiOpen: open }),
+  toggleAskAi: () => set((state) => ({ askAiOpen: !state.askAiOpen })),
 }));

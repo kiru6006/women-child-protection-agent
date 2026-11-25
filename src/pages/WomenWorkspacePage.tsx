@@ -121,30 +121,58 @@ export function WomenWorkspacePage() {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-mono font-bold text-gov-navy">{c.token}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-green-50 text-green-800 border border-green-200 font-semibold">
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded border font-semibold ${
+                      c.consentStatus.startsWith('WITHDRAWN')
+                        ? 'bg-amber-50 text-amber-900 border-amber-300'
+                        : 'bg-green-50 text-green-800 border-green-200'
+                    }`}
+                  >
                     {c.consentStatus}
                   </span>
                   <span className="text-[11px] text-slate-600">
                     Repeat Statements: <strong className="text-green-700">{c.repeatStatements}</strong> (Paper baseline: {c.paperBaseline})
                   </span>
                 </div>
-                {c.currentStageIndex < c.steps.length - 1 && (
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <button
                     type="button"
                     onClick={() =>
                       setContinuityCases((prev) =>
                         prev.map((item) =>
                           item.token === c.token
-                            ? { ...item, currentStageIndex: Math.min(item.steps.length - 1, item.currentStageIndex + 1) }
+                            ? {
+                                ...item,
+                                consentStatus: item.consentStatus.startsWith('WITHDRAWN')
+                                  ? 'GRANTED (Zero-PII Token)'
+                                  : 'WITHDRAWN (Non-Statutory Sharing Paused)',
+                              }
                             : item
                         )
                       )
                     }
-                    className="px-2.5 py-1 rounded bg-primary hover:bg-primary-hover text-white font-semibold text-[11px]"
+                    className="px-2 py-1 rounded border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 font-semibold text-[11px]"
                   >
-                    Log Next Continuity Step
+                    {c.consentStatus.startsWith('WITHDRAWN') ? 'Restore Consent' : 'Withdraw Consent'}
                   </button>
-                )}
+                  {c.currentStageIndex < c.steps.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setContinuityCases((prev) =>
+                          prev.map((item) =>
+                            item.token === c.token
+                              ? { ...item, currentStageIndex: Math.min(item.steps.length - 1, item.currentStageIndex + 1) }
+                              : item
+                          )
+                        )
+                      }
+                      className="px-2.5 py-1 rounded bg-primary hover:bg-primary-hover text-white font-semibold text-[11px]"
+                    >
+                      Log Next Continuity Step
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
                 {c.steps.map((st, idx) => {

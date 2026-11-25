@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, CircleHelp, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, User } from 'lucide-react';
+import { Bell, CircleHelp, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, Sparkles, User } from 'lucide-react';
 import { useAppStore, UserRole } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { governmentSchemes } from '@/data/platformData';
@@ -18,6 +18,7 @@ export function Header() {
     setMobileNavOpen,
     themeMode,
     toggleThemeMode,
+    toggleAskAi,
   } = useAppStore();
 
   const { alerts, gaps, officials, evidence, datasets } = useDemoStore();
@@ -244,6 +245,17 @@ export function Header() {
               </div>
             )}
           </div>
+
+          {/* Ask AI Dashboard Assistant Icon */}
+          <button
+            type="button"
+            onClick={toggleAskAi}
+            className="group relative p-1.5 sm:p-2 rounded bg-[#1F3864] border border-[#EF5A90] text-white hover:bg-[#7D2A42] flex items-center justify-center shrink-0"
+            aria-label="Ask AI about this dashboard"
+          >
+            <Sparkles className="w-4 h-4 text-[#FFC0CB]" />
+            <span className={tooltipCls}>Ask AI — Dashboard Assistant</span>
+          </button>
 
           {/* Help & Platform Knowledge Centre Icon */}
           <Link

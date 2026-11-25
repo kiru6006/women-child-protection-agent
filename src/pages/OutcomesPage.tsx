@@ -6,7 +6,38 @@ import { StatCard } from '@/components/common/StatCard';
 import { OutcomeRecord } from '@/types';
 import { createOutcome, fetchOutcomes, verifyOutcome } from '@/services/api';
 import { useAppStore } from '@/store/appStore';
-import { AlertTriangle, CheckCircle2, FileSearch, Plus } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, FileSearch, PhoneCall, Plus } from 'lucide-react';
+
+interface GroundTruthCallback {
+  id: string;
+  caseToken: string;
+  channel: 'IVR_VOICE' | 'SMS_CODE';
+  code: '1_RECEIVED' | '2_DELAYED' | '3_NOT_RECEIVED';
+  reportedAt: string;
+  discrepancyFlag: boolean;
+  note: string;
+}
+
+const INITIAL_GROUND_TRUTH: GroundTruthCallback[] = [
+  {
+    id: 'GT-PAT-001',
+    caseToken: 'CASE-DV-2026-PAT-0842',
+    channel: 'IVR_VOICE',
+    code: '1_RECEIVED',
+    reportedAt: '2026-11-24 14:20',
+    discrepancyFlag: false,
+    note: 'Beneficiary pressed 1 (Support & DLSA counsel contact confirmed). Zero PII stored.',
+  },
+  {
+    id: 'GT-PAT-002',
+    caseToken: 'CASE-POSH-2026-PAT-0319',
+    channel: 'SMS_CODE',
+    code: '2_DELAYED',
+    reportedAt: '2026-11-24 16:05',
+    discrepancyFlag: true,
+    note: 'Paper status marked Completed, but callback code 2 indicates interim relief disbursement pending.',
+  },
+];
 
 export function OutcomesPage() {
   const { currentRole } = useAppStore();
@@ -15,6 +46,8 @@ export function OutcomesPage() {
   const [showRecord, setShowRecord] = useState(false);
   const [observed, setObserved] = useState('78');
   const [notes, setNotes] = useState('');
+  const [callbacks, setCallbacks] = useState<GroundTruthCallback[]>(INITIAL_GROUND_TRUTH);
+  const [simCode, setSimCode] = useState<GroundTruthCallback['code']>('1_RECEIVED');
 
   useEffect(() => {
     fetchOutcomes().then(setOutcomes);
@@ -225,6 +258,94 @@ export function OutcomesPage() {
           );
         })}
       </div>
+
+      {/* M17 Synthetic Demo: Ground-Truth Citizen SMS / IVR Callback Verification */}
+      <Card
+        header={
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <PhoneCall className="w-4 h-4 text-[#7D2A42]" />
+              <span className="text-sm font-bold text-gov-navy">M17 Ground-Truth SMS / IVR Verification (Synthetic Demo)</span>
+            </div>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-pink-50 text-pink-800 border border-pink-200 font-semibold">
+              Zero-PII Status Codes Only (1=Received, 2=Delayed, 3=Not Received)
+            </span>
+          </div>
+        }
+      >
+        <div className="space-y-3 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded">
+            <span className="text-slate-700">
+              Simulate a tokenised beneficiary callback to cross-check whether paper completion matches field reality.
+            </span>
+            <div className="flex items-center gap-2">
+              <select
+                value={simCode}
+                onChange={(e) => setSimCode(e.target.value as GroundTruthCallback['code'])}
+                className="px-2 py-1 rounded border border-slate-300 bg-white text-xs"
+              >
+                <option value="1_RECEIVED">Code 1 — Support Received</option>
+                <option value="2_DELAYED">Code 2 — Delayed / Partial</option>
+                <option value="3_NOT_RECEIVED">Code 3 — Not Received (Discrepancy)</option>
+              </select>
+              <button
+                type="button"
+                onClick={() =>
+                  setCallbacks((prev) => [
+                    {
+                      id: `GT-SIM-${prev.length + 1}`,
+                      caseToken: `CASE-DV-2026-PAT-0${900 + prev.length}`,
+                      channel: prev.length % 2 === 0 ? 'IVR_VOICE' : 'SMS_CODE',
+                      code: simCode,
+                      reportedAt: 'Just now (Synthetic)',
+                      discrepancyFlag: simCode !== '1_RECEIVED',
+                      note:
+                        simCode === '1_RECEIVED'
+                          ? 'Beneficiary confirmed support delivery via IVR/SMS code 1.'
+                          : 'Discrepancy flagged: triggers human follow-up review before outcome closure.',
+                    },
+                    ...prev,
+                  ])
+                }
+                className="px-2.5 py-1 rounded bg-[#7D2A42] hover:bg-[#654161] text-white font-semibold"
+              >
+                Trigger Synthetic Callback
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {callbacks.map((cb) => (
+              <div key={cb.id} className="p-2.5 rounded border border-slate-200 bg-white flex flex-wrap items-center justify-between gap-2">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-mono font-bold text-gov-navy">{cb.caseToken}</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                      {cb.channel}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                        cb.code === '1_RECEIVED'
+                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                          : 'bg-amber-50 text-amber-800 border border-amber-200'
+                      }`}
+                    >
+                      {cb.code}
+                    </span>
+                    {cb.discrepancyFlag && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-800 border border-red-200">
+                        DISCREPANCY FLAGGED
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-slate-600">{cb.note}</p>
+                </div>
+                <span className="text-[10px] font-mono text-slate-500">{cb.reportedAt}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

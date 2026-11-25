@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
+import { AskAIDrawer } from './AskAIDrawer';
 import { useAppStore } from '@/store/appStore';
 
 interface AppLayoutProps {
@@ -32,6 +33,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             {children}
           </div>
         </main>
+        <AskAIDrawer />
       </div>
     </div>
   );
