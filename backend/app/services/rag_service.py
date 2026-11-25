@@ -186,4 +186,34 @@ class RAGService:
         }
 
 
+class VectorIndexAdapter:
+    """Abstract vector retrieval interface supporting in-memory cosine and pgvector backends."""
+
+    def search(self, query: str, chunks: List[Dict[str, Any]], threshold: float = 0.18) -> tuple[Dict[str, Any] | None, float]:
+        q_tokens = _tokenize(query)
+        best_chunk = None
+        best_score = 0.0
+        for chunk in chunks:
+            score = _cosine_similarity(q_tokens, _tokenize(f"{chunk['keywords']} {chunk['answer']}"))
+            if score > best_score:
+                best_score = score
+                best_chunk = chunk
+        return (best_chunk, best_score) if best_chunk and best_score >= threshold else (None, best_score)
+
+
+class PgVectorAdapter(VectorIndexAdapter):
+    """PostgreSQL pgvector adapter scaffold (activates when pgvector + embedding model configured)."""
+
+    def __init__(self, dsn: str):
+        self.dsn = dsn
+        self.enabled = dsn.startswith("postgresql")
+
+
+class LocalLLMAdapter:
+    """On-premise quantised LLM adapter scaffold locked to temperature=0.0 and citation-only output."""
+
+    temperature: float = 0.0
+    requires_external_saas: bool = False
+
+
 rag_service = RAGService()

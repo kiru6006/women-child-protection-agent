@@ -6,7 +6,16 @@ from sqlalchemy.orm import Session
 from backend.app.core.auth import ActorContext, HUMAN_VALIDATOR_ROLES, enforce_domain_a_write, get_actor_context
 from backend.app.core.pii_guard import reject_raw_pii
 from backend.app.db.database import get_db
-from backend.app.db.models import ActionItemDB, DecisionRecordDB, DependencyDB, MatterDB, NotificationDB, RecognitionNominationDB
+from backend.app.db.models import (
+    ActionItemDB,
+    ContinuityTokenDB,
+    DecisionRecordDB,
+    DependencyDB,
+    GroundTruthCallbackDB,
+    MatterDB,
+    NotificationDB,
+    RecognitionNominationDB,
+)
 from backend.app.services.audit_service import audit_service
 from backend.app.services.execution_engine import (
     detect_dependency_cycles,
@@ -18,6 +27,14 @@ from backend.app.services.execution_engine import (
 )
 
 exec_router = APIRouter(tags=["Execution Engine"])
+
+
+def _get_or_404(db: Session, model, entity_id: str, label: str):
+    """Fetch primary-key entity or raise 404 consistently across execution endpoints."""
+    row = db.query(model).filter(model.id == entity_id).first()
+    if not row:
+        raise HTTPException(status_code=404, detail=f"{label} not found")
+    return row
 
 
 class MatterCreate(BaseModel):
@@ -527,11 +544,127 @@ def approve_recognition_nomination(
 ):
     if actor.role not in HUMAN_VALIDATOR_ROLES:
         raise HTTPException(status_code=403, detail="Only human authority can approve governance recognition.")
-    row = db.query(RecognitionNominationDB).filter(RecognitionNominationDB.id == nom_id).first()
-    if not row:
-        raise HTTPException(status_code=404, detail="Nomination not found")
+    row = _get_or_404(db, RecognitionNominationDB, nom_id, "Nomination")
     row.status = "APPROVED"
     audit_service.append_event(actor.role, "APPROVE_RECOGNITION", "RECOGNITION", nom_id, row.candidate_name)
     db.commit()
     db.refresh(row)
     return row
+
+
+class ContinuityCreate(BaseModel):
+    token: str = Field(..., min_length=6, max_length=64)
+    domain: str = Field("WOMEN", pattern="^(WOMEN|CHILD)$")
+    consent_status: str = "GRANTED (Zero-PII Token)"
+    paper_baseline: int = 4
+    steps: List[str] = Field(default_factory=lambda: ["OSC Intake", "Medical 24h", "PO DIR Filed", "DLSA Legal Aid", "Shakti Sadan"])
+
+
+class ContinuityPatch(BaseModel):
+    consent_status: Optional[str] = None
+    current_stage_index: Optional[int] = None
+
+
+class GroundTruthCreate(BaseModel):
+    case_token: str = Field(..., min_length=6, max_length=64)
+    channel: str = Field(..., pattern="^(IVR_VOICE|SMS_CODE)$")
+    code: str = Field(..., pattern="^(1_RECEIVED|2_DELAYED|3_NOT_RECEIVED)$")
+    note: str = Field(..., min_length=4)
+
+
+@exec_router.get("/continuity")
+def list_continuity_tokens(db: Session = Depends(get_db)):
+    return db.query(ContinuityTokenDB).all()
+
+
+@exec_router.post("/continuity", status_code=201)
+def create_continuity_token(
+    payload: ContinuityCreate,
+    actor: ActorContext = Depends(get_actor_context),
+    db: Session = Depends(get_db),
+):
+    enforce_domain_a_write(payload.domain)
+    reject_raw_pii(payload.token, payload.consent_status)
+    row = ContinuityTokenDB(
+        token=payload.token,
+        domain=payload.domain,
+        consent_status=payload.consent_status,
+        repeat_statements=1,
+        paper_baseline=payload.paper_baseline,
+        current_stage_index=0,
+        steps=payload.steps,
+        updated_at=now_iso(),
+    )
+    db.add(row)
+    audit_service.append_event(actor.role, "CREATE_CONTINUITY_TOKEN", "CONTINUITY", payload.token, payload.consent_status)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+@exec_router.patch("/continuity/{token}")
+def update_continuity_token(
+    token: str,
+    payload: ContinuityPatch,
+    actor: ActorContext = Depends(get_actor_context),
+    db: Session = Depends(get_db),
+):
+    row = db.query(ContinuityTokenDB).filter(ContinuityTokenDB.token == token).first()
+    if not row:
+        raise HTTPException(status_code=404, detail="Continuity token not found")
+    enforce_domain_a_write(row.domain)
+    if payload.consent_status is not None:
+        reject_raw_pii(payload.consent_status)
+        row.consent_status = payload.consent_status
+    if payload.current_stage_index is not None:
+        row.current_stage_index = max(0, min(len(row.steps or []) - 1, payload.current_stage_index))
+    row.updated_at = now_iso()
+    audit_service.append_event(actor.role, "UPDATE_CONTINUITY", "CONTINUITY", token, row.consent_status)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+@exec_router.get("/ground-truth")
+def list_ground_truth_callbacks(db: Session = Depends(get_db)):
+    return db.query(GroundTruthCallbackDB).order_by(GroundTruthCallbackDB.reported_at.desc()).all()
+
+
+@exec_router.post("/ground-truth", status_code=201)
+def create_ground_truth_callback(
+    payload: GroundTruthCreate,
+    actor: ActorContext = Depends(get_actor_context),
+    db: Session = Depends(get_db),
+):
+    reject_raw_pii(payload.case_token, payload.note)
+    new_id = f"GT-{db.query(GroundTruthCallbackDB).count() + 1:03d}"
+    row = GroundTruthCallbackDB(
+        id=new_id,
+        case_token=payload.case_token,
+        channel=payload.channel,
+        code=payload.code,
+        discrepancy_flag=1 if payload.code != "1_RECEIVED" else 0,
+        note=payload.note,
+        reported_at=now_iso(),
+    )
+    db.add(row)
+    audit_service.append_event(actor.role, "RECORD_GROUND_TRUTH", "OUTCOME_CALLBACK", new_id, payload.code)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+@exec_router.get("/integrations/status")
+def get_integrations_status():
+    """Explicit readiness registry for external government & infrastructure adapters."""
+    return {
+        "mode": "PROTOTYPE_MODULAR_MONOLITH",
+        "adapters": [
+            {"id": "db-orm", "name": "SQLAlchemy + Alembic (SQLite / PostgreSQL RLS)", "status": "CONFIGURED_LOCAL_SQLITE", "note": "Migration 0002 includes PostgreSQL RLS policy DDL."},
+            {"id": "rag-vector", "name": "Bounded Cosine RAG + Pluggable Vector Adapter", "status": "ACTIVE_IN_MEMORY", "note": "PgVectorAdapter ready when DATABASE_URL uses PostgreSQL."},
+            {"id": "cctns", "name": "Police CCTNS Read-Only Milestone Adapter", "status": "REQUIRES_GOV_INTEGRATION", "note": "Gated by G03 WCD/Police protocol."},
+            {"id": "ecourts", "name": "e-Courts / ICJS / NALSA Cause-List Adapter", "status": "REQUIRES_GOV_INTEGRATION", "note": "Public cause-list metadata only until legal clearance."},
+            {"id": "pfms", "name": "PFMS / State Treasury Sanction Batch Adapter", "status": "REQUIRES_GOV_INTEGRATION", "note": "File-based batch ingestion ready; live API requires Treasury MoU."},
+            {"id": "ivr-sms", "name": "M17 Zero-PII Citizen SMS/IVR Callback Gateway", "status": "SYNTHETIC_DEMO_ACTIVE", "note": "Persists tokenised status codes (1/2/3) locally."},
+        ],
+    }

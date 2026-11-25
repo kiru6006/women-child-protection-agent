@@ -287,3 +287,28 @@ class RecognitionNominationDB(Base):
     quality_metric = Column(String(256), nullable=False)
     independent_verifier = Column(String(128), nullable=False)
     status = Column(String(32), nullable=False, default="NOMINATED")
+
+
+class ContinuityTokenDB(Base):
+    __tablename__ = "continuity_tokens"
+
+    token = Column(String(64), primary_key=True, index=True)
+    domain = Column(String(16), nullable=False, default="WOMEN")
+    consent_status = Column(String(128), nullable=False, default="GRANTED (Zero-PII Token)")
+    repeat_statements = Column(Integer, nullable=False, default=1)
+    paper_baseline = Column(Integer, nullable=False, default=4)
+    current_stage_index = Column(Integer, nullable=False, default=0)
+    steps = Column(JSON, nullable=False, default=list)
+    updated_at = Column(String(64), nullable=False)
+
+
+class GroundTruthCallbackDB(Base):
+    __tablename__ = "ground_truth_callbacks"
+
+    id = Column(String(64), primary_key=True, index=True)
+    case_token = Column(String(64), nullable=False, index=True)
+    channel = Column(String(32), nullable=False)
+    code = Column(String(32), nullable=False)
+    discrepancy_flag = Column(Integer, nullable=False, default=0)
+    note = Column(Text, nullable=False)
+    reported_at = Column(String(64), nullable=False)

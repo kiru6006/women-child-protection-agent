@@ -33,7 +33,8 @@
 | **Milestone G** | Civic Light UX | **DONE** | `DESIGN.md`, `design-tokens.css`, `:focus-visible`, Domain/Severity/StatCard/CTA & Investigation light refactor (`5/5` Vitest, `20/20` Pytest). |
 | **Milestone H** | P0–P3 Execution | **DONE** | `Matter`/`Action` (12-state)/`Dependency`/`Decision`/`Notification`/`Recognition` backend + `MyWork`/`ProblemDecompose`/`Matter360`/`Convergence`/`Finance`/`NGO`/`Excellence` UI (`6/6` Vitest, `26/26` Pytest). |
 | **Milestone I** | Demo, Help & QA | **DONE** | Compact icon header + B&W theme toggle, bottom-docked `Ask AI` assistant, `19-Step End-to-End Demo` (`/demo-flow`), 30-category `Help & Platform Knowledge Centre` (`/help`), M17/M18 mock simulators, `10/10` Vitest, `26/26` Pytest, Playwright `21/21` (`31` routes × `4` viewports: `1920px`/`1280px`/`768px`/`375px`, `0` errors, `0` overflows). |
-| **Prod & Pilot** | Post-Demo | **PENDING** | PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local LLM, Gov SSO IdP, `G03`/`G04`/`G08`/`G10` government sign-offs. |
+| **Milestone J** | Phased Infra & M17/M18 DB | **DONE** | Alembic `0002` (`continuity_tokens`, `ground_truth_callbacks`, PostgreSQL RLS DDL), M17/M18 Zero-PII REST APIs, offline PWA `sw.js` + `offlineQueue.ts`, `PgVectorAdapter` & `LocalLLMAdapter` scaffolds, `/integrations/status` registry (`28/28` Pytest). |
+| **Prod & Pilot** | Post-Demo | **PENDING** | Managed PostgreSQL + `pgvector` on NIC MeghRaj, local LLM weights, Gov SSO IdP, `G03`/`G04`/`G08`/`G10` government sign-offs. |
 | **Continuity M18** | Conditional | **PENDING (`G03/G04`)** | `case_tokens`, `consents`, `referrals`, `step_events`, repeat-statement UI, offline PWA sync. |
 
 ---
