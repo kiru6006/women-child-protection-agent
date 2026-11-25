@@ -273,3 +273,17 @@ class NotificationDB(Base):
     message = Column(Text, nullable=False)
     is_read = Column(Integer, nullable=False, default=0)
     created_at = Column(String(64), nullable=False)
+
+
+class RecognitionNominationDB(Base):
+    __tablename__ = "recognition_nominations"
+
+    id = Column(String(64), primary_key=True, index=True)
+    candidate_name = Column(String(256), nullable=False)
+    candidate_type = Column(String(64), nullable=False)
+    category = Column(String(128), nullable=False)
+    geography = Column(String(128), nullable=False)
+    evidence_summary = Column(Text, nullable=False)
+    quality_metric = Column(String(256), nullable=False)
+    independent_verifier = Column(String(128), nullable=False)
+    status = Column(String(32), nullable=False, default="NOMINATED")

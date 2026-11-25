@@ -168,3 +168,42 @@ def test_p0_ngo_isolation_role_transfer_notification_dedup_and_decision_gate():
             params={"dedup_key": "DEDUP-TEST-1", "target_role": "DWCD_OFFICER", "event_type": "REMINDER", "message": "Check SLA"},
         ).json()
         assert n1["id"] == n2["id"]
+
+
+def test_p2_recurring_problem_detection_and_recognition_gates():
+    with TestClient(app) as client:
+        rec_patterns = client.get("/api/v1/recurring-problems").json()
+        assert len(rec_patterns) >= 1
+        assert rec_patterns[0]["matter_count"] >= 2
+
+        # Perverse arrest/closure metric rejected 422
+        bad = client.post(
+            "/api/v1/recognition",
+            headers={"X-User-Role": "DISTRICT_COLLECTOR"},
+            json={
+                "candidate_name": "Test Unit",
+                "evidence_summary": "Closed 100 cases fast",
+                "quality_metric": "Total arrests and raw case closure volume",
+            },
+        )
+        assert bad.status_code == 422
+
+        # Quality metric accepted and human-approved
+        good = client.post(
+            "/api/v1/recognition",
+            headers={"X-User-Role": "DISTRICT_COLLECTOR"},
+            json={
+                "candidate_name": "Sakhi OSC Joint Desk",
+                "evidence_summary": "Verified single-window intake cut repeat statements",
+                "quality_metric": "92% Day-90 quality-verified intake",
+            },
+        )
+        assert good.status_code == 201
+        nom_id = good.json()["id"]
+
+        ai_app = client.post(f"/api/v1/recognition/{nom_id}/approve", headers={"X-User-Role": "AI_AGENT"})
+        assert ai_app.status_code == 403
+
+        dm_app = client.post(f"/api/v1/recognition/{nom_id}/approve", headers={"X-User-Role": "DISTRICT_COLLECTOR"})
+        assert dm_app.status_code == 200
+        assert dm_app.json()["status"] == "APPROVED"

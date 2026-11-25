@@ -151,3 +151,25 @@ def validate_matter_closure(matter: MatterDB, target_status: str, db: Session) -
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Cannot close Matter with {open_actions} unverified actions.",
         )
+
+
+def detect_recurring_problems(db: Session) -> List[Dict]:
+    matters = db.query(MatterDB).all()
+    grouped: Dict[str, List[MatterDB]] = {}
+    for m in matters:
+        key = f"{m.jurisdiction.split(',')[0].strip()}:{m.domain}"
+        grouped.setdefault(key, []).append(m)
+
+    patterns: List[Dict] = []
+    for key, items in grouped.items():
+        if len(items) >= 2:
+            patterns.append(
+                {
+                    "pattern_id": f"REC-PAT-{len(patterns) + 1}",
+                    "scope": key,
+                    "matter_count": len(items),
+                    "matter_ids": [i.id for i in items],
+                    "recommendation": "Systemic process/capacity review recommended instead of isolated alerts.",
+                }
+            )
+    return patterns

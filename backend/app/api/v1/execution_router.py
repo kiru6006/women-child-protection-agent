@@ -6,10 +6,11 @@ from sqlalchemy.orm import Session
 from backend.app.core.auth import ActorContext, HUMAN_VALIDATOR_ROLES, enforce_domain_a_write, get_actor_context
 from backend.app.core.pii_guard import reject_raw_pii
 from backend.app.db.database import get_db
-from backend.app.db.models import ActionItemDB, DecisionRecordDB, DependencyDB, MatterDB, NotificationDB
+from backend.app.db.models import ActionItemDB, DecisionRecordDB, DependencyDB, MatterDB, NotificationDB, RecognitionNominationDB
 from backend.app.services.audit_service import audit_service
 from backend.app.services.execution_engine import (
     detect_dependency_cycles,
+    detect_recurring_problems,
     emit_notification_dedup,
     now_iso,
     validate_action_transition,
@@ -464,3 +465,73 @@ def emit_notification_endpoint(
     db.commit()
     db.refresh(notif)
     return notif
+
+
+class RecognitionCreate(BaseModel):
+    candidate_name: str = Field(..., min_length=3)
+    candidate_type: str = "DISTRICT_TEAM"
+    category: str = "Effective Interdepartmental Coordination"
+    geography: str = "Patna, Bihar"
+    evidence_summary: str = Field(..., min_length=6)
+    quality_metric: str = Field(..., min_length=4)
+    independent_verifier: str = "State WCD Quality Audit Cell"
+
+
+@exec_router.get("/recurring-problems")
+def list_recurring_problems(db: Session = Depends(get_db)):
+    return detect_recurring_problems(db)
+
+
+@exec_router.get("/recognition")
+def list_recognition_nominations(db: Session = Depends(get_db)):
+    return db.query(RecognitionNominationDB).all()
+
+
+@exec_router.post("/recognition", status_code=201)
+def create_recognition_nomination(
+    payload: RecognitionCreate,
+    actor: AuthenticatedActor = Depends(get_current_actor) if False else Depends(get_actor_context),
+    db: Session = Depends(get_db),
+):
+    reject_raw_pii(payload.candidate_name, payload.evidence_summary, payload.quality_metric)
+    metric_lower = payload.quality_metric.lower()
+    if any(bad in metric_lower for bad in ["arrest count", "total arrests", "raw case closure", "crime reduction only"]):
+        raise HTTPException(
+            status_code=422,
+            detail="Recognition cannot be based solely on raw arrest counts, closure volume, or crime reduction.",
+        )
+    new_id = f"REC-{db.query(RecognitionNominationDB).count() + 101}"
+    row = RecognitionNominationDB(
+        id=new_id,
+        candidate_name=payload.candidate_name,
+        candidate_type=payload.candidate_type,
+        category=payload.category,
+        geography=payload.geography,
+        evidence_summary=payload.evidence_summary,
+        quality_metric=payload.quality_metric,
+        independent_verifier=payload.independent_verifier,
+        status="NOMINATED",
+    )
+    db.add(row)
+    audit_service.append_event(actor.role, "CREATE_RECOGNITION", "RECOGNITION", new_id, payload.candidate_name)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+@exec_router.post("/recognition/{nom_id}/approve")
+def approve_recognition_nomination(
+    nom_id: str,
+    actor: ActorContext = Depends(get_actor_context),
+    db: Session = Depends(get_db),
+):
+    if actor.role not in HUMAN_VALIDATOR_ROLES:
+        raise HTTPException(status_code=403, detail="Only human authority can approve governance recognition.")
+    row = db.query(RecognitionNominationDB).filter(RecognitionNominationDB.id == nom_id).first()
+    if not row:
+        raise HTTPException(status_code=404, detail="Nomination not found")
+    row.status = "APPROVED"
+    audit_service.append_event(actor.role, "APPROVE_RECOGNITION", "RECOGNITION", nom_id, row.candidate_name)
+    db.commit()
+    db.refresh(row)
+    return row

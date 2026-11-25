@@ -7,6 +7,8 @@ import { Building2, Users, ShieldCheck } from 'lucide-react';
 export function NgoCommunityPage() {
   const { ngos, activities } = useGovernanceStore();
   const [tab, setTab] = useState<'ngos' | 'activities' | 'local'>('ngos');
+  const [activityEv, setActivityEv] = useState<Record<string, string>>({});
+  const [verifiedMap, setVerifiedMap] = useState<Record<string, string>>({});
 
   return (
     <div className="space-y-4">
@@ -85,15 +87,33 @@ export function NgoCommunityPage() {
                   </div>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded font-bold border ${
-                  a.verificationStatus === 'VERIFIED' ? 'bg-[#DFFFE0] text-[#166534] border-[#16A028]' : 'bg-[#FFE5DE] text-[#7D2A42] border-[#C98A87]'
+                  (verifiedMap[a.id] || a.verificationStatus) === 'VERIFIED' ? 'bg-[#DFFFE0] text-[#166534] border-[#16A028]' : 'bg-[#FFE5DE] text-[#7D2A42] border-[#C98A87]'
                 }`}>
-                  {a.verificationStatus}
+                  {verifiedMap[a.id] || a.verificationStatus}
                 </span>
               </div>
               <div className="mt-2 pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-[11px] text-slate-700">
                 <span><strong>Target:</strong> {a.targetGroup}</span>
                 <span><strong>Funding:</strong> ₹{a.approvedFundingInr.toLocaleString()}</span>
                 <span><strong>Expected Outcome:</strong> {a.expectedOutcome}</span>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <input
+                  placeholder="Submit delivery evidence ref (no PII)..."
+                  value={activityEv[a.id] || ''}
+                  onChange={(e) => setActivityEv((p) => ({ ...p, [a.id]: e.target.value }))}
+                  className="flex-1 min-w-[180px] border border-[#C98A87] rounded px-2 py-1 text-xs"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!activityEv[a.id]?.trim()) return;
+                    setVerifiedMap((p) => ({ ...p, [a.id]: 'VERIFIED' }));
+                  }}
+                  className="px-2.5 py-1 rounded bg-[#16A028] text-white font-semibold text-[11px]"
+                >
+                  Submit Delivery Evidence
+                </button>
               </div>
             </Card>
           ))}

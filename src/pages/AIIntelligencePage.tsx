@@ -208,6 +208,28 @@ export function AIIntelligencePage() {
           </Card>
         ))}
       </div>
+
+      {/* Section 20: Recurring Systemic Problem Intelligence */}
+      <Card
+        header={
+          <div className="flex items-center justify-between w-full">
+            <span className="text-xs font-bold text-[#1F3864]">Recurring Problem Intelligence (§20)</span>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#E6D0E3] text-[#46296E] border border-[#654161]">
+              Systemic Pattern Detector
+            </span>
+          </div>
+        }
+      >
+        <div className="p-2.5 rounded border border-[#E5B8B7] bg-[#FFE5DE]/30 text-xs flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <strong className="text-[#7D2A42]">REC-PAT-1 (Patna:WOMEN — 2+ Recurring Coordination Matters):</strong>{' '}
+            <span className="text-slate-700">Repeated OSC legal-aid drop-off & DIR mediation patterns detected; recommends systemic SOP & roster review instead of isolated alerts.</span>
+          </div>
+          <Link to="/decompose" className="px-2.5 py-1 rounded bg-[#7D2A42] text-white font-semibold text-[11px] shrink-0">
+            Decompose Systemic Cause →
+          </Link>
+        </div>
+      </Card>
     </div>
   );
 }
