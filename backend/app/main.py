@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.core.config import settings
 from backend.app.api.v1.router import api_router
+from backend.app.api.v1.execution_router import exec_router
 from backend.app.db.database import init_db
 
 
@@ -31,6 +32,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(exec_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health", tags=["System"])

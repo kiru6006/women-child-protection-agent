@@ -1,11 +1,15 @@
 from sqlalchemy.orm import Session
 from backend.app.db.models import (
+    ActionItemDB,
     AlertRecordDB,
     DatasetCatalogDB,
+    DependencyDB,
     EvidenceItemDB,
     GapContractDB,
     GapInvestigationDB,
     InterventionDB,
+    MatterDB,
+    NotificationDB,
     OfficialDirectoryDB,
     OutcomeDB,
 )
@@ -270,4 +274,141 @@ def seed_db_if_empty(db: Session) -> None:
             ),
         ]
         db.add_all(alerts)
+
+    if db.query(MatterDB).count() == 0:
+        db.add_all(
+            [
+                MatterDB(
+                    id="MTR-2026-W-001",
+                    demo_code="DEMO-01",
+                    title="Domestic Violence Survivor Financial & Shelter Linkage",
+                    domain="WOMEN",
+                    category="WELFARE_ASSISTANCE",
+                    jurisdiction="Patna, Bihar",
+                    severity="HIGH",
+                    matter_status="ACTIVE",
+                    admin_status="IN_PROGRESS",
+                    police_status="PRELIMINARY_INQUIRY",
+                    litigation_status="PENDING_HEARING",
+                    court_compliance_status="PARTIALLY_COMPLIED",
+                    financial_status="DISBURSED",
+                    outcome_status="PARTIALLY_ACHIEVED",
+                    coordinating_authority="DISTRICT_COLLECTOR_PATNA",
+                    responsible_authority="DWCD_PATNA",
+                    responsible_department="Women & Child Development",
+                    is_synthetic=1,
+                    created_at="2026-10-12T09:00:00Z",
+                    updated_at="2026-11-24T10:00:00Z",
+                ),
+                MatterDB(
+                    id="MTR-2026-W-002",
+                    demo_code="DEMO-02",
+                    title="Police & DLSA Legal Aid Roster Coordination at Sakhi OSC",
+                    domain="WOMEN",
+                    category="DEPARTMENTAL_COORDINATION",
+                    jurisdiction="Patna, Bihar",
+                    severity="CRITICAL",
+                    matter_status="ACTIVE",
+                    admin_status="WAITING_FOR_DEPENDENCY",
+                    police_status="INVESTIGATION_ONGOING",
+                    litigation_status="INTERIM_ORDER_PASSED",
+                    court_compliance_status="AWAITING_ACTION",
+                    financial_status="RELEASED",
+                    outcome_status="IN_PROGRESS",
+                    coordinating_authority="DISTRICT_COLLECTOR_PATNA",
+                    responsible_authority="SECRETARY_DLSA_PATNA",
+                    responsible_department="Legal Services Authority",
+                    is_synthetic=1,
+                    created_at="2026-10-05T09:00:00Z",
+                    updated_at="2026-11-24T10:00:00Z",
+                ),
+            ]
+        )
+
+    if db.query(DependencyDB).count() == 0:
+        db.add(
+            DependencyDB(
+                id="DEP-001",
+                matter_id="MTR-2026-W-001",
+                dep_type="FUND_RELEASE",
+                predecessor_action_id="ACT-101",
+                dependent_action_id="ACT-102",
+                predecessor_node="Finance & Treasury",
+                dependent_node="District WCD",
+                owner_role="TREASURY_OFFICER_PATNA",
+                supporting_authority="DWCD_PATNA",
+                reason="PFMS batch awaiting DDO digital signature",
+                status="WAITING_FOR_FUNDS",
+                is_lawful_wait=0,
+                due_date="2026-11-30",
+                escalation_authority="DISTRICT_COLLECTOR_PATNA",
+                evidence_ref="WCD/PAT/FIN/2026-44",
+            )
+        )
+
+    if db.query(ActionItemDB).count() == 0:
+        db.add_all(
+            [
+                ActionItemDB(
+                    id="ACT-101",
+                    matter_id="MTR-2026-W-001",
+                    intervention_id="INT-PAT-001",
+                    title="Approve Treasury PFMS Batch for Balance Rs. 10,000 Rehab Grant",
+                    description="Clear pending PFMS batch for survivor subsistence grant.",
+                    responsible_department="Finance & Treasury",
+                    responsible_role="TREASURY_OFFICER_PATNA",
+                    accountable_authority="DISTRICT_COLLECTOR_PATNA",
+                    coordinating_authority="DISTRICT_COLLECTOR_PATNA",
+                    assigned_date="2026-11-20",
+                    acknowledged=0,
+                    required_deliverable="Signed PFMS UTR batch",
+                    timeline_date="2026-11-30",
+                    completion_criteria="UTR generated and logged",
+                    required_evidence="PFMS UTR Receipt",
+                    dependency_ids=[],
+                    escalation_authority="STATE_WCD_SECRETARY",
+                    status="ASSIGNED",
+                    progress_updates=[],
+                    transfer_history=[],
+                ),
+                ActionItemDB(
+                    id="ACT-102",
+                    matter_id="MTR-2026-W-001",
+                    intervention_id="INT-PAT-001",
+                    title="Disburse Balance Shelter Rehabilitation Kit & Log Receipt",
+                    description="Complete balance tranche disbursement once DEP-001 resolves.",
+                    responsible_department="Women & Child Development",
+                    responsible_role="DWCD_PATNA",
+                    accountable_authority="DISTRICT_COLLECTOR_PATNA",
+                    coordinating_authority="DISTRICT_COLLECTOR_PATNA",
+                    assigned_date="2026-11-20",
+                    acknowledged=1,
+                    acknowledged_at="2026-11-21T10:00:00Z",
+                    required_deliverable="Disbursement acknowledgement",
+                    timeline_date="2026-12-03",
+                    completion_criteria="Funds received by survivor account",
+                    required_evidence="Bank Disbursement Voucher",
+                    dependency_ids=["DEP-001"],
+                    escalation_authority="DISTRICT_COLLECTOR_PATNA",
+                    status="WAITING_FOR_DEPENDENCY",
+                    progress_updates=[],
+                    transfer_history=[],
+                ),
+            ]
+        )
+
+    if db.query(NotificationDB).count() == 0:
+        db.add(
+            NotificationDB(
+                id="NTF-101",
+                dedup_key="ASSIGN:ACT-101:TREASURY_OFFICER_PATNA",
+                matter_id="MTR-2026-W-001",
+                action_id="ACT-101",
+                target_role="TREASURY_OFFICER_PATNA",
+                event_type="ACTION_ASSIGNED",
+                message="Action ACT-101 assigned: Approve Treasury PFMS Batch",
+                is_read=0,
+                created_at="2026-11-20T09:00:00Z",
+            )
+        )
     db.commit()

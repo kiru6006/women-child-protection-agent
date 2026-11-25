@@ -173,3 +173,103 @@ class AlertRecordDB(Base):
     linked_entity_type = Column(String(32), nullable=True)
     linked_entity_id = Column(String(64), nullable=True)
     created_at = Column(String(64), nullable=False)
+
+
+class MatterDB(Base):
+    __tablename__ = "matters"
+
+    id = Column(String(64), primary_key=True, index=True)
+    demo_code = Column(String(32), nullable=False)
+    title = Column(String(256), nullable=False)
+    domain = Column(String(16), nullable=False)
+    category = Column(String(64), nullable=False)
+    jurisdiction = Column(String(128), nullable=False)
+    severity = Column(String(16), nullable=False)
+    matter_status = Column(String(32), nullable=False, default="OPEN")
+    admin_status = Column(String(32), nullable=False, default="NOT_STARTED")
+    police_status = Column(String(32), nullable=False, default="NOT_APPLICABLE")
+    litigation_status = Column(String(32), nullable=False, default="NOT_APPLICABLE")
+    court_compliance_status = Column(String(32), nullable=False, default="NOT_APPLICABLE")
+    financial_status = Column(String(32), nullable=False, default="NOT_APPLICABLE")
+    outcome_status = Column(String(32), nullable=False, default="NOT_MEASURED")
+    coordinating_authority = Column(String(128), nullable=False)
+    responsible_authority = Column(String(128), nullable=False)
+    responsible_department = Column(String(128), nullable=False)
+    is_synthetic = Column(Integer, nullable=False, default=1)
+    created_at = Column(String(64), nullable=False)
+    updated_at = Column(String(64), nullable=False)
+
+
+class ActionItemDB(Base):
+    __tablename__ = "actions"
+
+    id = Column(String(64), primary_key=True, index=True)
+    matter_id = Column(String(64), nullable=False, index=True)
+    intervention_id = Column(String(64), nullable=True)
+    title = Column(String(256), nullable=False)
+    description = Column(Text, nullable=False)
+    responsible_department = Column(String(128), nullable=False)
+    responsible_role = Column(String(128), nullable=False)
+    accountable_authority = Column(String(128), nullable=False)
+    coordinating_authority = Column(String(128), nullable=False)
+    assigned_date = Column(String(32), nullable=False)
+    acknowledged = Column(Integer, nullable=False, default=0)
+    acknowledged_at = Column(String(64), nullable=True)
+    required_deliverable = Column(String(256), nullable=False)
+    timeline_date = Column(String(32), nullable=False)
+    completion_criteria = Column(Text, nullable=False)
+    required_evidence = Column(String(256), nullable=False)
+    completion_evidence_ref = Column(Text, nullable=True)
+    dependency_ids = Column(JSON, nullable=False, default=list)
+    escalation_authority = Column(String(128), nullable=False)
+    status = Column(String(32), nullable=False, default="ASSIGNED")
+    progress_updates = Column(JSON, nullable=False, default=list)
+    transfer_history = Column(JSON, nullable=False, default=list)
+    dispute_reason = Column(Text, nullable=True)
+
+
+class DependencyDB(Base):
+    __tablename__ = "dependencies"
+
+    id = Column(String(64), primary_key=True, index=True)
+    matter_id = Column(String(64), nullable=False, index=True)
+    dep_type = Column(String(64), nullable=False)
+    predecessor_action_id = Column(String(64), nullable=True)
+    dependent_action_id = Column(String(64), nullable=True)
+    predecessor_node = Column(String(128), nullable=False)
+    dependent_node = Column(String(128), nullable=False)
+    owner_role = Column(String(128), nullable=False)
+    supporting_authority = Column(String(128), nullable=False)
+    reason = Column(Text, nullable=False)
+    status = Column(String(32), nullable=False, default="OPEN")
+    is_lawful_wait = Column(Integer, nullable=False, default=0)
+    due_date = Column(String(32), nullable=False)
+    escalation_authority = Column(String(128), nullable=False)
+    evidence_ref = Column(String(128), nullable=True)
+
+
+class DecisionRecordDB(Base):
+    __tablename__ = "decisions"
+
+    id = Column(String(64), primary_key=True, index=True)
+    matter_id = Column(String(64), nullable=False, index=True)
+    queue_type = Column(String(64), nullable=False)
+    title = Column(String(256), nullable=False)
+    decision_action = Column(String(32), nullable=False)
+    rationale = Column(Text, nullable=False)
+    decided_by_role = Column(String(128), nullable=False)
+    decided_at = Column(String(64), nullable=False)
+
+
+class NotificationDB(Base):
+    __tablename__ = "notifications"
+
+    id = Column(String(64), primary_key=True, index=True)
+    dedup_key = Column(String(128), nullable=False, unique=True, index=True)
+    matter_id = Column(String(64), nullable=True)
+    action_id = Column(String(64), nullable=True)
+    target_role = Column(String(128), nullable=False)
+    event_type = Column(String(64), nullable=False)
+    message = Column(Text, nullable=False)
+    is_read = Column(Integer, nullable=False, default=0)
+    created_at = Column(String(64), nullable=False)
