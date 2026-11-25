@@ -76,10 +76,10 @@ export function Header() {
   }, [searchQuery, gaps, officials, evidence, datasets]);
 
   const iconBtn =
-    'group relative p-2 rounded bg-slate-800/90 border border-slate-700 text-slate-100 hover:bg-[#7D2A42] hover:border-[#EF5A90] flex items-center justify-center';
+    'group relative p-1.5 sm:p-2 rounded bg-slate-800/90 border border-slate-700 text-slate-100 hover:bg-[#7D2A42] hover:border-[#EF5A90] flex items-center justify-center shrink-0';
 
   const tooltipCls =
-    'pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full right-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] font-medium border border-slate-700 shadow-md z-50';
+    'hidden sm:block pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full right-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] font-medium border border-slate-700 shadow-md z-50';
 
   return (
     <header className="bg-gov-navy text-white border-b border-slate-800 sticky top-0 z-40 shadow-xs">
@@ -93,7 +93,7 @@ export function Header() {
             aria-label="Toggle mobile navigation"
           >
             <Menu className="w-4 h-4" />
-            <span className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
+            <span className="hidden sm:block pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
               Menu
             </span>
           </button>
@@ -112,15 +112,15 @@ export function Header() {
             <div className="w-7 h-7 rounded bg-[#7D2A42] text-white font-black flex items-center justify-center text-xs border border-[#EF5A90] shrink-0">
               WCD
             </div>
-            <span className="font-bold text-sm text-white truncate">WCD Protection Portal</span>
-            <span className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
+            <span className="hidden sm:inline font-bold text-sm text-white truncate">WCD Protection Portal</span>
+            <span className="hidden sm:block pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
               Ministry of Women & Child Development — Integrated Protection Platform
             </span>
           </Link>
         </div>
 
         {/* Right: Icon-Only Compact Controls (Hover & Click reveal full label) */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {/* Search Icon */}
           <div className="relative">
             <button
@@ -258,7 +258,7 @@ export function Header() {
           {/* 19-Step End-to-End Demo Button (Just before User Profile Icon) */}
           <Link
             to="/demo-flow"
-            className="group relative p-2 rounded bg-[#7D2A42] border border-[#EF5A90] text-white hover:bg-[#654161] flex items-center justify-center"
+            className="group relative p-1.5 sm:p-2 rounded bg-[#7D2A42] border border-[#EF5A90] text-white hover:bg-[#654161] flex items-center justify-center shrink-0"
             aria-label="19-Step End-to-End Demo Walkthrough"
           >
             <PlayCircle className="w-4 h-4" />

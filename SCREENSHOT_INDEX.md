@@ -1,7 +1,7 @@
 # Proposal Screenshot Sequence Index
 ## WCD Integrated Governance, Protection, Welfare & Accountability Platform
 
-> **Capture Status:** **CAPTURED (20/20)** via headless Chromium Playwright ([`scripts/capture_screenshots.py`](./scripts/capture_screenshots.py)) against `vite preview` (`4173`), saved in `docs/screenshots/`. Verified `0` page errors and `0` horizontal overflows at `1280x800`, `768x1024`, and `375x812`.
+> **Capture Status:** **CAPTURED (21/21)** via headless Chromium Playwright ([`scripts/capture_screenshots.py`](./scripts/capture_screenshots.py)) against `vite preview` (`4173`), saved in `docs/screenshots/`. Verified `0` page errors and `0` horizontal overflows at `1280x800`, `768x1024`, and `375x812`.
 
 | # | Screen Title | Government Problem Addressed | Purpose & Main Features | Stakeholders | Expected Benefit | Data / Synthetic Label | Filename | Route |
 |---|---|---|---|---|---|---|---|---|
@@ -25,3 +25,4 @@
 | 18 | District Administration Dashboard | District coordination overload | District matters, convergence, NGOs & outcomes | District Collector / DM | Fast district convergence | `SYNTHETIC DEMONSTRATION` | `18-district-dashboard.png` | `/dashboards?role=COLLECTOR` |
 | 19 | Outcome Verification | Process completed ≠ survivor safe | Baseline vs observed KPI + Day 30/60/90 cadence | Collector, Auditor | Verified field impact | `SYNTHETIC DEMONSTRATION` | `19-outcome-verification.png` | `/outcomes` |
 | 20 | Governance Excellence & Recognition | Perverse closure/arrest incentives | Quality-verified best practices & human approval | State Review Cell | Replicable good practice | `SYNTHETIC DEMONSTRATION` | `20-governance-excellence.png` | `/excellence` |
+| 21 | Help & Platform Knowledge Centre | Complex multi-dept platform orientation | 30-category knowledge hub, local search, role/dept/issue guides, mindmap, FAQs, glossary | All Authorised Stakeholders | Rapid orientation & clarity | `SYNTHETIC DEMONSTRATION` | `21-help-knowledge-centre.png` | `/help` |
