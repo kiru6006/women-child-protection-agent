@@ -36,6 +36,7 @@ const NAV_GROUPS: NavGroup[] = [
     statusTag: 'Live',
     items: [
       { label: 'Home Hub', to: '/' },
+      { label: '19-Step E2E Demo', to: '/demo-flow' },
       { label: 'My Work (Daily Inbox)', to: '/my-work' },
       { label: 'Government Command Centre', to: '/command-centre' },
       { label: 'Alerts & Notifications', to: '/alerts' },

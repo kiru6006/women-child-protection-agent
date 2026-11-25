@@ -29,6 +29,7 @@ import { ExcellencePage } from '@/pages/ExcellencePage';
 import { RoleDashboardsPage } from '@/pages/RoleDashboardsPage';
 import { MyWorkPage } from '@/pages/MyWorkPage';
 import { ProblemDecomposePage } from '@/pages/ProblemDecomposePage';
+import { DemoWalkthroughPage } from '@/pages/DemoWalkthroughPage';
 
 export function App() {
   return (
@@ -66,6 +67,7 @@ export function App() {
           <Route path="/dashboards" element={<RoleDashboardsPage />} />
           <Route path="/my-work" element={<MyWorkPage />} />
           <Route path="/decompose" element={<ProblemDecomposePage />} />
+          <Route path="/demo-flow" element={<DemoWalkthroughPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppLayout>
