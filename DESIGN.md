@@ -88,7 +88,5 @@ Used strictly for badges, small icons, category markers, and subtle borders with
 
 ## 5. Verification & Remaining Items
 
-- **Verified:** `npm run build` (`tsc -b && vite build`), `npm test` (`5/5` Vitest), `pytest` (`20/20` Pytest) pass after token, contrast, and component refactor.
-- **Completed Contrast Sweep:** Upgraded `text-slate-400` micro-captions/icons on light backgrounds across `AttentionCentrePage.tsx`, `AuditPage.tsx`, `EcosystemPage.tsx`, `EvidenceLibraryPage.tsx`, `GapExplorerPage.tsx`, `InterventionsPage.tsx`, `InvestigationPage.tsx`, `KnowledgeAssistantPage.tsx`, `KnowledgeDataPage.tsx`, `OutcomesPage.tsx`, and `PageHeader.tsx` to `text-slate-500`/`text-slate-600` (`>= 4.5:1`), and replaced the Attention Centre gradient/pink banner with Civic Intelligence Light (`bg-white` + `border-l-gov-navy`).
-- **Remaining:**
-  - Automated Playwright / Chrome DevTools contrast & responsive screenshot pass against live dev server (`1280px`, `768px`, `375px`).
+- **Verified:** `npm run build` (`tsc -b && vite build`), `npm test` (`10/10` Vitest), `pytest` (`26/26` Pytest), and Playwright responsive capture (`21/21` screens, `0` errors, `0` overflows across `1280x800`, `768x1024`, and `375x812`) pass.
+- **Completed Contrast & Theme Sweep:** Upgraded `text-slate-400` micro-captions/icons on light backgrounds across core pages to `text-slate-500`/`text-slate-600` (`>= 4.5:1`), replaced the Attention Centre gradient banner with Civic Intelligence Light (`bg-white` + `border-l-gov-navy`), and added a high-contrast Black & White theme toggle in the compact icon-only header.

@@ -1,6 +1,6 @@
 # WCD Protection Intelligence Platform (Suraksha Sentinel & Sahyog)
 
-AI-assisted Government Protection, Policy, Service Delivery and Intervention Intelligence Platform for the **Ministry of Women & Child Development (MoWCD), Government of India**.
+AI-assisted Government Protection, Policy, Service Delivery, Convergence and Accountability Platform for the **Ministry of Women & Child Development (MoWCD), Government of India**.
 
 **Navigation:** [1. Project Overview](#1-project-overview) · [2. Structure by Features](#2-structure-by-features) · [3. Repository Structure](#3-repository-structure) · [4. Documentation Index](#4-documentation-index) · [5. Quickstart](#5-local-development-quickstart)
 
@@ -9,7 +9,7 @@ AI-assisted Government Protection, Policy, Service Delivery and Intervention Int
 ## 1. Project Overview
 
 ### The Problem
-India's WCD ecosystem (Mission Shakti, Mission Vatsalya, POSHAN 2.0) already runs large MIS portals, yet protection fails between institutions:
+India's WCD ecosystem (Mission Shakti, Mission Vatsalya, POSHAN 2.0) already operates large MIS portals, yet protection fails between institutions:
 1. **Institutional Silos:** A survivor interacts with 6–12 disconnected authorities (OSC, Police, Hospital, DLSA, Shelter, CWC) with no shared continuity or SLA accountability.
 2. **Process ≠ Outcome:** Referrals can complete on paper while survivors return to unsafe environments due to missing legal aid, shelter, or economic support.
 3. **Action Gap:** Senior officials have aggregate statistics, not an investigation mechanism linking **observed failure → verified evidence → named owner → corrective action → measured 90-day outcome**.
@@ -18,9 +18,9 @@ India's WCD ecosystem (Mission Shakti, Mission Vatsalya, POSHAN 2.0) already run
 The platform runs a **Twin-Domain + Shared Intelligence** architecture across the lifecycle:
 `DISCOVER → INVESTIGATE → VALIDATE → ASSIGN → ACT → VERIFY → LEARN`
 
-* **Domain A — Women Protection Intelligence (Active MVP):** Covers `Safety → Support → Legal → Shelter → Economic/Livelihood → Rehabilitation` (`W01–W12`), focusing on proving 1 real protection gap end-to-end.
-* **Domain B — Child Protection Intelligence (Phase 2/3 Architecture-Ready):** Covers `C01–C16` (POCSO, JJ Act, CWC, CCI, aftercare) as public-source research and taxonomy only in MVP; live child case workflows remain locked behind separate statutory approvals.
-* **Shared Protection Intelligence Layer:** Evidence Library, Gap Contracts, Investigation Workspace, Bounded AI (`A1–A4` at `temperature=0.0` with `"DATA NOT AVAILABLE"` fallback), Intervention Approval, Outcome Verification, and Immutable SHA-256 Audit Chain.
+* **Domain A — Women Protection Intelligence (Active Demo / MVP):** Covers `Safety → Support → Legal → Shelter → Economic/Livelihood → Rehabilitation` (`W01–W12`), proving end-to-end protection gap resolution.
+* **Domain B — Child Protection Intelligence (Phase 2/3 Architecture-Ready):** Covers `C01–C16` (POCSO, JJ Act, CWC, CCI, aftercare) as aggregate research and taxonomy only in MVP; live child case workflows remain locked (`403`) behind separate statutory approvals.
+* **Shared Protection & Execution Layer:** Command Centre, Matter 360°, Convergence & Dependency 360°, RACI Ownership, Financial Intelligence, NGO & Community Collaboration, Police & Litigation Coordination, Evidence Library, Gap Contracts, Investigation Workspace, Bounded AI (`temperature=0.0` with `"DATA NOT AVAILABLE"` fallback), Intervention Approval, Outcome Verification, Immutable SHA-256 Audit Chain, 19-Step End-to-End Demo (`/demo-flow`), and Help & Platform Knowledge Centre (`/help`).
 * **Non-Negotiable Guardrails:** Zero PII in central/AI storage (HMAC-SHA256 tokens), no individual risk scoring, no AI judicial/fact findings, no public district leaderboards, and mandatory human validation/approval gates. See [`AGENTS.md`](./AGENTS.md).
 
 ---
@@ -29,38 +29,48 @@ The platform runs a **Twin-Domain + Shared Intelligence** architecture across th
 
 ```
 WCD Protection Intelligence Platform
-├── Domain A: Women Protection (MVP Active) ──> src/pages/WomenWorkspacePage.tsx
-├── Domain B: Child Protection (Phase 2 Ready) ─> src/pages/ChildProtectionPage.tsx
-└── Shared Protection Intelligence Layer
-    ├── 1. Attention Centre (M01) ──────────────> src/pages/AttentionCentrePage.tsx
-    ├── 2. Evidence Library (M05) ──────────────> src/pages/EvidenceLibraryPage.tsx
-    ├── 3. Gap Explorer (M04, M09) ─────────────> src/pages/GapExplorerPage.tsx
-    ├── 4. Investigation Workspace (M10) ───────> src/pages/InvestigationPage.tsx
-    ├── 5. Interventions & Outcomes (M12, M13) ─> src/pages/InterventionsPage.tsx + OutcomesPage.tsx
-    ├── 6. Statutory RAG Assistant (M15, M19) ──> src/pages/KnowledgeAssistantPage.tsx
-    └── 7. WORM Audit & Explainability (M20) ───> src/pages/AuditPage.tsx
+├── Domain A: Women Protection (MVP Active)          ──> /women
+├── Domain B: Child Protection (Phase 2 Locked 403)    ──> /child
+├── Executive & Role Workspaces
+│   ├── Home Governance Hub & Role Dashboards          ──> /, /command-centre, /dashboards
+│   ├── My Work & Alerts Escalation                    ──> /my-work, /alerts, /attention
+│   └── 19-Step End-to-End Demo & Help Knowledge Hub   ──> /demo-flow, /help
+├── Coordination, Convergence & Finance
+│   ├── Matter 360° (Police, Litigation, Welfare)      ──> /matter-360
+│   ├── Convergence Graph & Dependency 360°            ──> /convergence, /dependencies
+│   ├── RACI Ownership & Financial Execution           ──> /ownership, /finance
+│   └── NGO & Community Collaboration                  ──> /ngo-community
+└── Shared Protection Intelligence & Governance
+    ├── Evidence Library & Gap Explorer                ──> /evidence, /gaps
+    ├── Investigation & Problem Decomposition          ──> /investigation, /decompose
+    ├── Interventions, Outcomes & Excellence             ──> /interventions, /outcomes, /excellence
+    ├── AI Intelligence & Statutory RAG Assistant      ──> /ai-intelligence, /knowledge-assistant
+    └── WORM Audit & Explainability                    ──> /audit, /governance
 ```
 
-| Feature Module | Purpose | MVP Status | Frontend (`src/`) | Backend (`backend/`) |
-|---|---|---|---|---|
-| **Attention Centre** | Prioritised stalled-case & statutory breach queue for District Collectors / WCD officers | MVP | [`AttentionCentrePage.tsx`](./src/pages/AttentionCentrePage.tsx) | [`sentinel_service.py`](./backend/app/services/sentinel_service.py) |
-| **Women Protection Workspace** | Domain A 6-stage continuum (`Safety → Rehabilitation`) & operational entry point | MVP | [`WomenWorkspacePage.tsx`](./src/pages/WomenWorkspacePage.tsx) | [`router.py`](./backend/app/api/v1/router.py) |
-| **Child Protection Preview** | Domain B research taxonomy & JJ Act / POCSO DAG blueprint (no live child data) | Architecture-Ready | [`ChildProtectionPage.tsx`](./src/pages/ChildProtectionPage.tsx) | [`02-ARCHITECTURE_AND_PLAN.md`](./docs/02-ARCHITECTURE_AND_PLAN.md) |
-| **Evidence Library** | Source provenance & epistemic tagging (`VERIFIED_FACT`, `INFERENCE`, `HYPOTHESIS`, `DATA_NOT_AVAILABLE`) | MVP | [`EvidenceLibraryPage.tsx`](./src/pages/EvidenceLibraryPage.tsx) | [`router.py`](./backend/app/api/v1/router.py) |
-| **Gap Explorer** | 11-type Gap Contracts (`POLICY`..`EMERGING_THREAT`) with named owner role & KPIs | MVP | [`GapExplorerPage.tsx`](./src/pages/GapExplorerPage.tsx) | [`schemas.py`](./backend/app/models/schemas.py) |
-| **Investigation Workspace** | Core UI: facts, conflicting evidence, data gaps, competing hypotheses & legal refs | MVP (Primary UI) | [`InvestigationPage.tsx`](./src/pages/InvestigationPage.tsx) | [`router.py`](./backend/app/api/v1/router.py) |
-| **Intervention & Outcome Loop** | Human-approved corrective actions + 90-day baseline vs observed verification | MVP | [`InterventionsPage.tsx`](./src/pages/InterventionsPage.tsx), [`OutcomesPage.tsx`](./src/pages/OutcomesPage.tsx) | [`schemas.py`](./backend/app/models/schemas.py) |
-| **Statutory Knowledge Assistant** | Bounded RAG query & cited e-Office Show-Cause Notice drafting (`DATA NOT AVAILABLE` fallback) | MVP | [`KnowledgeAssistantPage.tsx`](./src/pages/KnowledgeAssistantPage.tsx) | [`rag_service.py`](./backend/app/services/rag_service.py) |
-| **Audit & Explainability** | Tamper-evident SHA-256 hash-chain ledger for all actions & AI outputs | MVP | [`AuditPage.tsx`](./src/pages/AuditPage.tsx) | [`audit_service.py`](./backend/app/services/audit_service.py) |
-| **Protection Continuity (CCP v2)** | District pilot consent, Zero-PII tokens, referrals & repeat-statement counter | Conditional (`G01–G10`) | [`01-BUSINESS_REQUIREMENTS.md`](./docs/01-BUSINESS_REQUIREMENTS.md) | [`06-EXECUTION_PLAN.md`](./docs/06-EXECUTION_PLAN.md) |
+| Feature Module | Purpose | Route | Demo Status |
+|---|---|---|---|
+| **Home & Command Centre** | Executive situational clarity, role-based dashboards (Minister, Secretary, Collector, Finance), and attention queue | `/`, `/command-centre`, `/dashboards` | Available (Synthetic Demo) |
+| **Women Protection Workspace** | Domain A 6-stage continuum (`Safety → Rehabilitation`) & M18 continuity tracker | `/women` | Available (Synthetic Demo) |
+| **Child Protection Preview** | Domain B research taxonomy (`C01–C16`) & JJ Act / POCSO blueprint (live child PII locked `403`) | `/child` | Architecture-Ready (Locked) |
+| **Matter 360°** | Unified workspace across Overview, Police, Litigation, Court Orders, Welfare, Finance, Ownership & NGO | `/matter-360` | Available (Synthetic Demo) |
+| **Convergence & Dependency 360°** | Inter-departmental links, 17 dependency types, cycle detection, and lawful-wait distinction | `/convergence`, `/dependencies` | Available (Synthetic Demo) |
+| **Ownership & Financial Execution** | Role-attached RACI matrix, transfer history, and `Allocated → Sanctioned → Released → Utilised` tracking | `/ownership`, `/finance` | Available (Synthetic Demo) |
+| **NGO & Community Collaboration** | Empaneled NGOs, Local Bodies/SHGs, approved activities, and zero auto-PII boundary | `/ngo-community` | Available (Synthetic Demo) |
+| **Evidence, Gaps & Investigation** | Source provenance, 11-type Gap Contracts, competing hypotheses, and Problem Decomposition | `/evidence`, `/gaps`, `/investigation`, `/decompose` | Available (Synthetic Demo) |
+| **Interventions, Outcomes & Excellence** | Human-approved corrective actions, 90-day outcome verification, and quality-gated recognition | `/interventions`, `/outcomes`, `/excellence` | Available (Synthetic Demo) |
+| **AI Intelligence & RAG Assistant** | Bounded AI findings (`temperature=0.0`), limitations, and `"DATA NOT AVAILABLE"` fallback | `/ai-intelligence`, `/knowledge-assistant` | Available (Synthetic Demo) |
+| **19-Step End-to-End Demo** | Interactive walkthrough of a full multi-department case lifecycle from intake to verified outcome | `/demo-flow` | Available (Synthetic Demo) |
+| **Help & Platform Knowledge Centre** | 30-category interactive orientation hub, local search, role/department/issue guides, mindmap, FAQs & glossary | `/help` | Available |
+| **Audit & Governance** | Tamper-evident SHA-256 WORM ledger, Zero-PII `422` guard, and explainability controls | `/audit`, `/governance` | Available (Synthetic Demo) |
 
-### Implementation Status (Done vs Pending)
+### Implementation Status (Done vs Post-Demo Production Pending)
 
-| Category | Done (Verified Prototype) | Pending (Live Pilot & Scale) |
+| Category | Done (Verified Demo Prototype) | Pending (Live Government Pilot Only) |
 |---|---|---|
-| **Frontend (`src/`)** | React `19.3.1`, TypeScript, Vite, Civic Intelligence Light + Pink design tokens ([`DESIGN.md`](./DESIGN.md)), `My Work`, `Matter 360°`, `Problem Decomposition`, `Decision Centre`, `Convergence`, `Dependency 360°`, `Finance`, `NGO`, `Excellence`, `Role Dashboards` (`6/6` Vitest) | Playwright responsive E2E suite, offline PWA service-worker sync |
-| **Backend (`backend/`)** | FastAPI + SQLAlchemy ORM + Alembic (`0001_initial_schema`), Gap/Evidence/Investigation/Intervention/Outcome + `Matter`/`Action` (12-state)/`Dependency` (cycle check)/`Decision`/`Notification` (dedup)/`Recognition` CRUD, Zero-PII `422` guard, DB SHA-256 audit chain (`26/26` Pytest) | Production PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local quantised LLM |
-| **Governance & Security** | Explicit CORS origins, signed Bearer JWT (`/api/v1/auth/token`), `DEV_HEADER_AUTH_ENABLED` toggle, Domain B (`CHILD`) `403` write lock, prompt-injection refusal | External Gov SSO IdP, VAPT (`G09`), `G03` WCD/Police protocol, `G04` DPDP opinion, `G10` paper baseline |
+| **Frontend Application** | React 19 + TypeScript SPA, Civic Intelligence Light + Pink & Black/White high-contrast themes, compact icon-only header, 31 routes, `Help & Knowledge Centre`, `19-Step Demo`, `10/10` Vitest passing, `21/21` Playwright screenshots (`0` errors, `0` overflows across `1280px` / `768px` / `375px`) | Offline PWA service-worker sync for remote field centres |
+| **Backend & Intelligence** | FastAPI modular monolith, SQLAlchemy ORM + Alembic migrations, deterministic Gap & 12-state Action machines, Dependency cycle check, Zero-PII `422` guard, DB-backed SHA-256 WORM audit chain (`26/26` Pytest passing) | Production PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local quantised LLM, live CCTNS/ICJS/PFMS APIs |
+| **Governance & Security** | Explicit CORS origins, signed Bearer JWT, Domain B (`CHILD`) `403` write lock, prompt-injection refusal, mandatory human approval gates | External Gov SSO IdP, VAPT (`G09`), `G03` WCD/Police protocol, `G04` DPDP opinion, `G10` paper baseline |
 
 ---
 
@@ -68,39 +78,16 @@ WCD Protection Intelligence Platform
 
 ```
 women-child-protection-agent/
-├── README.md                                  # Master project overview & quickstart (single README)
-├── AGENTS.md                                  # System invariants & agent execution rules
-├── DESIGN.md                                  # Civic Intelligence Light design system & colour tokens
-├── package.json                               # React + Vite + TypeScript + Vitest frontend config
-├── src/                                       # Frontend SPA (React 19, TypeScript, Tailwind, Zustand)
-│   ├── App.tsx                                # Router (10 pages)
-│   ├── pages/                                 # Feature screens mapped in Section 2
-│   ├── components/                            # Layout (Header, Sidebar) & epistemic/severity badges
-│   ├── services/api.ts                        # Backend REST client (with mock fallback)
-│   ├── store/appStore.ts                      # Role, domain, and district state
-│   ├── types/index.ts                         # Canonical domain & Gap Contract types
-│   └── tests/domain.test.ts                   # Vitest domain & invariant suite
-├── backend/                                   # FastAPI modular monolith
-│   ├── requirements.txt                       # Python dependencies
-│   ├── run.py                                 # Local Uvicorn launcher (run from repo root)
-│   └── app/
-│       ├── main.py                            # FastAPI entrypoint & CORS
-│       ├── core/config.py                     # Settings
-│       ├── api/v1/router.py                   # REST API endpoints
-│       ├── models/schemas.py                  # Pydantic schemas
-│       ├── services/                          # sentinel_service, rag_service, audit_service
-│       └── data/seed_data.py                  # Synthetic demonstration seed data
-└── docs/                                      # Clean, audit-ready documentation (7 files)
-    ├── 00-BUSINESS_REQUIREMENT.md             # Origin proposal, Protection Chain & 16-step build notes
-    ├── 01-BUSINESS_REQUIREMENTS.md            # Canonical BRD v3.0 (W01–W12, C01–C16, M01–M20, G01–G10, FR/NFR, KPIs)
-    ├── 02-ARCHITECTURE_AND_PLAN.md            # Modular monolith, Statutory DAGs, DB schema, 16-step build plan
-    ├── 03-AI_SAFETY_AND_GOVERNANCE.md         # Epistemic standards, bounded A1–A4 AI, SDLC gates, VAPT matrix
-    ├── 04-DATA_GOVERNANCE_AND_SECURITY.md     # DPDP Act 2023, Zero-PII tokenization, RLS, retention & erasure
-    ├── 05-AUDIT_AND_TRACEABILITY.md           # Verified codebase audit, traceability matrix & acceptance criteria
-    └── 06-EXECUTION_PLAN.md                   # Phased engineering execution plan (Milestones A–E, Steps 4–16)
+├── README.md                    # Master platform overview, structure & quickstart
+├── AGENTS.md                    # System invariants, domain boundaries & safety rules
+├── DESIGN.md                    # Civic Intelligence Light & B/W theme tokens and WCAG contrast
+├── HELP_CONTENT_INDEX.md        # Help & Platform Knowledge Centre structure & maintenance index
+├── SCREENSHOT_INDEX.md          # 21-screen Playwright capture index & responsive verification log
+├── src/                         # Frontend React 19 + TypeScript + Tailwind SPA
+├── backend/                     # Python FastAPI modular monolith, services, ORM & tests
+├── scripts/                     # Automated Playwright verification & screenshot capture scripts
+└── docs/                        # Audit-ready requirements, architecture, AI safety & execution docs
 ```
-
-**Core Entrypoints:** [`package.json`](./package.json) · [`src/App.tsx`](./src/App.tsx) · [`src/services/api.ts`](./src/services/api.ts) · [`src/tests/domain.test.ts`](./src/tests/domain.test.ts) · [`backend/run.py`](./backend/run.py) · [`backend/app/main.py`](./backend/app/main.py)
 
 ---
 
@@ -108,33 +95,37 @@ women-child-protection-agent/
 
 | Document | Scope |
 |---|---|
-| [`DESIGN.md`](./DESIGN.md) | Civic Intelligence Light colour audit, semantic CSS tokens, WCAG 2.1 AA focus & component map |
-| [`docs/00-BUSINESS_REQUIREMENT.md`](./docs/00-BUSINESS_REQUIREMENT.md) | Origin proposal, Protection Chain Intelligence, Investigation Workspace & 16-step build sequence |
+| [`DESIGN.md`](./DESIGN.md) | Civic Intelligence Light & Black/White colour tokens, WCAG 2.1 AA focus & contrast verification |
+| [`AGENTS.md`](./AGENTS.md) | Non-negotiable system invariants, Zero-PII rules, Domain A/B isolation & human gates |
+| [`HELP_CONTENT_INDEX.md`](./HELP_CONTENT_INDEX.md) | 30-category Help & Platform Knowledge Centre architecture and route-integrity coverage |
+| [`SCREENSHOT_INDEX.md`](./SCREENSHOT_INDEX.md) | 21-screen Playwright visual & responsive (`1280px` / `768px` / `375px`) verification index |
+| [`docs/00-BUSINESS_REQUIREMENT.md`](./docs/00-BUSINESS_REQUIREMENT.md) | Origin proposal, Protection Chain Intelligence & 16-step build sequence |
 | [`docs/01-BUSINESS_REQUIREMENTS.md`](./docs/01-BUSINESS_REQUIREMENTS.md) | Canonical BRD v3.0: problem framing, domains, M01–M20 catalogue, FR/NFRs, G01–G10 gates, KPIs |
-| [`docs/02-ARCHITECTURE_AND_PLAN.md`](./docs/02-ARCHITECTURE_AND_PLAN.md) | React/FastAPI/PostgreSQL/pgvector modular monolith, PWDVA/JJ/POCSO DAGs, schema, 16-step plan |
-| [`docs/03-AI_SAFETY_AND_GOVERNANCE.md`](./docs/03-AI_SAFETY_AND_GOVERNANCE.md) | Golden invariant, prohibited AI decisions, epistemic tags, bounded A1–A4 AI, VAPT benchmarks |
+| [`docs/02-ARCHITECTURE_AND_PLAN.md`](./docs/02-ARCHITECTURE_AND_PLAN.md) | Modular monolith architecture, PWDVA/JJ/POCSO DAGs, core schema & execution plan |
+| [`docs/03-AI_SAFETY_AND_GOVERNANCE.md`](./docs/03-AI_SAFETY_AND_GOVERNANCE.md) | Golden invariant, prohibited AI decisions, epistemic tags, bounded A1–A4 AI & VAPT benchmarks |
 | [`docs/04-DATA_GOVERNANCE_AND_SECURITY.md`](./docs/04-DATA_GOVERNANCE_AND_SECURITY.md) | Zero-PII HMAC tokenization, DPDP 2023 / JJ Act s.74 / POCSO s.23 / PWDVA s.12 controls, RLS |
-| [`docs/05-AUDIT_AND_TRACEABILITY.md`](./docs/05-AUDIT_AND_TRACEABILITY.md) | Current repo inventory, verified Requirements Traceability Matrix, risks, preserve/refactor/defer |
-| [`docs/06-EXECUTION_PLAN.md`](./docs/06-EXECUTION_PLAN.md) | Concrete Milestones A–E (Steps 4–16), exact file targets, exit gates, conditional M18 continuity |
+| [`docs/05-AUDIT_AND_TRACEABILITY.md`](./docs/05-AUDIT_AND_TRACEABILITY.md) | Verified codebase audit, traceability matrix, acceptance criteria & pilot readiness gates |
+| [`docs/06-EXECUTION_PLAN.md`](./docs/06-EXECUTION_PLAN.md) | Phased engineering milestones (A–I) and post-demo production roadmap |
+| [`docs/07-ENHANCEMENT_AUDIT_AND_ROADMAP.md`](./docs/07-ENHANCEMENT_AUDIT_AND_ROADMAP.md) | Governance, Matter 360°, Convergence, Finance & NGO integration feasibility matrix |
 
 ---
 
 ## 5. Local Development Quickstart
 
-### Frontend (`src/`)
+### Frontend
 ```bash
 npm install
 npm run dev        # Start Vite dev server (http://localhost:5173)
-npm test           # Run Vitest domain invariant suite
+npm test           # Run Vitest suite (10/10 tests)
 npm run build      # Type-check and production build
 ```
 
-### Backend (`backend/`)
+### Backend
 Run from the repository root:
 ```bash
 python3 -m venv backend/.venv
 source backend/.venv/bin/activate
 pip install -r backend/requirements.txt
-python backend/run.py
+uvicorn backend.app.main:app --reload --port 8000
 ```
 API docs available at `http://127.0.0.1:8000/api/v1/docs` and health check at `http://127.0.0.1:8000/health`.

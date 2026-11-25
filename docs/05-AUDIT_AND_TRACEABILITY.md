@@ -4,9 +4,9 @@
 ---
 
 ## 1. Current Application Inventory & Architecture
-* **Frontend (`src/`):** React 19.3.1, TypeScript 5.6, Vite 5.4, Tailwind CSS 3.4, Zustand 5.0 ([`package.json`](../package.json)), Civic Intelligence Light + Pink tokens ([`DESIGN.md`](../DESIGN.md), [`design-tokens.css`](../src/styles/design-tokens.css)). `6/6` `vitest` invariant tests passing ([`domain.test.ts`](../src/tests/domain.test.ts)). Explicit `"SYNTHETIC / OFFLINE FALLBACK"` banner via [`api.ts`](../src/services/api.ts) + [`AppLayout.tsx`](../src/components/layout/AppLayout.tsx) when backend is offline.
+* **Frontend (`src/`):** React 19.3.1, TypeScript 5.6, Vite 5.4, Tailwind CSS 3.4, Zustand 5.0 ([`package.json`](../package.json)), Civic Intelligence Light + Pink & B/W tokens ([`DESIGN.md`](../DESIGN.md), [`design-tokens.css`](../src/styles/design-tokens.css)). `10/10` `vitest` invariant & route-integrity tests passing ([`domain.test.ts`](../src/tests/domain.test.ts), [`help.test.ts`](../src/tests/help.test.ts)), plus `21/21` Playwright screenshots (`0` errors, `0` overflows at `1280x800`, `768x1024`, `375x812`). Explicit `"SYNTHETIC / OFFLINE FALLBACK"` banner via [`api.ts`](../src/services/api.ts) + [`AppLayout.tsx`](../src/components/layout/AppLayout.tsx) when backend is offline.
 * **Backend (`backend/`):** FastAPI modular monolith ([`main.py`](../backend/app/main.py), [`router.py`](../backend/app/api/v1/router.py), [`execution_router.py`](../backend/app/api/v1/execution_router.py)) with SQLAlchemy 2.0 ORM ([`models.py`](../backend/app/db/models.py)), Alembic migration baseline ([`0001_initial_schema.py`](../backend/alembic/versions/0001_initial_schema.py)), SQLite dev DB (`DATABASE_URL` env-configurable to PostgreSQL), signed HMAC Bearer JWT + dev header RBAC ([`auth.py`](../backend/app/core/auth.py)), Zero-PII guard ([`pii_guard.py`](../backend/app/core/pii_guard.py)), deterministic Gap & Action State Machines ([`gap_state_machine.py`](../backend/app/services/gap_state_machine.py), [`execution_engine.py`](../backend/app/services/execution_engine.py)), bounded cosine-similarity RAG ([`rag_service.py`](../backend/app/services/rag_service.py)), DB-backed SHA-256 audit ledger ([`audit_service.py`](../backend/app/services/audit_service.py)), and `26/26` `pytest` passing.
-* **Pending Production / Governance Items:** PostgreSQL + `pgvector` + RLS on NIC MeghRaj, external Government SSO IdP wiring, local quantised LLM adapter, Playwright browser E2E suite, and `G01–G10` government sign-offs.
+* **Pending Production / Governance Items (Post-Demo):** PostgreSQL + `pgvector` + RLS on NIC MeghRaj, external Government SSO IdP wiring, local quantised LLM adapter, and `G01–G10` government sign-offs.
 
 ---
 
@@ -15,10 +15,10 @@
 ### 2.1 Done vs Pending Overview
 | Area | Done (Verified in Repo) | Pending (Before Live Pilot) |
 |---|---|---|
-| **Frontend (`src/`)** | React 19 upgrade, mobile drawer/domain switcher, fallback banner, live API + create/update forms for Evidence, Gaps, Investigation, Interventions, Outcomes, Audit | Playwright automated responsive E2E tests (`1280px`/`768px`/`375px`), offline-tolerant PWA service worker |
-| **Backend & DB (`backend/`)** | SQLAlchemy ORM + Alembic (`0001_initial_schema`), `POST/PATCH` endpoints, deterministic Gap state machine, Zero-PII `422` guard, DB SHA-256 WORM audit | Production PostgreSQL + RLS on NIC MeghRaj, external LLM + `pgvector` embeddings |
+| **Frontend (`src/`)** | React 19 upgrade, mobile drawer/domain switcher, compact icon header + B&W theme, 19-Step Demo (`/demo-flow`), Help Knowledge Centre (`/help`), Playwright `21/21` (`0` errors, `0` overflows at `1280px`/`768px`/`375px`), `10/10` Vitest | Offline-tolerant PWA service worker (post-demo) |
+| **Backend & DB (`backend/`)** | SQLAlchemy ORM + Alembic (`0001_initial_schema`), `POST/PATCH` endpoints, deterministic Gap state machine, Zero-PII `422` guard, DB SHA-256 WORM audit (`26/26` Pytest) | Production PostgreSQL + RLS on NIC MeghRaj, external LLM + `pgvector` embeddings |
 | **Auth & Security** | Explicit CORS origins, env-based `SECRET_SALT`, signed Bearer JWT (`POST /auth/token`), `DEV_HEADER_AUTH_ENABLED` toggle, Domain B (`CHILD`) `403` write lock | External Government SSO IdP integration, independent VAPT certification (`G09`) |
-| **Governance & Pilot (`G01–G10`)** | 7-file clean `docs/` baseline + `DESIGN.md`, `5/5` Vitest + `20/20` Pytest + E2E synthetic gap lifecycle | `G03` WCD/Police data-sharing protocol, `G04` DPDP legal opinion, `G08` 10–15 staff interviews, `G10` paper baseline |
+| **Governance & Pilot (`G01–G10`)** | Clean `docs/` baseline + `DESIGN.md` + `HELP_CONTENT_INDEX.md` + `SCREENSHOT_INDEX.md`, `10/10` Vitest + `26/26` Pytest + E2E synthetic gap lifecycle | `G03` WCD/Police data-sharing protocol, `G04` DPDP legal opinion, `G08` 10–15 staff interviews, `G10` paper baseline |
 | **Conditional / Phase 2–3** | Domain B blueprint (`ChildProtectionPage.tsx`) + `M18` Synthetic Continuity Tracker (`WomenWorkspacePage.tsx`) | Live `M18` DB persistence (`G03/G04` gated), `M17` Ground-Truth IVR, Domain B live activation |
 
 ### 2.2 Requirements Traceability Matrix
