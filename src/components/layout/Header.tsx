@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, User } from 'lucide-react';
+import { Bell, CircleHelp, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, User } from 'lucide-react';
 import { useAppStore, UserRole } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { governmentSchemes } from '@/data/platformData';
@@ -244,6 +244,16 @@ export function Header() {
               </div>
             )}
           </div>
+
+          {/* Help & Platform Knowledge Centre Icon */}
+          <Link
+            to="/help"
+            className={iconBtn}
+            aria-label="Help & Platform Knowledge Centre"
+          >
+            <CircleHelp className="w-4 h-4 text-[#FFC0CB]" />
+            <span className={tooltipCls}>Help & Knowledge Centre</span>
+          </Link>
 
           {/* 19-Step End-to-End Demo Button (Just before User Profile Icon) */}
           <Link

@@ -26,6 +26,7 @@ SCREENS = [
     ("18-district-dashboard.png", "/dashboards?role=COLLECTOR"),
     ("19-outcome-verification.png", "/outcomes"),
     ("20-governance-excellence.png", "/excellence"),
+    ("21-help-knowledge-centre.png", "/help"),
 ]
 
 
@@ -49,7 +50,7 @@ def main():
         # Responsive overflow checks on Home & Matter 360
         for vw, vh in [(1280, 800), (768, 1024), (375, 812)]:
             page.set_viewport_size({"width": vw, "height": vh})
-            for route in ["/", "/matter-360", "/my-work"]:
+            for route in ["/", "/matter-360", "/my-work", "/help"]:
                 page.goto(f"{BASE}{route}", wait_until="networkidle")
                 sw = page.evaluate("document.documentElement.scrollWidth")
                 iw = page.evaluate("window.innerWidth")

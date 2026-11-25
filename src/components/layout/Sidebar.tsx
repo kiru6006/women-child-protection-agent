@@ -15,6 +15,7 @@ import {
   Award,
   Users,
   Scale,
+  CircleHelp,
 } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
 import { cn } from '@/lib/utils';
@@ -165,6 +166,15 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Audit History (WORM)', to: '/audit' },
       { label: 'Governance & Security', to: '/governance?tab=explainability' },
+    ],
+  },
+  {
+    id: 'help',
+    label: 'Help',
+    icon: CircleHelp,
+    accent: 'text-[#EF5A90]',
+    items: [
+      { label: 'Help & Knowledge Centre', to: '/help' },
     ],
   },
 ];

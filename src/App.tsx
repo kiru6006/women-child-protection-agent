@@ -30,6 +30,7 @@ import { RoleDashboardsPage } from '@/pages/RoleDashboardsPage';
 import { MyWorkPage } from '@/pages/MyWorkPage';
 import { ProblemDecomposePage } from '@/pages/ProblemDecomposePage';
 import { DemoWalkthroughPage } from '@/pages/DemoWalkthroughPage';
+import { HelpPage } from '@/features/help/HelpPage';
 
 export function App() {
   return (
@@ -68,6 +69,7 @@ export function App() {
           <Route path="/my-work" element={<MyWorkPage />} />
           <Route path="/decompose" element={<ProblemDecomposePage />} />
           <Route path="/demo-flow" element={<DemoWalkthroughPage />} />
+          <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppLayout>
