@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mockGaps, mockEvidence, mockInvestigation, mockOutcomes } from '../data/mockData';
+import { useDemoStore } from '../store/demoStore';
 
 describe('WCD Protection Intelligence Platform — Domain & Integrity Invariants', () => {
   it('enforces that all initial mock gaps have valid 11-type taxonomy classifications', () => {
@@ -53,6 +54,31 @@ describe('WCD Protection Intelligence Platform — Domain & Integrity Invariants
       expect(outcome.observedResult).toBeGreaterThan(outcome.baseline);
       expect(['EFFECTIVE', 'PARTIALLY_EFFECTIVE', 'INEFFECTIVE', 'INSUFFICIENT_DATA']).toContain(outcome.status);
     });
+  });
+
+  it('supports full interactive mock-store lifecycle and rejects raw PII', () => {
+    const store = useDemoStore.getState();
+    expect(() =>
+      store.addEvidence(
+        {
+          title: 'Bad',
+          sourceOrg: 'Test',
+          publicationDate: '2026-11-25',
+          documentType: 'SOP',
+          sourceUrlOrRef: 'REF',
+          credibilityCategory: 'OFFICIAL_GOVERNMENT',
+          sourceOrigin: 'SYNTHETIC',
+          applicableDomain: 'WOMEN',
+          epistemicClass: 'HYPOTHESIS',
+          extractedClaim: 'Aadhaar 1234 5678 9012 leak',
+          confidenceScore: 0.5,
+        },
+        'OSC_ADMIN'
+      )
+    ).toThrow(/ZERO-PII/);
+
+    const inv = store.getInvestigationForGap('GAP-W-PATNA-003');
+    expect(inv.gapId).toBe('GAP-W-PATNA-003');
   });
 });
 

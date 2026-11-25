@@ -2,12 +2,12 @@ import { SeverityLevel } from '@/types';
 import { cn } from '@/lib/utils';
 
 interface SeverityBadgeProps {
-  severity: SeverityLevel;
+  severity: SeverityLevel | 'INFORMATIONAL';
   className?: string;
 }
 
 export function SeverityBadge({ severity, className }: SeverityBadgeProps) {
-  const configs: Record<SeverityLevel, { label: string; bg: string; text: string; border: string }> = {
+  const configs: Record<SeverityLevel | 'INFORMATIONAL', { label: string; bg: string; text: string; border: string }> = {
     CRITICAL: {
       label: 'CRITICAL',
       bg: 'bg-red-50 text-red-800 border-red-300',
@@ -16,9 +16,9 @@ export function SeverityBadge({ severity, className }: SeverityBadgeProps) {
     },
     HIGH: {
       label: 'HIGH',
-      bg: 'bg-amber-50 text-amber-800 border-amber-300',
-      text: 'text-amber-800',
-      border: 'border-amber-300',
+      bg: 'bg-orange-50 text-orange-800 border-orange-300',
+      text: 'text-orange-800',
+      border: 'border-orange-300',
     },
     MEDIUM: {
       label: 'MEDIUM',
@@ -28,7 +28,13 @@ export function SeverityBadge({ severity, className }: SeverityBadgeProps) {
     },
     LOW: {
       label: 'LOW',
-      bg: 'bg-slate-50 text-slate-700 border-slate-300',
+      bg: 'bg-green-50 text-green-800 border-green-300',
+      text: 'text-green-800',
+      border: 'border-green-300',
+    },
+    INFORMATIONAL: {
+      label: 'INFO',
+      bg: 'bg-slate-100 text-slate-700 border-slate-300',
       text: 'text-slate-700',
       border: 'border-slate-300',
     },

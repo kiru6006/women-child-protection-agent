@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { ProtectionDomain } from '@/types';
 
-export type UserRole = 
-  | 'DISTRICT_COLLECTOR' 
-  | 'WCD_SECRETARY' 
-  | 'OSC_ADMIN' 
-  | 'PROTECTION_OFFICER' 
-  | 'DLSA_LAWYER' 
+export type UserRole =
+  | 'DISTRICT_COLLECTOR'
+  | 'WCD_SECRETARY'
+  | 'OSC_ADMIN'
+  | 'PROTECTION_OFFICER'
+  | 'DLSA_LAWYER'
   | 'AUDITOR';
 
 interface AppState {
@@ -19,6 +19,10 @@ interface AppState {
   setActiveDomain: (domain: ProtectionDomain) => void;
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
+  mobileNavOpen: boolean;
+  setMobileNavOpen: (open: boolean) => void;
+  usingMockFallback: boolean;
+  setUsingMockFallback: (active: boolean) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -31,5 +35,8 @@ export const useAppStore = create<AppState>((set) => ({
   setActiveDomain: (domain) => set({ activeDomain: domain }),
   sidebarCollapsed: false,
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+  mobileNavOpen: false,
+  setMobileNavOpen: (open) => set({ mobileNavOpen: open }),
+  usingMockFallback: false,
+  setUsingMockFallback: (active) => set({ usingMockFallback: active }),
 }));
-

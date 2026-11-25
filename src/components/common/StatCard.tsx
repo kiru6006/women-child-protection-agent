@@ -25,9 +25,9 @@ export function StatCard({
 }: StatCardProps) {
   const variantStyles = {
     default: 'border-slate-200 bg-white hover:border-slate-300',
-    alert: 'border-red-200 bg-red-50/30 hover:border-red-300',
-    warning: 'border-amber-200 bg-amber-50/30 hover:border-amber-300',
-    success: 'border-emerald-200 bg-emerald-50/30 hover:border-emerald-300',
+    alert: 'border-slate-200 border-l-4 border-l-red-600 bg-white hover:border-slate-300',
+    warning: 'border-slate-200 border-l-4 border-l-orange-500 bg-white hover:border-slate-300',
+    success: 'border-slate-200 border-l-4 border-l-green-600 bg-white hover:border-slate-300',
   };
 
   return (
@@ -42,7 +42,7 @@ export function StatCard({
     >
       <div className="flex items-center justify-between text-slate-500 mb-2">
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-600">{label}</span>
-        {badge || (Icon && <Icon className="w-4 h-4 text-slate-400" />)}
+        {badge || (Icon && <Icon className="w-4 h-4 text-slate-600" />)}
       </div>
       <div className="text-2xl font-bold tracking-tight text-slate-900">{value}</div>
       {subtext && <p className="text-xs text-slate-500 mt-1">{subtext}</p>}

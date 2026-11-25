@@ -1,0 +1,84 @@
+:root {
+  /* Civic Intelligence Light Core */
+  --bg-app: #F1F5F9;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F8FAFC;
+  --bg-selected: #FFE5DE;
+
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+
+  --border-decorative: #E2E8F0;
+  --border-control: #64748B;
+
+  /* Extracted Women, Girl Child & Awareness Palette */
+  --wcd-baby-pink: #FFC0CB;       /* rgb(255, 192, 203) - Girl Child tint */
+  --wcd-peach: #FFE5DE;           /* rgb(255, 229, 222) - Gentle Peach tint */
+  --wcd-lavender: #E6D0E3;        /* rgb(230, 208, 227) - Soft Lavender */
+  --wcd-lemon: #FFFACD;           /* rgb(255, 250, 205) - Lemon Macaron */
+  --wcd-mint: #DFFFE0;            /* rgb(223, 255, 224) - Gummy Mint */
+  --wcd-burgundy: #7D2A42;        /* rgb(125, 42, 66)   - Women strength/confidence */
+  --wcd-plum: #654161;            /* rgb(101, 65, 97)   - Royal Plum */
+  --wcd-teal: #167F80;            /* rgb(22, 127, 128)  - Deep Teal */
+  --wcd-emerald: #16A028;         /* rgb(22, 160, 40)   - Emerald Green */
+  --wcd-navy: #1F3864;            /* rgb(31, 56, 100)   - Navy Blue */
+  --wcd-dusty-rose: #C98A87;      /* rgb(201, 138, 135) - Dusty Rose border */
+  --wcd-iwd-purple: #46296E;      /* rgb(70, 41, 110)   - IWD Purple */
+  --wcd-iwd-green: #8AEA92;       /* rgb(138, 234, 146) - IWD Green */
+  --wcd-girl-pink: #EF5A90;       /* rgb(239, 90, 144)  - National Girl Child Day Pink */
+
+  /* Primary Government Brand */
+  --gov-navy: #1F3864;
+  --primary: #7D2A42;
+  --primary-hover: #654161;
+  --ring: #EF5A90;
+
+  /* Protection Domains */
+  --domain-women-accent: #7D2A42;
+  --domain-women-tint: #FFE5DE;
+  --domain-women-border: #C98A87;
+
+  --domain-child-accent: #EF5A90;
+  --domain-child-text: #7D2A42;
+  --domain-child-tint: #FFC0CB;
+  --domain-child-border: #EF5A90;
+
+  --domain-ai-accent: #46296E;
+  --domain-ai-tint: #E6D0E3;
+
+  --domain-ecosystem-accent: #167F80;
+  --domain-ecosystem-tint: #DFFFE0;
+
+  --domain-schemes-accent: #16A028;
+  --domain-schemes-tint: #DFFFE0;
+
+  /* Operational Severity (Red, Orange, Yellow, Green, Slate) */
+  --sev-critical-text: #991B1B;
+  --sev-critical-border: #DC2626;
+  --sev-critical-bg: #FEF2F2;
+
+  --sev-high-text: #9A3412;
+  --sev-high-border: #EA580C;
+  --sev-high-bg: #FFF7ED;
+
+  --sev-medium-text: #854D0E;
+  --sev-medium-border: #CA8A04;
+  --sev-medium-bg: #FFFACD;
+
+  --sev-low-text: #166534;
+  --sev-low-bg: #DFFFE0;
+
+  --sev-info-text: #475569;
+  --sev-info-bg: #F1F5F9;
+
+  /* Data Visualisation Palette */
+  --chart-1: #7D2A42;
+  --chart-2: #EF5A90;
+  --chart-3: #1F3864;
+  --chart-4: #167F80;
+  --chart-5: #46296E;
+  --chart-6: #16A028;
+  --chart-7: #654161;
+  --chart-8: #C98A87;
+}

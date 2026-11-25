@@ -1,8 +1,18 @@
-import { mockAuditLogs } from '@/data/mockData';
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/common/Card';
-import { Lock } from 'lucide-react';
+import { AuditEvent } from '@/types';
+import { fetchAuditLedger, verifyAuditChain } from '@/services/api';
+import { Lock, AlertTriangle } from 'lucide-react';
 
 export function AuditPage() {
+  const [logs, setLogs] = useState<AuditEvent[]>([]);
+  const [chainValid, setChainValid] = useState(true);
+
+  useEffect(() => {
+    fetchAuditLedger().then(setLogs);
+    verifyAuditChain().then((res) => setChainValid(res.valid));
+  }, []);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -14,10 +24,17 @@ export function AuditPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs px-2.5 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-mono flex items-center gap-1 font-semibold">
-            <Lock className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Hash Chain Intact</span>
-          </span>
+          {chainValid ? (
+            <span className="text-xs px-2.5 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-mono flex items-center gap-1 font-semibold">
+              <Lock className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Hash Chain Intact ({logs.length} blocks)</span>
+            </span>
+          ) : (
+            <span className="text-xs px-2.5 py-1 rounded bg-red-50 text-red-800 border border-red-300 font-mono flex items-center gap-1 font-semibold">
+              <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
+              <span>Hash Chain Tamper Detected</span>
+            </span>
+          )}
         </div>
       </div>
 
@@ -36,7 +53,7 @@ export function AuditPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {mockAuditLogs.map((log) => (
+              {logs.map((log) => (
                 <tr key={log.id} className="hover:bg-slate-50/70 transition-colors">
                   <td className="py-3 px-4 font-mono font-bold text-gov-blue">{log.id}</td>
                   <td className="py-3 px-4 text-slate-500 whitespace-nowrap">{log.timestamp.replace('T', ' ').replace('Z', '')}</td>
@@ -48,7 +65,7 @@ export function AuditPage() {
                   </td>
                   <td className="py-3 px-4 font-mono text-xs">{log.entityId}</td>
                   <td className="py-3 px-4 text-xs max-w-xs">{log.details}</td>
-                  <td className="py-3 px-4 font-mono text-[10px] text-slate-400 truncate max-w-[140px]" title={log.sha256Hash}>
+                  <td className="py-3 px-4 font-mono text-[10px] text-slate-600 truncate max-w-[140px]" title={log.sha256Hash}>
                     {log.sha256Hash.substring(0, 16)}...
                   </td>
                 </tr>

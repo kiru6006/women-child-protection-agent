@@ -15,12 +15,12 @@ export function DomainBadge({ domain, className }: DomainBadgeProps) {
       className={cn(
         'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border',
         isWomen
-          ? 'bg-rose-50 text-rose-800 border-rose-200'
-          : 'bg-purple-50 text-purple-800 border-purple-200',
+          ? 'bg-[#FFE5DE] text-[#7D2A42] border-[#C98A87]'
+          : 'bg-[#FFC0CB]/45 text-[#7D2A42] border-[#EF5A90]',
         className
       )}
     >
-      {isWomen ? <ShieldCheck className="w-3 h-3 text-rose-600" /> : <UserCheck className="w-3 h-3 text-purple-600" />}
+      {isWomen ? <ShieldCheck className="w-3 h-3 text-[#7D2A42]" /> : <UserCheck className="w-3 h-3 text-[#EF5A90]" />}
       <span>{isWomen ? 'Women Protection' : 'Child Protection'}</span>
     </span>
   );

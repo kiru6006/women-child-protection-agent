@@ -18,13 +18,13 @@ export function Card({ children, className, header, footer, ...props }: CardProp
       {...props}
     >
       {header && (
-        <div className="px-5 py-3.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+        <div className="px-4 py-2.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
           {header}
         </div>
       )}
-      <div className="p-5">{children}</div>
+      <div className="p-3.5">{children}</div>
       {footer && (
-        <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50 text-xs text-slate-500">
+        <div className="px-4 py-2 border-t border-slate-100 bg-slate-50/50 text-xs text-slate-600">
           {footer}
         </div>
       )}

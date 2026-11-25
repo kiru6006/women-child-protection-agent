@@ -1,12 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card } from '@/components/common/Card';
 import { EpistemicBadge } from '@/components/badges/EpistemicBadge';
 import { Bot, Send, BookOpen, Sparkles } from 'lucide-react';
 import { queryRAG } from '@/services/api';
 
 export function KnowledgeAssistantPage() {
+  const [searchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState<any>(null);
+
+  const tokenParam = searchParams.get('token');
+  const breachParam = searchParams.get('breach');
+  const officerParam = searchParams.get('officer');
+
+  useEffect(() => {
+    if (tokenParam && breachParam) {
+      setQuery(`Generate statutory Show-Cause Notice for ${tokenParam} (${breachParam})`);
+      setResponse({
+        answer:
+          `ADMINISTRATIVE DRAFT ONLY — NOT LEGAL EVIDENCE\n` +
+          `Ref: WCD/PATNA/2026/SCN-${tokenParam.slice(-4)} | To: ${officerParam || 'Designated Officer'}\n` +
+          `Subject: Statutory Deadline Breach (${breachParam}) in Case Token ${tokenParam}.\n\n` +
+          `Pursuant to PWDVA 2005 Sections 7 & 9(1)(b) and State SOPs, institutional handoffs must complete within statutory limits. ` +
+          `Explain reasons for delay within 24 hours.`,
+        citations: [
+          'Protection of Women from Domestic Violence Act 2005, Section 7 & Section 9(1)(b)',
+          'State Government Servants Conduct Rules, Rule 3(1)',
+        ],
+        epistemicClass: 'RECOMMENDATION',
+        confidence: 0.99,
+      });
+    }
+  }, [tokenParam, breachParam, officerParam]);
 
   const samplePrompts = [
     'What is the statutory deadline for hospital medical examination under PWDVA 2005?',
@@ -132,7 +158,7 @@ export function KnowledgeAssistantPage() {
           </div>
 
           <div className="flex flex-wrap gap-1.5 pt-1">
-            <span className="text-[11px] text-slate-400 self-center mr-1">Frequent Queries:</span>
+            <span className="text-[11px] text-slate-600 self-center mr-1">Frequent Queries:</span>
             {samplePrompts.map((p, idx) => (
               <button
                 key={idx}
@@ -152,11 +178,11 @@ export function KnowledgeAssistantPage() {
         <Card className="space-y-4 border-gov-blue/40 shadow-xs">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
-              <Bot className="w-5 h-5 text-gov-pink-700" />
+              <Bot className="w-5 h-5 text-indigo-700" />
               <span className="font-bold text-sm text-slate-900">Statutory Grounded Analysis</span>
               {response.fromBackend && (
-                <span className="text-[10px] bg-pink-100 text-pink-800 px-2 py-0.5 rounded font-mono font-semibold flex items-center gap-1 border border-pink-300">
-                  <Sparkles className="w-3 h-3 text-pink-600" />
+                <span className="text-[10px] bg-indigo-50 text-indigo-800 px-2 py-0.5 rounded font-mono font-semibold flex items-center gap-1 border border-indigo-200">
+                  <Sparkles className="w-3 h-3 text-indigo-700" />
                   <span>FastAPI Service</span>
                 </span>
               )}
@@ -170,7 +196,7 @@ export function KnowledgeAssistantPage() {
 
           <div>
             <h4 className="text-xs font-bold text-slate-700 mb-2 flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+              <BookOpen className="w-3.5 h-3.5 text-slate-600" />
               <span>Verified Statutory Citations (Zero Hallucination Gate)</span>
             </h4>
             <ul className="space-y-1.5">
@@ -182,7 +208,7 @@ export function KnowledgeAssistantPage() {
             </ul>
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-[11px] text-slate-600">
             <span>Model Temperature: <strong>0.0 (Strict Deterministic)</strong></span>
             <span>Retrieval Confidence: <strong>{(response.confidence * 100).toFixed(0)}%</strong></span>
           </div>

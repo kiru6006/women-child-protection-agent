@@ -19,10 +19,12 @@
    - Plan -> Implement -> Run -> Test -> Break -> Review -> Fix -> Commit.
 
 ## Enterprise Documentation Map
-- Master Documentation Index: [`docs/README.md`](file:///Users/apple/projects/women-child-protection-agent/docs/README.md)
-- AI SDLC & Governance: [`docs/03-ai-governance-sdlc/AI_SDLC_GOVERNANCE.md`](file:///Users/apple/projects/women-child-protection-agent/docs/03-ai-governance-sdlc/AI_SDLC_GOVERNANCE.md)
-- DPDP Act & Zero-PII: [`docs/04-security-compliance/DATA_GOVERNANCE_DPDP.md`](file:///Users/apple/projects/women-child-protection-agent/docs/04-security-compliance/DATA_GOVERNANCE_DPDP.md)
-- Statutory DAG State Machines: [`docs/02-architecture-design/STATUTORY_STATE_MACHINES.md`](file:///Users/apple/projects/women-child-protection-agent/docs/02-architecture-design/STATUTORY_STATE_MACHINES.md)
-- System Architecture Blueprint: [`docs/02-architecture-design/SYSTEM_ARCHITECTURE_PLAN.md`](file:///Users/apple/projects/women-child-protection-agent/docs/02-architecture-design/SYSTEM_ARCHITECTURE_PLAN.md)
+- Design System (Civic Light): [`DESIGN.md`](file:///Users/apple/projects/women-child-protection-agent/DESIGN.md)
+- Business Requirements (BRD v3.0): [`docs/01-BUSINESS_REQUIREMENTS.md`](file:///Users/apple/projects/women-child-protection-agent/docs/01-BUSINESS_REQUIREMENTS.md)
+- Architecture & 16-Step Plan: [`docs/02-ARCHITECTURE_AND_PLAN.md`](file:///Users/apple/projects/women-child-protection-agent/docs/02-ARCHITECTURE_AND_PLAN.md)
+- AI Safety & Governance: [`docs/03-AI_SAFETY_AND_GOVERNANCE.md`](file:///Users/apple/projects/women-child-protection-agent/docs/03-AI_SAFETY_AND_GOVERNANCE.md)
+- Data Governance & DPDP: [`docs/04-DATA_GOVERNANCE_AND_SECURITY.md`](file:///Users/apple/projects/women-child-protection-agent/docs/04-DATA_GOVERNANCE_AND_SECURITY.md)
+- Codebase Audit & Traceability: [`docs/05-AUDIT_AND_TRACEABILITY.md`](file:///Users/apple/projects/women-child-protection-agent/docs/05-AUDIT_AND_TRACEABILITY.md)
+- Phased Execution Plan: [`docs/06-EXECUTION_PLAN.md`](file:///Users/apple/projects/women-child-protection-agent/docs/06-EXECUTION_PLAN.md)
 
 

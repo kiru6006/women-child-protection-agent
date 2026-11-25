@@ -1,106 +1,88 @@
+import { useSearchParams, Link } from 'react-router-dom';
 import { Card } from '@/components/common/Card';
+import { PageHeader } from '@/components/common/PageHeader';
 import { DomainBadge } from '@/components/badges/DomainBadge';
 import { Lock } from 'lucide-react';
 
+const CHILD_TABS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'abuse', label: 'Abuse & Neglect' },
+  { id: 'pocso', label: 'POCSO Intelligence' },
+  { id: 'missing', label: 'Missing Children' },
+  { id: 'marriage', label: 'Child Marriage' },
+  { id: 'labour', label: 'Labour & Trafficking' },
+  { id: 'education', label: 'Education & Dropout' },
+  { id: 'health', label: 'Health & Nutrition' },
+  { id: 'digital', label: 'Digital Safety' },
+  { id: 'care', label: 'Institutional & Family Care' },
+  { id: 'aftercare', label: 'Rehab & Aftercare' },
+];
+
 export function ChildProtectionPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'overview';
+
   const plannedModules = [
-    {
-      title: '1. Identification & Helpline 1098 Handoff',
-      status: 'Design Phase',
-      desc: 'Seamless transfer protocol between Child Helpline and DCPU / Special Juvenile Police Unit (SJPU).',
-    },
-    {
-      title: '2. Statutory CWC Production DAG',
-      status: 'Architecture-Ready',
-      desc: 'Strict 24-hour statutory timer under Section 31(1) of the Juvenile Justice Act 2015 with automated show-cause notice generation.',
-    },
-    {
-      title: '3. Forensic Medical Examination (POCSO)',
-      status: 'Architecture-Ready',
-      desc: 'Section 27 POCSO Act 24-hour medical examination window tracking with child-friendly protocol audit.',
-    },
-    {
-      title: '4. Institutional Care (CCI) & Fit Facility',
-      status: 'Design Phase',
-      desc: 'Child Care Institution vacancy mapping and Individual Care Plan (ICP) statutory reviews.',
-    },
-    {
-      title: '5. Family Reintegration & Aftercare',
-      status: 'Planned',
-      desc: 'Post-18 institutional release tracking and Mission Vatsalya sponsorship linkage verification.',
-    },
+    { title: '1. Helpline 1098 & DCPU Aggregate Intelligence', status: 'Aggregate Research', desc: 'Public Mission Vatsalya & NCPCR institutional indicators.' },
+    { title: '2. Statutory CWC Production DAG (JJ Act s.31)', status: 'Architecture-Ready (Locked)', desc: '24h statutory production timer — live child case tracking blocked until DPDP/legal approval.' },
+    { title: '3. POCSO Medical & FTSC Pendency (DoJ)', status: 'Aggregate Research', desc: 'Fast Track Special Courts pendency & Section 27 protocol tracking.' },
+    { title: '4. Education Dropout & Nutrition (UDISE+ / POSHAN)', status: 'Aggregate Research', desc: 'District school dropout & Anganwadi nutrition convergence.' },
+    { title: '5. CCI, Foster Care & Aftercare', status: 'Planned (Phase 2/3)', desc: 'Institutional capacity & post-18 sponsorship tracking.' },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-purple-50/60 border border-purple-200 p-5 rounded-lg">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-900">Child Protection Intelligence (Domain B)</h1>
-            <DomainBadge domain="CHILD" />
-          </div>
-          <span className="text-xs bg-purple-100 text-purple-900 font-bold px-2.5 py-1 rounded-full border border-purple-300">
-            Phase 2 Architecture-Ready
-          </span>
-        </div>
-        <p className="text-xs text-slate-600 leading-relaxed max-w-4xl">
-          <strong>Safeguarding & DPDP Invariant:</strong> To strictly comply with Section 74 of the Juvenile Justice Act 2015 and Section 23 of the POCSO Act 2012, no live child records or case tracking are active in the Phase 1 MVP. Domain B is architecturally segregated and scheduled for activation following independent legal review.
-        </p>
+    <div className="space-y-5">
+      <PageHeader
+        breadcrumb={['Child Protection', CHILD_TABS.find((t) => t.id === activeTab)?.label || 'Overview']}
+        title="Child Protection Intelligence (Domain B)"
+        purpose="Public-source research taxonomy and statutory architecture for C01–C16. Individual child case workflows, risk scoring, and custody decisions are strictly disabled in Phase 1 MVP (JJ Act s.74 & POCSO s.23)."
+        badge="Aggregate Research Only • Live Writes Locked (403)"
+        source="MoWCD Mission Vatsalya, NCPCR, UDISE+, DoJ (Cataloged)"
+        reportingPeriod="2023–2026"
+        classification="OFFICIAL_PUBLIC"
+        actions={<DomainBadge domain="CHILD" />}
+      />
+
+      <div className="flex flex-wrap gap-1.5">
+        {CHILD_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setSearchParams({ tab: t.id })}
+            className={`px-2.5 py-1 rounded text-xs font-semibold border ${
+              activeTab === t.id ? 'bg-[#7D2A42] text-white border-[#7D2A42]' : 'bg-white text-slate-700 border-slate-200 hover:bg-[#FFC0CB]/40'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
-      {/* Security & Isolation Guarantee */}
       <Card
+        className="border-[#FFC0CB]"
         header={
-          <div className="flex items-center gap-2 font-bold text-sm text-slate-800">
-            <Lock className="w-4 h-4 text-purple-600" />
-            <span>Strict Domain Segregation & RBAC Protocol</span>
+          <div className="flex items-center gap-2 font-bold text-sm text-[#7D2A42]">
+            <Lock className="w-4 h-4 text-[#EF5A90]" />
+            <span>Safeguarding Boundary & Domain B Modules</span>
           </div>
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div className="p-3 bg-slate-50 rounded border border-slate-200 space-y-1">
-            <span className="font-bold text-slate-900 block">No Cross-Domain Leakage</span>
-            <p className="text-slate-600">
-              Women Protection officers cannot access sensitive CWC child records without judicial authorization.
-            </p>
-          </div>
-
-          <div className="p-3 bg-slate-50 rounded border border-slate-200 space-y-1">
-            <span className="font-bold text-slate-900 block">Family Context Isolation</span>
-            <p className="text-slate-600">
-              Mother-child cases are linked via restricted junction tokens, maintaining independent state machines.
-            </p>
-          </div>
-
-          <div className="p-3 bg-slate-50 rounded border border-slate-200 space-y-1">
-            <span className="font-bold text-slate-900 block">Zero PII / Anonymized Tokens</span>
-            <p className="text-slate-600">
-              Future case ingestion will strictly utilize irreversible SHA-256 HMAC child tokens (e.g. CASE-POCSO-2026-PAT-0119).
-            </p>
-          </div>
-        </div>
-      </Card>
-
-      {/* Planned Phase 2 DAG Modules */}
-      <div>
-        <h2 className="text-base font-bold text-slate-800 mb-3">Planned Statutory Modules (Mission Vatsalya Convergence)</h2>
-        <div className="space-y-3">
-          {plannedModules.map((mod, idx) => (
-            <Card key={idx} className="hover:border-purple-200 transition-colors">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">{mod.title}</h3>
-                  <p className="text-xs text-slate-600 mt-1">{mod.desc}</p>
-                </div>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-200 whitespace-nowrap">
-                  {mod.status}
-                </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          {plannedModules.map((m) => (
+            <div key={m.title} className="p-3 rounded border border-sky-200 bg-sky-50/40">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <span className="font-bold text-slate-900">{m.title}</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-sky-100 text-sky-900 font-semibold">{m.status}</span>
               </div>
-            </Card>
+              <p className="text-slate-600">{m.desc}</p>
+            </div>
           ))}
         </div>
-      </div>
+        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-3 text-xs">
+          <Link to="/knowledge?tab=catalogue" className="text-blue-700 font-semibold hover:underline">View Child Datasets in Catalogue →</Link>
+          <Link to="/ecosystem?tab=officials" className="text-blue-700 font-semibold hover:underline">View CWC / NCPCR Directory →</Link>
+        </div>
+      </Card>
     </div>
   );
 }

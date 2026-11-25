@@ -49,6 +49,7 @@ export interface EvidenceItem {
   documentType: 'ACT' | 'SOP' | 'ANNUAL_REPORT' | 'CAG_AUDIT' | 'DATASET' | 'FIELD_STUDY';
   sourceUrlOrRef: string;
   credibilityCategory: 'OFFICIAL_GOVERNMENT' | 'STATUTORY_BODY' | 'INDEPENDENT_AUDIT';
+  sourceOrigin?: 'OFFICIAL' | 'OPERATIONAL' | 'FIELD' | 'SYNTHETIC';
   applicableDomain: 'WOMEN' | 'CHILD' | 'SHARED';
   epistemicClass: EpistemicClass;
   extractedClaim: string;
@@ -96,10 +97,13 @@ export interface InvestigationWorkspaceData {
   domain: ProtectionDomain;
   problemSummary: string;
   verifiedFacts: string[];
+  conflictingEvidence?: string[];
   dataGaps: string[];
   hypotheses: Hypothesis[];
   possibleInterventions: string[];
   legalReferences: string[];
+  schemeReferences?: string[];
+  dependencies?: string[];
   assignedInvestigatorRole: string;
   status: 'CANDIDATE' | 'UNDER_INVESTIGATION' | 'VALIDATED' | 'INTERVENTION_PLANNED' | 'VERIFIED';
   updatedAt: string;
