@@ -23,6 +23,8 @@ interface AppState {
   setMobileNavOpen: (open: boolean) => void;
   usingMockFallback: boolean;
   setUsingMockFallback: (active: boolean) => void;
+  themeMode: 'pink' | 'bw';
+  toggleThemeMode: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -39,4 +41,13 @@ export const useAppStore = create<AppState>((set) => ({
   setMobileNavOpen: (open) => set({ mobileNavOpen: open }),
   usingMockFallback: false,
   setUsingMockFallback: (active) => set({ usingMockFallback: active }),
+  themeMode: 'pink',
+  toggleThemeMode: () =>
+    set((state) => {
+      const next = state.themeMode === 'pink' ? 'bw' : 'pink';
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.toggle('theme-bw', next === 'bw');
+      }
+      return { themeMode: next };
+    }),
 }));

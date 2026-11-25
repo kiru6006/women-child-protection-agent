@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Menu, Search, Shield, User, MapPin, PanelLeft } from 'lucide-react';
+import { Bell, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, User } from 'lucide-react';
 import { useAppStore, UserRole } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { governmentSchemes } from '@/data/platformData';
@@ -16,11 +16,13 @@ export function Header() {
     toggleSidebar,
     mobileNavOpen,
     setMobileNavOpen,
+    themeMode,
+    toggleThemeMode,
   } = useAppStore();
 
   const { alerts, gaps, officials, evidence, datasets } = useDemoStore();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [openMenu, setOpenMenu] = useState<'search' | 'location' | 'role' | 'pii' | null>(null);
 
   const openAlertsCount = alerts.filter((a) => a.status !== 'RESOLVED' && a.status !== 'REJECTED').length;
 
@@ -47,7 +49,7 @@ export function Header() {
 
     gaps.forEach((g) => {
       if (g.title.toLowerCase().includes(q) || g.id.toLowerCase().includes(q)) {
-        results.push({ label: `${g.id}: ${g.title}`, type: 'Gap Contract', to: `/investigation?gapId=${g.id}` });
+        results.push({ label: `${g.id}: ${g.title}`, type: 'Gap', to: `/investigation?gapId=${g.id}` });
       }
     });
     governmentSchemes.forEach((s) => {
@@ -62,7 +64,7 @@ export function Header() {
     });
     evidence.forEach((e) => {
       if (e.title.toLowerCase().includes(q) || e.extractedClaim.toLowerCase().includes(q)) {
-        results.push({ label: e.title, type: 'Evidence', to: `/knowledge?tab=evidence` });
+        results.push({ label: e.title, type: 'Evidence', to: `/evidence` });
       }
     });
     datasets.forEach((d) => {
@@ -73,128 +75,217 @@ export function Header() {
     return results.slice(0, 8);
   }, [searchQuery, gaps, officials, evidence, datasets]);
 
+  const iconBtn =
+    'group relative p-2 rounded bg-slate-800/90 border border-slate-700 text-slate-100 hover:bg-[#7D2A42] hover:border-[#EF5A90] flex items-center justify-center';
+
+  const tooltipCls =
+    'pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full right-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] font-medium border border-slate-700 shadow-md z-50';
+
   return (
     <header className="bg-gov-navy text-white border-b border-slate-800 sticky top-0 z-40 shadow-xs">
-      <div className="px-3 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2">
-        {/* Left: Sidebar Toggle + Platform Identity */}
+      <div className="px-3 sm:px-4 py-1.5 flex items-center justify-between gap-2">
+        {/* Left: Compact Toggle + Identity */}
         <div className="flex items-center gap-2 min-w-0">
           <button
             type="button"
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
-            className="md:hidden p-1.5 rounded bg-slate-800 border border-slate-700 text-slate-100 hover:bg-slate-700"
+            className={`md:hidden ${iconBtn}`}
             aria-label="Toggle mobile navigation"
           >
             <Menu className="w-4 h-4" />
+            <span className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
+              Menu
+            </span>
           </button>
           <button
             type="button"
             onClick={toggleSidebar}
-            className="hidden md:inline-flex p-1.5 rounded bg-slate-800 border border-slate-700 text-slate-200 hover:bg-slate-700"
+            className={`hidden md:inline-flex ${iconBtn}`}
             aria-label="Toggle sidebar"
           >
             <PanelLeft className="w-4 h-4" />
+            <span className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
+              Toggle Sidebar
+            </span>
           </button>
-          <Link to="/" className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded bg-blue-700 text-white font-black flex items-center justify-center text-sm border border-blue-500 shrink-0">
+          <Link to="/" className="group relative flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 rounded bg-[#7D2A42] text-white font-black flex items-center justify-center text-xs border border-[#EF5A90] shrink-0">
               WCD
             </div>
-            <div className="min-w-0">
-              <div className="font-bold text-sm text-white truncate">WCD Protection Intelligence Platform</div>
-              <p className="hidden lg:block text-[10px] text-slate-300 truncate">
-                Ministry of Women & Child Development | Governance, Continuity & Gap-Closure Portal
-              </p>
-            </div>
+            <span className="font-bold text-sm text-white truncate">WCD Protection Portal</span>
+            <span className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-0 mt-1.5 whitespace-nowrap px-2 py-1 rounded bg-slate-900 text-white text-[11px] border border-slate-700 z-50">
+              Ministry of Women & Child Development — Integrated Protection Platform
+            </span>
           </Link>
         </div>
 
-        {/* Center: Global Search */}
-        <div className="relative flex-1 max-w-md min-w-[180px] order-3 md:order-2 w-full md:w-auto">
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400" />
-          <input
-            type="search"
-            value={searchQuery}
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setTimeout(() => setSearchFocused(false), 180)}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search gaps, schemes, officials, datasets, laws..."
-            aria-label="Global platform search"
-            className="w-full pl-8 pr-3 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-hidden focus:border-blue-400"
-          />
-          {searchFocused && searchResults.length > 0 && (
-            <div className="absolute left-0 right-0 mt-1 bg-white text-slate-900 rounded-md shadow-lg border border-slate-200 z-50 max-h-72 overflow-y-auto">
-              {searchResults.map((res, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onMouseDown={() => {
-                    setSearchQuery('');
-                    navigate(res.to);
-                  }}
-                  className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-2"
-                >
-                  <span className="truncate font-medium">{res.label}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono shrink-0">
-                    {res.type}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Right: Scope, Alerts Bell, Role, Zero-PII */}
-        <div className="flex items-center gap-2 text-xs order-2 md:order-3">
-          <div className="hidden sm:flex items-center gap-1 bg-slate-800 px-2 py-1 rounded border border-slate-700">
-            <MapPin className="w-3 h-3 text-blue-300" />
-            <select
-              aria-label="Administrative scope"
-              value={`${selectedState}:${selectedDistrict}`}
-              onChange={(e) => {
-                const [s, d] = e.target.value.split(':');
-                setSelectedDistrict(s, d);
-              }}
-              className="bg-transparent text-slate-100 text-xs focus:outline-hidden cursor-pointer"
+        {/* Right: Icon-Only Compact Controls (Hover & Click reveal full label) */}
+        <div className="flex items-center gap-1.5">
+          {/* Search Icon */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenMenu(openMenu === 'search' ? null : 'search')}
+              className={iconBtn}
+              aria-label="Global platform search"
             >
-              {districtOptions.map((opt) => (
-                <option key={`${opt.state}:${opt.district}`} value={`${opt.state}:${opt.district}`} className="bg-slate-900 text-white">
-                  {opt.district}, {opt.state}
-                </option>
-              ))}
-            </select>
+              <Search className="w-4 h-4" />
+              <span className={tooltipCls}>Global Search</span>
+            </button>
+            {openMenu === 'search' && (
+              <div className="absolute right-0 mt-1.5 w-72 sm:w-80 bg-white text-slate-900 rounded-md shadow-lg border border-[#C98A87] p-2 z-50">
+                <input
+                  autoFocus
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search gaps, schemes, officials, laws..."
+                  className="w-full px-2.5 py-1.5 rounded border border-[#C98A87] text-xs text-slate-900"
+                />
+                {searchResults.length > 0 && (
+                  <div className="mt-1.5 max-h-60 overflow-y-auto divide-y divide-slate-100">
+                    {searchResults.map((res, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setOpenMenu(null);
+                          navigate(res.to);
+                        }}
+                        className="w-full text-left px-2 py-1.5 text-xs hover:bg-[#FFE5DE]/50 flex items-center justify-between gap-2"
+                      >
+                        <span className="truncate font-medium">{res.label}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-mono shrink-0">{res.type}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
+          {/* District Scope Icon */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenMenu(openMenu === 'location' ? null : 'location')}
+              className={iconBtn}
+              aria-label={`Jurisdiction: ${selectedDistrict}, ${selectedState}`}
+            >
+              <MapPin className="w-4 h-4 text-[#FFC0CB]" />
+              <span className={tooltipCls}>Jurisdiction: {selectedDistrict}, {selectedState}</span>
+            </button>
+            {openMenu === 'location' && (
+              <div className="absolute right-0 mt-1.5 w-52 bg-white text-slate-900 rounded-md shadow-lg border border-[#C98A87] p-1.5 z-50 space-y-1 text-xs">
+                <div className="px-2 py-1 text-[10px] font-bold uppercase text-[#7D2A42]">Select District</div>
+                {districtOptions.map((opt) => (
+                  <button
+                    key={`${opt.state}:${opt.district}`}
+                    type="button"
+                    onClick={() => {
+                      setSelectedDistrict(opt.state, opt.district);
+                      setOpenMenu(null);
+                    }}
+                    className={`w-full text-left px-2 py-1.5 rounded ${
+                      selectedDistrict === opt.district ? 'bg-[#FFE5DE] text-[#7D2A42] font-bold' : 'hover:bg-slate-100'
+                    }`}
+                  >
+                    {opt.district}, {opt.state}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Alerts Bell Icon */}
           <Link
             to="/alerts"
-            className="relative p-1.5 rounded bg-slate-800 border border-slate-700 text-slate-100 hover:bg-slate-700"
+            className={iconBtn}
             aria-label={`Alerts centre (${openAlertsCount} open)`}
           >
             <Bell className="w-4 h-4" />
             {openAlertsCount > 0 && (
-              <span className="absolute -top-1 -right-1 px-1 min-w-[16px] h-4 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 px-1 min-w-[15px] h-4 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
                 {openAlertsCount}
               </span>
             )}
+            <span className={tooltipCls}>Alerts & Notifications ({openAlertsCount} open)</span>
           </Link>
 
-          <div className="flex items-center gap-1 bg-slate-800 px-2 py-1 rounded border border-slate-700 max-w-[160px] sm:max-w-none">
-            <User className="w-3 h-3 text-blue-300 shrink-0" />
-            <select
-              aria-label="Active official role"
-              value={currentRole}
-              onChange={(e) => setCurrentRole(e.target.value as UserRole)}
-              className="bg-transparent text-slate-100 text-xs focus:outline-hidden cursor-pointer truncate"
+          {/* Black & White Theme Toggle Icon */}
+          <button
+            type="button"
+            onClick={toggleThemeMode}
+            className={iconBtn}
+            aria-label="Toggle Black and White theme"
+          >
+            <Contrast className="w-4 h-4" />
+            <span className={tooltipCls}>
+              {themeMode === 'bw' ? 'Switch to Pink Civic Theme' : 'Switch to Black & White Theme'}
+            </span>
+          </button>
+
+          {/* Zero PII Icon */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenMenu(openMenu === 'pii' ? null : 'pii')}
+              className={iconBtn}
+              aria-label="Zero PII Safeguarding Active"
             >
-              {Object.entries(roleLabels).map(([roleKey, label]) => (
-                <option key={roleKey} value={roleKey} className="bg-slate-900 text-white">
-                  {label}
-                </option>
-              ))}
-            </select>
+              <Shield className="w-4 h-4 text-[#8AEA92]" />
+              <span className={tooltipCls}>Zero-PII Safeguarding Active</span>
+            </button>
+            {openMenu === 'pii' && (
+              <div className="absolute right-0 mt-1.5 w-60 bg-white text-slate-900 rounded-md shadow-lg border border-[#C98A87] p-2.5 z-50 text-xs">
+                <div className="font-bold text-[#7D2A42] mb-1">Zero-PII Safeguarding</div>
+                <p className="text-[11px] text-slate-600">All references use pseudonymous tokens; raw Aadhaar, phone, and email payloads are blocked (`422`).</p>
+              </div>
+            )}
           </div>
 
-          <div className="hidden xl:flex items-center gap-1 px-2 py-1 rounded bg-emerald-950 border border-emerald-700 text-emerald-200 font-mono text-[10px]">
-            <Shield className="w-3 h-3" />
-            <span>Zero PII</span>
+          {/* 19-Step End-to-End Demo Button (Just before User Profile Icon) */}
+          <Link
+            to="/demo-flow"
+            className="group relative p-2 rounded bg-[#7D2A42] border border-[#EF5A90] text-white hover:bg-[#654161] flex items-center justify-center"
+            aria-label="19-Step End-to-End Demo Walkthrough"
+          >
+            <PlayCircle className="w-4 h-4" />
+            <span className={tooltipCls}>19-Step End-to-End Demo</span>
+          </Link>
+
+          {/* User Profile / Role Icon */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenMenu(openMenu === 'role' ? null : 'role')}
+              className={iconBtn}
+              aria-label={`User Role: ${roleLabels[currentRole]}`}
+            >
+              <User className="w-4 h-4 text-[#FFC0CB]" />
+              <span className={tooltipCls}>Profile: {roleLabels[currentRole]}</span>
+            </button>
+            {openMenu === 'role' && (
+              <div className="absolute right-0 mt-1.5 w-64 bg-white text-slate-900 rounded-md shadow-lg border border-[#C98A87] p-1.5 z-50 space-y-1 text-xs">
+                <div className="px-2 py-1 text-[10px] font-bold uppercase text-[#7D2A42]">Active Official Role</div>
+                {Object.entries(roleLabels).map(([roleKey, label]) => (
+                  <button
+                    key={roleKey}
+                    type="button"
+                    onClick={() => {
+                      setCurrentRole(roleKey as UserRole);
+                      setOpenMenu(null);
+                    }}
+                    className={`w-full text-left px-2 py-1.5 rounded ${
+                      currentRole === roleKey ? 'bg-[#FFE5DE] text-[#7D2A42] font-bold' : 'hover:bg-slate-100'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -37,3 +37,10 @@
     outline-offset: 2px;
   }
 }
+
+html.theme-bw {
+  filter: grayscale(100%) contrast(1.06);
+  --gov-navy: #0f172a;
+  --primary: #111827;
+  --ring: #000000;
+}
