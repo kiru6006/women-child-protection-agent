@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '@/components/common/Card';
 import { PageHeader } from '@/components/common/PageHeader';
@@ -6,6 +6,31 @@ import { SeverityBadge } from '@/components/badges/SeverityBadge';
 import { useAppStore } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { AlertItem } from '@/data/platformData';
+import { Bell } from 'lucide-react';
+
+interface NotifItem {
+  id: string;
+  dedup_key: string;
+  target_role: string;
+  event_type: string;
+  message: string;
+  matter_id?: string;
+  created_at: string;
+}
+
+const SEED_NOTIFS: NotifItem[] = [
+  {
+    id: 'NTF-101',
+    dedup_key: 'ASSIGN:ACT-101:TREASURY_OFFICER',
+    target_role: 'TREASURY_OFFICER',
+    event_type: 'ACTION_ASSIGNED',
+    message: 'Action ACT-101 assigned: Approve Treasury PFMS Batch (Balance Rs. 10,000)',
+    matter_id: 'MTR-2026-W-001',
+    created_at: '2026-11-20T09:00:00Z',
+  },
+];
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
 
 const LIFECYCLE: AlertItem['status'][] = [
   'NEW',
@@ -23,6 +48,16 @@ export function AlertsPage() {
   const [severityFilter, setSeverityFilter] = useState('ALL');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [notifs, setNotifs] = useState<NotifItem[]>(SEED_NOTIFS);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/notifications`, { signal: AbortSignal.timeout(1200) })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) setNotifs(data);
+      })
+      .catch(() => {});
+  }, []);
 
   const categories = Array.from(new Set(alerts.map((a) => a.category)));
 
@@ -67,6 +102,31 @@ export function AlertsPage() {
               <option key={st} value={st}>{st}</option>
             ))}
           </select>
+        </div>
+      </Card>
+
+      <Card
+        header={
+          <div className="flex items-center justify-between w-full">
+            <span className="text-xs font-bold text-[#1F3864] flex items-center gap-1.5">
+              <Bell className="w-3.5 h-3.5 text-[#EF5A90]" /> Deduplicated Notifications ({notifs.length})
+            </span>
+            <span className="text-[10px] font-mono text-[#7D2A42]">Anti-Flooding Active</span>
+          </div>
+        }
+      >
+        <div className="space-y-1.5 text-xs">
+          {notifs.slice(0, 4).map((n) => (
+            <div key={n.id} className="p-2 rounded border border-[#E5B8B7] bg-white flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span className="font-mono font-bold text-[#7D2A42] mr-2">{n.event_type}</span>
+                <span className="text-slate-800">{n.message}</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#FFE5DE] text-[#7D2A42] border border-[#C98A87]">
+                {n.target_role}
+              </span>
+            </div>
+          ))}
         </div>
       </Card>
 

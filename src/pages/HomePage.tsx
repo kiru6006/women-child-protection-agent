@@ -73,6 +73,9 @@ export function HomePage() {
             title="WCD Integrated Governance Hub"
             purpose="Answers what happened, who needs support, which authority is responsible, what is pending with whom, what dependencies/funds are needed, and whether outcomes were achieved."
           />
+          <Link to="/my-work" className="text-xs px-2.5 py-1.5 rounded border border-[#C98A87] bg-white text-[#7D2A42] font-semibold hover:bg-[#FFE5DE]/50">
+            My Work
+          </Link>
           <Link to="/dashboards?role=MINISTER" className="text-xs px-2.5 py-1.5 rounded border border-[#C98A87] bg-white text-[#7D2A42] font-semibold hover:bg-[#FFE5DE]/50">
             Role Views
           </Link>
