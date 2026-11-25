@@ -36,6 +36,7 @@ const NAV_GROUPS: NavGroup[] = [
     statusTag: 'Live',
     items: [
       { label: 'Home Hub', to: '/' },
+      { label: 'My Work (Daily Inbox)', to: '/my-work' },
       { label: 'Government Command Centre', to: '/command-centre' },
       { label: 'Alerts & Notifications', to: '/alerts' },
       { label: 'Minister Overview', to: '/dashboards?role=MINISTER' },
@@ -65,6 +66,7 @@ const NAV_GROUPS: NavGroup[] = [
     statusTag: '360°',
     items: [
       { label: 'Matter 360°', to: '/matter-360' },
+      { label: 'Problem Decomposition', to: '/decompose' },
       { label: 'Investigation Workspace', to: '/investigation' },
       { label: 'Gap Contracts', to: '/gaps' },
       { label: 'Intervention Management', to: '/interventions' },

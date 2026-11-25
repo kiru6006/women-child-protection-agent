@@ -27,6 +27,8 @@ import { FinancePage } from '@/pages/FinancePage';
 import { NgoCommunityPage } from '@/pages/NgoCommunityPage';
 import { ExcellencePage } from '@/pages/ExcellencePage';
 import { RoleDashboardsPage } from '@/pages/RoleDashboardsPage';
+import { MyWorkPage } from '@/pages/MyWorkPage';
+import { ProblemDecomposePage } from '@/pages/ProblemDecomposePage';
 
 export function App() {
   return (
@@ -62,6 +64,8 @@ export function App() {
           <Route path="/ngo-community" element={<NgoCommunityPage />} />
           <Route path="/excellence" element={<ExcellencePage />} />
           <Route path="/dashboards" element={<RoleDashboardsPage />} />
+          <Route path="/my-work" element={<MyWorkPage />} />
+          <Route path="/decompose" element={<ProblemDecomposePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppLayout>

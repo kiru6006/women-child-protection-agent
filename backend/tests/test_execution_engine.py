@@ -20,8 +20,27 @@ def test_p0_action_without_owner_rejected_422():
 
 def test_p0_blocked_action_cannot_start_and_dispute_returns_to_draft():
     with TestClient(app) as client:
+        # Ensure DEP-001 is unresolved and create a fresh blocked action for idempotency
+        client.patch(
+            "/api/v1/dependencies/DEP-001/status",
+            headers={"X-User-Role": "TREASURY_OFFICER"},
+            json={"status": "WAITING_FOR_FUNDS"},
+        )
+        blocked_act = client.post(
+            "/api/v1/actions",
+            headers={"X-User-Role": "DISTRICT_COLLECTOR"},
+            json={
+                "matter_id": "MTR-2026-W-001",
+                "title": "Blocked disbursement action",
+                "description": "Depends on DEP-001",
+                "responsible_department": "WCD",
+                "responsible_role": "DWCD_OFFICER",
+                "dependency_ids": ["DEP-001"],
+            },
+        ).json()
+        client.post(f"/api/v1/actions/{blocked_act['id']}/acknowledge", headers={"X-User-Role": "DWCD_OFFICER"})
         res = client.post(
-            "/api/v1/actions/ACT-102/transition",
+            f"/api/v1/actions/{blocked_act['id']}/transition",
             headers={"X-User-Role": "DWCD_OFFICER"},
             json={"target_status": "IN_PROGRESS"},
         )
