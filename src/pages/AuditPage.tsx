@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { AuditEvent } from '@/types';
 import { fetchAuditLedger, verifyAuditChain } from '@/services/api';
 import { Lock, AlertTriangle } from 'lucide-react';
@@ -14,13 +15,14 @@ export function AuditPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Cryptographic Audit & Explainability Ledger</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            WORM (Write Once, Read Many) tamper-evident SHA-256 hash log of all AI suggestions, administrative decisions, and data access.
-          </p>
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1F3864]">Cryptographic Audit & Explainability Ledger</h1>
+          <MoreInfoButton
+            title="Cryptographic Audit & Explainability Ledger"
+            purpose="WORM (Write Once, Read Many) tamper-evident SHA-256 hash log of all AI suggestions, administrative decisions, and data access."
+          />
         </div>
 
         <div className="flex items-center gap-2">

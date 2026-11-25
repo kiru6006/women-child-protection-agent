@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AppLayout } from '@/components/layout/AppLayout';
 import { HomePage } from '@/pages/HomePage';
 import { CommandCentrePage } from '@/pages/CommandCentrePage';
+import { AttentionCentrePage } from '@/pages/AttentionCentrePage';
 import { AlertsPage } from '@/pages/AlertsPage';
 import { WomenWorkspacePage } from '@/pages/WomenWorkspacePage';
 import { ChildProtectionPage } from '@/pages/ChildProtectionPage';
@@ -26,6 +27,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/command-centre" element={<CommandCentrePage />} />
+          <Route path="/attention" element={<AttentionCentrePage />} />
           <Route path="/alerts" element={<AlertsPage />} />
           <Route path="/women" element={<WomenWorkspacePage />} />
           <Route path="/women-workspace" element={<WomenWorkspacePage />} />

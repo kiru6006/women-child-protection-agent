@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { StatusBadge } from '@/components/badges/StatusBadge';
 import { SeverityBadge } from '@/components/badges/SeverityBadge';
 import { GapContract, GapStatus, GapTaxonomyType, SeverityLevel } from '@/types';
@@ -115,19 +116,20 @@ export function GapExplorerPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Gap Intelligence Explorer</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Stateful Gap Contracts classified under the 11-Taxonomy Government Framework with assigned role owners and measurable KPIs.
-          </p>
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1F3864]">Gap Intelligence Explorer</h1>
+          <MoreInfoButton
+            title="Gap Intelligence Explorer"
+            purpose="Stateful Gap Contracts classified under the 11-Taxonomy Government Framework with assigned role owners and measurable KPIs."
+          />
         </div>
         <button
           type="button"
           onClick={() => setShowCreate(!showCreate)}
-          className="text-xs px-3 py-1.5 rounded bg-primary text-white font-semibold hover:bg-primary-hover flex items-center gap-1"
+          className="text-xs px-3 py-1.5 rounded bg-[#7D2A42] text-white font-semibold hover:bg-[#654161] flex items-center gap-1"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Propose Gap</span>

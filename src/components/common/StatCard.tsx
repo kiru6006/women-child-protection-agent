@@ -24,10 +24,10 @@ export function StatCard({
   onClick,
 }: StatCardProps) {
   const variantStyles = {
-    default: 'border-slate-200 bg-white hover:border-slate-300',
-    alert: 'border-slate-200 border-l-4 border-l-red-600 bg-white hover:border-slate-300',
-    warning: 'border-slate-200 border-l-4 border-l-orange-500 bg-white hover:border-slate-300',
-    success: 'border-slate-200 border-l-4 border-l-green-600 bg-white hover:border-slate-300',
+    default: 'border-[#E5B8B7] bg-white hover:border-[#EF5A90]',
+    alert: 'border-[#E5B8B7] border-l-4 border-l-red-600 bg-white hover:border-[#EF5A90]',
+    warning: 'border-[#E5B8B7] border-l-4 border-l-orange-500 bg-white hover:border-[#EF5A90]',
+    success: 'border-[#E5B8B7] border-l-4 border-l-green-600 bg-white hover:border-[#EF5A90]',
   };
 
   return (

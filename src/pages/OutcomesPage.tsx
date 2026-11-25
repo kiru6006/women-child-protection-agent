@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { mockGaps } from '@/data/mockData';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { StatCard } from '@/components/common/StatCard';
 import { OutcomeRecord } from '@/types';
 import { createOutcome, fetchOutcomes, verifyOutcome } from '@/services/api';
@@ -70,18 +71,19 @@ export function OutcomesPage() {
   const partialCount = outcomes.filter((o) => o.status === 'PARTIALLY_EFFECTIVE').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Outcome Verification Engine</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Ground-truth assessment verifying whether administrative sanctions actually solved the protection failure in the field.
-          </p>
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1F3864]">Outcome Verification Engine</h1>
+          <MoreInfoButton
+            title="Outcome Verification Engine"
+            purpose="Ground-truth assessment verifying whether administrative sanctions actually solved the protection failure in the field."
+          />
         </div>
         <button
           type="button"
           onClick={() => setShowRecord(!showRecord)}
-          className="text-xs px-3 py-1.5 rounded bg-primary text-white font-semibold hover:bg-primary-hover flex items-center gap-1"
+          className="text-xs px-3 py-1.5 rounded bg-[#7D2A42] text-white font-semibold hover:bg-[#654161] flex items-center gap-1"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Record Outcome</span>

@@ -17,6 +17,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { SeverityBadge } from '@/components/badges/SeverityBadge';
 import { StatusBadge } from '@/components/badges/StatusBadge';
 import { DomainBadge } from '@/components/badges/DomainBadge';
@@ -76,6 +77,10 @@ export function HomePage() {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          <MoreInfoButton
+            title="WCD Protection Intelligence Hub"
+            purpose="Unified platform for discovering systemic protection failures, inspecting authoritative evidence, coordinating responsible authorities, managing interventions, and verifying outcomes."
+          />
           <Link
             to="/command-centre"
             className="text-xs px-3 py-1.5 rounded border border-[#C98A87] bg-white text-[#7D2A42] font-semibold hover:bg-[#FFE5DE]/50"

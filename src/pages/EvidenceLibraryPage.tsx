@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { EpistemicBadge } from '@/components/badges/EpistemicBadge';
 import { EpistemicClass, EvidenceItem } from '@/types';
 import { createEvidence, fetchEvidence } from '@/services/api';
@@ -73,23 +74,24 @@ export function EvidenceLibraryPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Evidence Library & Provenance Catalog</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Ground-truth government documents, statutory gazettes, CAG audit observations, and epistemic classifications.
-          </p>
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1F3864]">Evidence Library & Provenance Catalog</h1>
+          <MoreInfoButton
+            title="Evidence Library & Provenance Catalog"
+            purpose="Ground-truth government documents, statutory gazettes, CAG audit observations, and epistemic classifications."
+          />
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs bg-slate-100 px-3 py-1.5 rounded border border-slate-200 text-slate-700 font-mono">
-            {items.length} Indexed Sources
+          <span className="text-xs bg-[#FFE5DE] px-2.5 py-1 rounded border border-[#C98A87] text-[#7D2A42] font-mono font-semibold">
+            {items.length} Sources
           </span>
           <button
             type="button"
             onClick={() => setShowAdd(!showAdd)}
-            className="text-xs px-3 py-1.5 rounded bg-primary text-white font-semibold hover:bg-primary-hover flex items-center gap-1"
+            className="text-xs px-3 py-1.5 rounded bg-[#7D2A42] text-white font-semibold hover:bg-[#654161] flex items-center gap-1"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Evidence</span>

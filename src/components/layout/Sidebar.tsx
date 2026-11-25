@@ -22,6 +22,7 @@ interface NavGroup {
   label: string;
   icon: any;
   accent?: string;
+  statusTag?: string;
   items: { label: string; to: string }[];
 }
 
@@ -30,9 +31,11 @@ const NAV_GROUPS: NavGroup[] = [
     id: 'overview',
     label: 'Overview',
     icon: LayoutDashboard,
+    statusTag: 'Live',
     items: [
-      { label: 'Home Portal', to: '/' },
+      { label: 'Home Hub', to: '/' },
       { label: 'Government Command Centre', to: '/command-centre' },
+      { label: 'Attention Centre (Collector)', to: '/attention' },
       { label: 'Alerts & Notifications', to: '/alerts' },
       { label: 'National Situation Overview', to: '/geography?tab=india' },
     ],
@@ -42,6 +45,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Women Protection',
     icon: ShieldCheck,
     accent: 'text-[#7D2A42]',
+    statusTag: 'MVP',
     items: [
       { label: 'Women Intelligence Overview', to: '/women?tab=overview' },
       { label: 'Crime & Violence', to: '/women?tab=crime' },
@@ -60,6 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Child Protection',
     icon: ShieldAlert,
     accent: 'text-[#EF5A90]',
+    statusTag: 'Read-Only',
     items: [
       { label: 'Child Intelligence Overview', to: '/child?tab=overview' },
       { label: 'Child Abuse & Neglect', to: '/child?tab=abuse' },
@@ -78,6 +83,8 @@ const NAV_GROUPS: NavGroup[] = [
     id: 'ai',
     label: 'AI Intelligence',
     icon: Bot,
+    accent: 'text-[#46296E]',
+    statusTag: 'Bounded',
     items: [
       { label: 'AI Intelligence Centre', to: '/ai-intelligence?tab=centre' },
       { label: 'Emerging Issue Detection', to: '/ai-intelligence?tab=emerging' },
@@ -95,6 +102,8 @@ const NAV_GROUPS: NavGroup[] = [
     id: 'action',
     label: 'Investigation & Action',
     icon: SearchCode,
+    accent: 'text-[#7D2A42]',
+    statusTag: 'MVP',
     items: [
       { label: 'Gap Explorer & Contracts', to: '/gaps' },
       { label: 'Investigation Workspace', to: '/investigation' },
@@ -221,12 +230,20 @@ export function Sidebar() {
                     <Icon className={cn('w-4 h-4 shrink-0', group.accent || 'text-gov-navy')} />
                     {!sidebarCollapsed && <span className="truncate">{group.label}</span>}
                   </span>
-                  {!sidebarCollapsed &&
-                    (isOpen ? (
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                    ) : (
-                      <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                    ))}
+                  {!sidebarCollapsed && (
+                    <span className="flex items-center gap-1 shrink-0">
+                      {group.statusTag && (
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#FFE5DE]/70 text-[#7D2A42] border border-[#E5B8B7] font-mono">
+                          {group.statusTag}
+                        </span>
+                      )}
+                      {isOpen ? (
+                        <ChevronDown className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                      ) : (
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                      )}
+                    </span>
+                  )}
                 </button>
 
                 {!sidebarCollapsed && isOpen && (

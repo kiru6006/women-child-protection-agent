@@ -12,19 +12,19 @@ export function Card({ children, className, header, footer, ...props }: CardProp
   return (
     <div
       className={cn(
-        'bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden',
+        'bg-white border border-[#E5B8B7] border-t-2 border-t-[#EF5A90]/75 hover:border-[#EF5A90] transition-colors rounded-lg shadow-xs overflow-hidden',
         className
       )}
       {...props}
     >
       {header && (
-        <div className="px-4 py-2.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+        <div className="px-4 py-2.5 border-b border-[#F3D5D4] bg-[#FFE5DE]/30 flex items-center justify-between">
           {header}
         </div>
       )}
       <div className="p-3.5">{children}</div>
       {footer && (
-        <div className="px-4 py-2 border-t border-slate-100 bg-slate-50/50 text-xs text-slate-600">
+        <div className="px-4 py-2 border-t border-[#F3D5D4] bg-[#FFE5DE]/20 text-xs text-slate-600">
           {footer}
         </div>
       )}

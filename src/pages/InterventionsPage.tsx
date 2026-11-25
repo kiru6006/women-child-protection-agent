@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/common/Card';
+import { MoreInfoButton } from '@/components/common/PageHeader';
 import { InterventionPlan } from '@/types';
 import { approveIntervention, createIntervention, fetchInterventions } from '@/services/api';
 import { useAppStore } from '@/store/appStore';
@@ -53,18 +54,19 @@ export function InterventionsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Intervention Workspace & Mandated Directives</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Formal administrative interventions sanctioned by District Magistrates and WCD Secretaries with measurable baseline-to-target KPIs.
-          </p>
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1F3864]">Intervention Workspace & Directives</h1>
+          <MoreInfoButton
+            title="Intervention Workspace & Directives"
+            purpose="Formal administrative interventions sanctioned by District Magistrates and WCD Secretaries with measurable baseline-to-target KPIs."
+          />
         </div>
         <button
           type="button"
           onClick={() => setShowPropose(!showPropose)}
-          className="text-xs px-3 py-1.5 rounded bg-primary text-white font-semibold hover:bg-primary-hover flex items-center gap-1 self-start"
+          className="text-xs px-3 py-1.5 rounded bg-[#7D2A42] text-white font-semibold hover:bg-[#654161] flex items-center gap-1"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Propose Intervention</span>
