@@ -1,7 +1,7 @@
 # Proposal Screenshot Sequence Index
 ## WCD Integrated Governance, Protection, Welfare & Accountability Platform
 
-> **Capture Status:** Routes and synthetic demonstration records (`DEMO-01`..`DEMO-10`) are live and verified by `tsc -b && vite build`, `vitest` (`6/6`), and `pytest` (`20/20`). Automated browser screenshot capture is **pending** Chrome remote debugging (`chrome://inspect/#remote-debugging`) or Playwright installation.
+> **Capture Status:** **CAPTURED (20/20)** via headless Chromium Playwright ([`scripts/capture_screenshots.py`](./scripts/capture_screenshots.py)) against `vite preview` (`4173`), saved in `docs/screenshots/`. Verified `0` page errors and `0` horizontal overflows at `1280x800`, `768x1024`, and `375x812`.
 
 | # | Screen Title | Government Problem Addressed | Purpose & Main Features | Stakeholders | Expected Benefit | Data / Synthetic Label | Filename | Route |
 |---|---|---|---|---|---|---|---|---|
