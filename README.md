@@ -58,8 +58,8 @@ WCD Protection Intelligence Platform
 
 | Category | Done (Verified Prototype) | Pending (Live Pilot & Scale) |
 |---|---|---|
-| **Frontend (`src/`)** | React `19.3.1`, TypeScript, Vite, Civic Intelligence Light design tokens ([`DESIGN.md`](./DESIGN.md)), 10+ pages, mobile drawer & domain switcher, `"SYNTHETIC / OFFLINE FALLBACK"` banner, live API + create/update forms (`5/5` Vitest) | Playwright responsive E2E suite, offline PWA service-worker sync |
-| **Backend (`backend/`)** | FastAPI + SQLAlchemy ORM + Alembic (`0001_initial_schema`), Gap/Evidence/Investigation/Intervention/Outcome CRUD, deterministic state machine, Zero-PII `422` guard, DB SHA-256 audit chain (`20/20` Pytest) | Production PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local quantised LLM |
+| **Frontend (`src/`)** | React `19.3.1`, TypeScript, Vite, Civic Intelligence Light + Pink design tokens ([`DESIGN.md`](./DESIGN.md)), `My Work`, `Matter 360°`, `Problem Decomposition`, `Decision Centre`, `Convergence`, `Dependency 360°`, `Finance`, `NGO`, `Excellence`, `Role Dashboards` (`6/6` Vitest) | Playwright responsive E2E suite, offline PWA service-worker sync |
+| **Backend (`backend/`)** | FastAPI + SQLAlchemy ORM + Alembic (`0001_initial_schema`), Gap/Evidence/Investigation/Intervention/Outcome + `Matter`/`Action` (12-state)/`Dependency` (cycle check)/`Decision`/`Notification` (dedup)/`Recognition` CRUD, Zero-PII `422` guard, DB SHA-256 audit chain (`26/26` Pytest) | Production PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local quantised LLM |
 | **Governance & Security** | Explicit CORS origins, signed Bearer JWT (`/api/v1/auth/token`), `DEV_HEADER_AUTH_ENABLED` toggle, Domain B (`CHILD`) `403` write lock, prompt-injection refusal | External Gov SSO IdP, VAPT (`G09`), `G03` WCD/Police protocol, `G04` DPDP opinion, `G10` paper baseline |
 
 ---

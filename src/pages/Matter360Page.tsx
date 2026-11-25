@@ -142,6 +142,23 @@ export function Matter360Page() {
               <div className="p-2 bg-slate-50 rounded border border-slate-200"><dt className="text-[10px] font-bold text-slate-600 uppercase">Coordinating Authority</dt><dd className="font-semibold">{matter.coordinatingAuthority}</dd></div>
               <div className="p-2 bg-slate-50 rounded border border-slate-200"><dt className="text-[10px] font-bold text-slate-600 uppercase">Responsible Authority</dt><dd className="font-semibold">{matter.responsibleAuthority}</dd></div>
             </dl>
+            <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5 text-[11px]">
+              <div className="flex items-center justify-between">
+                <strong className="text-[#1F3864]">Meaningful Progress Timeline:</strong>
+                {(matter.matterStatus === 'CLOSED' || matter.matterStatus === 'RESOLVED') && (
+                  <button
+                    type="button"
+                    onClick={() => updateMatterStatus(matter.id, 'REOPENED')}
+                    className="px-2 py-0.5 rounded border border-orange-400 bg-orange-50 text-orange-900 font-semibold"
+                  >
+                    Reopen Matter
+                  </button>
+                )}
+              </div>
+              <div className="p-2 rounded bg-[#FFE5DE]/30 border border-[#E5B8B7]">
+                <strong>Created:</strong> {matter.createdDate} → <strong>Last Progress:</strong> {matter.updatedDate} → <strong>Next Review:</strong> {matter.outcome.nextReviewDate}
+              </div>
+            </div>
           </Card>
 
           <Card header={<span className="text-xs font-bold text-[#1F3864]">Linked Dependencies ({linkedDeps.length})</span>}>

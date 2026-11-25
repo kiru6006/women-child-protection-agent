@@ -74,6 +74,26 @@ export function GeographyPage() {
           </table>
         </div>
       </Card>
+      <Card header={<span className="text-sm font-bold text-[#1F3864]">Context-Adjusted Analytical Comparison (No Public Leaderboards)</span>}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          {[
+            { label: 'Patna Sakhi OSC Legal Linkage (Synthetic)', pct: 58, target: 'Target 85%' },
+            { label: 'Vaishali PMMVY Backlog Cleared (Synthetic)', pct: 64, target: 'Target 95%' },
+            { label: 'Bhagalpur Single-Statement Intake (Benchmark)', pct: 92, target: 'Verified' },
+          ].map((b) => (
+            <div key={b.label} className="p-2.5 rounded border border-[#E5B8B7] bg-white space-y-1.5">
+              <div className="flex justify-between font-semibold text-[#1F3864]">
+                <span className="truncate">{b.label}</span>
+                <span className="font-mono text-[#7D2A42]">{b.pct}%</span>
+              </div>
+              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="bg-[#EF5A90] h-full" style={{ width: `${b.pct}%` }} />
+              </div>
+              <div className="text-[10px] text-slate-600">{b.target} • Context-adjusted pilot cohort</div>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 }
