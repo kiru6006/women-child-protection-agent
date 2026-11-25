@@ -68,7 +68,7 @@ WCD Protection Intelligence Platform
 
 | Category | Done (Verified Demo Prototype) | Pending (Live Government Pilot Only) |
 |---|---|---|
-| **Frontend Application** | React 19 + TypeScript SPA, Civic Intelligence Light + Pink & Black/White high-contrast themes, compact icon-only header, 31 routes, `Help & Knowledge Centre`, `19-Step Demo`, `10/10` Vitest passing, `21/21` Playwright screenshots (`0` errors, `0` overflows across `1280px` / `768px` / `375px`) | Offline PWA service-worker sync for remote field centres |
+| **Frontend Application** | React 19 + TypeScript SPA, Civic Intelligence Light + Pink & Black/White high-contrast themes, compact icon-only header, bottom-docked `Ask AI` assistant, 31 routes (responsive `375px` to `1920px+`), `Help & Knowledge Centre`, `19-Step Demo`, M17/M18 mock simulators, `10/10` Vitest passing, `21/21` Playwright screenshots (`31` routes × `4` viewports, `0` errors, `0` overflows) | Offline PWA service-worker sync for remote field centres |
 | **Backend & Intelligence** | FastAPI modular monolith, SQLAlchemy ORM + Alembic migrations, deterministic Gap & 12-state Action machines, Dependency cycle check, Zero-PII `422` guard, DB-backed SHA-256 WORM audit chain (`26/26` Pytest passing) | Production PostgreSQL + RLS on NIC MeghRaj, `pgvector` + local quantised LLM, live CCTNS/ICJS/PFMS APIs |
 | **Governance & Security** | Explicit CORS origins, signed Bearer JWT, Domain B (`CHILD`) `403` write lock, prompt-injection refusal, mandatory human approval gates | External Gov SSO IdP, VAPT (`G09`), `G03` WCD/Police protocol, `G04` DPDP opinion, `G10` paper baseline |
 

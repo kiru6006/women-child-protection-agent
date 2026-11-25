@@ -1,7 +1,7 @@
 # Proposal Screenshot Sequence Index
 ## WCD Integrated Governance, Protection, Welfare & Accountability Platform
 
-> **Capture Status:** **CAPTURED (21/21)** via headless Chromium Playwright ([`scripts/capture_screenshots.py`](./scripts/capture_screenshots.py)) against `vite preview` (`4173`), saved in `docs/screenshots/`. Verified `0` page errors and `0` horizontal overflows at `1280x800`, `768x1024`, and `375x812`.
+> **Capture Status:** **CAPTURED (21/21)** via headless Chromium Playwright ([`scripts/capture_screenshots.py`](./scripts/capture_screenshots.py)) against `vite preview` (`4173`), saved in `docs/screenshots/`. Verified **all 31 routes × 4 viewports** (`1920x1080`, `1280x800`, `768x1024`, `375x812` = 124 checks) with **`0` page errors** and **`0` horizontal overflows**.
 
 | # | Screen Title | Government Problem Addressed | Purpose & Main Features | Stakeholders | Expected Benefit | Data / Synthetic Label | Filename | Route |
 |---|---|---|---|---|---|---|---|---|

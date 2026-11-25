@@ -88,5 +88,5 @@ Used strictly for badges, small icons, category markers, and subtle borders with
 
 ## 5. Verification & Remaining Items
 
-- **Verified:** `npm run build` (`tsc -b && vite build`), `npm test` (`10/10` Vitest), `pytest` (`26/26` Pytest), and Playwright responsive capture (`21/21` screens, `0` errors, `0` overflows across `1280x800`, `768x1024`, and `375x812`) pass.
+- **Verified:** `npm run build` (`tsc -b && vite build`), `npm test` (`10/10` Vitest), `pytest` (`26/26` Pytest), and Playwright full 31-route × 4-viewport audit (`21/21` screenshots, `1920x1080`, `1280x800`, `768x1024`, `375x812`, `0` errors, `0` overflows) pass.
 - **Completed Contrast & Theme Sweep:** Upgraded `text-slate-400` micro-captions/icons on light backgrounds across core pages to `text-slate-500`/`text-slate-600` (`>= 4.5:1`), replaced the Attention Centre gradient banner with Civic Intelligence Light (`bg-white` + `border-l-gov-navy`), and added a high-contrast Black & White theme toggle in the compact icon-only header.

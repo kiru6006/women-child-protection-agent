@@ -47,10 +47,18 @@ def main():
             page.wait_for_timeout(200)
             page.screenshot(path=os.path.join(OUT_DIR, fname), full_page=True)
 
-        # Responsive overflow checks on Home & Matter 360
-        for vw, vh in [(1280, 800), (768, 1024), (375, 812)]:
+        # Responsive overflow checks across ALL 31 routes and 4 viewport sizes
+        all_routes = [
+            "/", "/command-centre", "/attention", "/alerts", "/women", "/child",
+            "/ai-intelligence", "/knowledge-assistant", "/gaps", "/investigation",
+            "/interventions", "/outcomes", "/geography", "/ecosystem", "/schemes",
+            "/knowledge", "/evidence", "/governance", "/audit", "/matter-360",
+            "/convergence", "/dependencies", "/ownership", "/finance", "/ngo-community",
+            "/excellence", "/dashboards", "/my-work", "/decompose", "/demo-flow", "/help",
+        ]
+        for vw, vh in [(1920, 1080), (1280, 800), (768, 1024), (375, 812)]:
             page.set_viewport_size({"width": vw, "height": vh})
-            for route in ["/", "/matter-360", "/my-work", "/help"]:
+            for route in all_routes:
                 page.goto(f"{BASE}{route}", wait_until="networkidle")
                 sw = page.evaluate("document.documentElement.scrollWidth")
                 iw = page.evaluate("window.innerWidth")

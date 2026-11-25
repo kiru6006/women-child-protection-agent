@@ -29,7 +29,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <div className="flex-1 flex overflow-hidden relative">
         <Sidebar />
         <main className="flex-1 overflow-y-auto p-3 md:p-4 lg:p-5 bg-app">
-          <div className="max-w-7xl mx-auto space-y-4">
+          <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto space-y-4">
             {children}
           </div>
         </main>
