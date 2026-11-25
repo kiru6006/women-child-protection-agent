@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { mockGaps, mockEvidence, mockInvestigation, mockOutcomes } from '../data/mockData';
 import { useDemoStore } from '../store/demoStore';
+import { useGovernanceStore } from '../store/governanceStore';
 
 describe('WCD Protection Intelligence Platform — Domain & Integrity Invariants', () => {
   it('enforces that all initial mock gaps have valid 11-type taxonomy classifications', () => {
@@ -79,6 +80,31 @@ describe('WCD Protection Intelligence Platform — Domain & Integrity Invariants
 
     const inv = store.getInvestigationForGap('GAP-W-PATNA-003');
     expect(inv.gapId).toBe('GAP-W-PATNA-003');
+  });
+
+  it('validates 10 synthetic E2E demos, independent statuses, cycle detection, and RACI transfer history', () => {
+    const gov = useGovernanceStore.getState();
+    expect(gov.matters.length).toBe(10);
+    expect(gov.convergenceLinks.length).toBe(10);
+    gov.matters.forEach((m, idx) => {
+      expect(m.demoCode).toBe(`DEMO-${String(idx + 1).padStart(2, '0')}`);
+      expect(m.isSynthetic).toBe(true);
+      expect(m.matterStatus).toBeDefined();
+      expect(m.adminStatus).toBeDefined();
+      expect(m.police.status).toBeDefined();
+      expect(m.litigation.status).toBeDefined();
+      expect(m.litigation.complianceStatus).toBeDefined();
+      expect(m.finance.status).toBeDefined();
+      expect(m.outcome.status).toBeDefined();
+    });
+
+    const cycles = gov.detectCircularDependencies();
+    expect(cycles.length).toBeGreaterThanOrEqual(1);
+
+    gov.reassignRaciRole('RACI-02', 'Addl. Secretary DLSA Patna', 'Unit test posting');
+    const updated = useGovernanceStore.getState().raciAssignments.find((r) => r.id === 'RACI-02');
+    expect(updated?.responsibleRole).toBe('Addl. Secretary DLSA Patna');
+    expect(updated?.transferHistory.length).toBe(1);
   });
 });
 

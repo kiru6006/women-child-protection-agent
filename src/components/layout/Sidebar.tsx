@@ -3,16 +3,18 @@ import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   ShieldCheck,
-  ShieldAlert,
   Bot,
   SearchCode,
-  MapPin,
   Building2,
-  Landmark,
   BookOpen,
   Lock,
   ChevronDown,
   ChevronRight,
+  Network,
+  Wallet,
+  Award,
+  Users,
+  Scale,
 } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
 import { cn } from '@/lib/utils';
@@ -35,48 +37,84 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Home Hub', to: '/' },
       { label: 'Government Command Centre', to: '/command-centre' },
-      { label: 'Attention Centre (Collector)', to: '/attention' },
       { label: 'Alerts & Notifications', to: '/alerts' },
-      { label: 'National Situation Overview', to: '/geography?tab=india' },
+      { label: 'Minister Overview', to: '/dashboards?role=MINISTER' },
+      { label: 'Secretary Overview', to: '/dashboards?role=SECRETARY' },
+      { label: 'Collector & Role Views', to: '/dashboards?role=COLLECTOR' },
     ],
   },
   {
-    id: 'women',
-    label: 'Women Protection',
+    id: 'protection',
+    label: 'Protection Intelligence',
     icon: ShieldCheck,
     accent: 'text-[#7D2A42]',
     statusTag: 'MVP',
     items: [
-      { label: 'Women Intelligence Overview', to: '/women?tab=overview' },
-      { label: 'Crime & Violence', to: '/women?tab=crime' },
-      { label: 'Domestic Violence', to: '/women?tab=dv' },
-      { label: 'Sexual Harassment & Exploitation', to: '/women?tab=harassment' },
-      { label: 'Workplace Protection', to: '/women?tab=workplace' },
-      { label: 'Cyber & Digital Safety', to: '/women?tab=cyber' },
-      { label: 'Health & Nutrition', to: '/women?tab=health' },
-      { label: 'Economic Empowerment', to: '/women?tab=economic' },
-      { label: 'Schemes & Support Services', to: '/women?tab=schemes' },
-      { label: 'Rehabilitation & Welfare', to: '/women?tab=rehab' },
+      { label: 'Women Protection (Domain A)', to: '/women?tab=overview' },
+      { label: 'Child Protection (Read-Only)', to: '/child?tab=overview' },
+      { label: 'Attention Centre (Collector)', to: '/attention' },
+      { label: 'Schemes & Services', to: '/schemes?tab=all' },
+      { label: 'Geographic Intelligence', to: '/geography?tab=india' },
     ],
   },
   {
-    id: 'child',
-    label: 'Child Protection',
-    icon: ShieldAlert,
-    accent: 'text-[#EF5A90]',
-    statusTag: 'Read-Only',
+    id: 'matter',
+    label: 'Matter & Action Management',
+    icon: SearchCode,
+    accent: 'text-[#7D2A42]',
+    statusTag: '360°',
     items: [
-      { label: 'Child Intelligence Overview', to: '/child?tab=overview' },
-      { label: 'Child Abuse & Neglect', to: '/child?tab=abuse' },
-      { label: 'POCSO Intelligence', to: '/child?tab=pocso' },
-      { label: 'Missing Children', to: '/child?tab=missing' },
-      { label: 'Child Marriage', to: '/child?tab=marriage' },
-      { label: 'Child Labour & Trafficking', to: '/child?tab=labour' },
-      { label: 'Education & School Dropout', to: '/child?tab=education' },
-      { label: 'Health & Nutrition', to: '/child?tab=health' },
-      { label: 'Digital Child Safety', to: '/child?tab=digital' },
-      { label: 'Institutional & Family Care', to: '/child?tab=care' },
-      { label: 'Rehabilitation & Aftercare', to: '/child?tab=aftercare' },
+      { label: 'Matter 360°', to: '/matter-360' },
+      { label: 'Investigation Workspace', to: '/investigation' },
+      { label: 'Gap Contracts', to: '/gaps' },
+      { label: 'Intervention Management', to: '/interventions' },
+      { label: 'Outcome Verification', to: '/outcomes' },
+    ],
+  },
+  {
+    id: 'police_legal',
+    label: 'Police & Legal Coordination',
+    icon: Scale,
+    accent: 'text-[#1F3864]',
+    statusTag: 'Demo',
+    items: [
+      { label: 'Police Coordination', to: '/matter-360?tab=police' },
+      { label: 'Litigation & Court Orders', to: '/matter-360?tab=litigation' },
+      { label: 'Legal Aid (DLSA)', to: '/dashboards?role=LEGAL' },
+    ],
+  },
+  {
+    id: 'convergence',
+    label: 'Government Convergence',
+    icon: Network,
+    accent: 'text-[#EF5A90]',
+    statusTag: 'Demo',
+    items: [
+      { label: 'Department Connectivity', to: '/convergence' },
+      { label: 'Dependency 360°', to: '/dependencies' },
+      { label: 'Responsibility Matrix (RACI)', to: '/ownership' },
+    ],
+  },
+  {
+    id: 'finance',
+    label: 'Finance & Resources',
+    icon: Wallet,
+    accent: 'text-[#16A028]',
+    statusTag: 'Demo',
+    items: [
+      { label: 'Financial Command Centre', to: '/finance' },
+      { label: 'Finance Dashboard', to: '/dashboards?role=FINANCE' },
+    ],
+  },
+  {
+    id: 'ngo',
+    label: 'NGO & Community',
+    icon: Users,
+    accent: 'text-[#167F80]',
+    statusTag: 'Demo',
+    items: [
+      { label: 'NGO & Local Body Registry', to: '/ngo-community' },
+      { label: 'NGO Partner Dashboard', to: '/dashboards?role=NGO' },
     ],
   },
   {
@@ -87,44 +125,7 @@ const NAV_GROUPS: NavGroup[] = [
     statusTag: 'Bounded',
     items: [
       { label: 'AI Intelligence Centre', to: '/ai-intelligence?tab=centre' },
-      { label: 'Emerging Issue Detection', to: '/ai-intelligence?tab=emerging' },
-      { label: 'Gap Detection', to: '/ai-intelligence?tab=gaps' },
-      { label: 'Evidence Analysis', to: '/ai-intelligence?tab=evidence' },
-      { label: 'Root-Cause Investigation', to: '/ai-intelligence?tab=root-cause' },
-      { label: 'Scheme Effectiveness', to: '/ai-intelligence?tab=schemes' },
-      { label: 'Capacity & Resources', to: '/ai-intelligence?tab=capacity' },
-      { label: 'Government Convergence', to: '/ai-intelligence?tab=convergence' },
-      { label: 'Intervention Recommendations', to: '/ai-intelligence?tab=interventions' },
-      { label: 'AI Knowledge Assistant', to: '/knowledge-assistant' },
-    ],
-  },
-  {
-    id: 'action',
-    label: 'Investigation & Action',
-    icon: SearchCode,
-    accent: 'text-[#7D2A42]',
-    statusTag: 'MVP',
-    items: [
-      { label: 'Gap Explorer & Contracts', to: '/gaps' },
-      { label: 'Investigation Workspace', to: '/investigation' },
-      { label: 'Intervention Management', to: '/interventions' },
-      { label: 'Departmental Dependencies', to: '/interventions?tab=dependencies' },
-      { label: 'Pending Government Actions', to: '/interventions?tab=pending' },
-      { label: 'Outcome Verification', to: '/outcomes' },
-      { label: 'Decision Briefs', to: '/interventions?tab=briefs' },
-    ],
-  },
-  {
-    id: 'geography',
-    label: 'Geographic Intelligence',
-    icon: MapPin,
-    items: [
-      { label: 'India Overview', to: '/geography?tab=india' },
-      { label: 'State Intelligence', to: '/geography?tab=state' },
-      { label: 'District Intelligence', to: '/geography?tab=district' },
-      { label: 'Service Coverage', to: '/geography?tab=coverage' },
-      { label: 'Capacity Gaps', to: '/geography?tab=capacity' },
-      { label: 'Regional Comparisons', to: '/geography?tab=comparisons' },
+      { label: 'Knowledge Assistant (RAG)', to: '/knowledge-assistant' },
     ],
   },
   {
@@ -132,27 +133,17 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Government Ecosystem',
     icon: Building2,
     items: [
-      { label: 'Ministry Overview', to: '/ecosystem?tab=ministry' },
-      { label: 'Government Officials', to: '/ecosystem?tab=officials' },
-      { label: 'Organisation Hierarchy', to: '/ecosystem?tab=hierarchy' },
-      { label: 'Departments & Institutions', to: '/ecosystem?tab=departments' },
-      { label: 'State WCD & District Authorities', to: '/ecosystem?tab=authorities' },
-      { label: 'Contact Directory', to: '/ecosystem?tab=contacts' },
-      { label: 'Helplines & Emergency', to: '/ecosystem?tab=helplines' },
-      { label: 'Responsibility Matrix', to: '/ecosystem?tab=matrix' },
+      { label: 'Officials & Hierarchy', to: '/ecosystem?tab=officials' },
+      { label: 'Contact & Helplines', to: '/ecosystem?tab=helplines' },
     ],
   },
   {
-    id: 'schemes',
-    label: 'Schemes & Services',
-    icon: Landmark,
+    id: 'excellence',
+    label: 'Governance Excellence',
+    icon: Award,
+    accent: 'text-[#EF5A90]',
     items: [
-      { label: 'All Government Schemes', to: '/schemes?tab=all' },
-      { label: 'Mission Shakti & OSCs', to: '/schemes?tab=shakti' },
-      { label: 'Mission Vatsalya & CCIs', to: '/schemes?tab=vatsalya' },
-      { label: 'Saksham Anganwadi & POSHAN', to: '/schemes?tab=poshan' },
-      { label: 'Legal Aid & Financial Support', to: '/schemes?tab=legal' },
-      { label: 'Service Availability', to: '/schemes?tab=availability' },
+      { label: 'Best Practices & Recognition', to: '/excellence' },
     ],
   },
   {
@@ -160,23 +151,18 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Knowledge & Data',
     icon: BookOpen,
     items: [
-      { label: 'Government Data Catalogue', to: '/knowledge?tab=catalogue' },
       { label: 'Evidence Library', to: '/evidence' },
-      { label: 'Laws, Rules & Orders', to: '/knowledge?tab=laws' },
-      { label: 'Policies & Guidelines', to: '/knowledge?tab=policies' },
-      { label: 'Reports & Parliament', to: '/knowledge?tab=reports' },
-      { label: 'Budget & Expenditure', to: '/knowledge?tab=budget' },
+      { label: 'Government Data Catalogue', to: '/knowledge?tab=catalogue' },
+      { label: 'Laws, Policies & Budgets', to: '/knowledge?tab=laws' },
     ],
   },
   {
-    id: 'governance',
-    label: 'Governance & Admin',
+    id: 'admin',
+    label: 'Administration',
     icon: Lock,
     items: [
-      { label: 'AI Explainability & Quality', to: '/governance?tab=explainability' },
-      { label: 'Source Verification & Security', to: '/governance?tab=security' },
       { label: 'Audit History (WORM)', to: '/audit' },
-      { label: 'User & System Config', to: '/governance?tab=config' },
+      { label: 'Governance & Security', to: '/governance?tab=explainability' },
     ],
   },
 ];
@@ -186,8 +172,9 @@ export function Sidebar() {
   const location = useLocation();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     overview: true,
-    women: true,
-    action: true,
+    protection: true,
+    matter: true,
+    convergence: true,
   });
 
   const toggleGroup = (id: string) => {
@@ -200,21 +187,22 @@ export function Sidebar() {
     <>
       {mobileNavOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/50 z-40 md:hidden"
+          className="fixed inset-0 bg-slate-900/40 z-30 md:hidden"
           onClick={() => setMobileNavOpen(false)}
           aria-hidden="true"
         />
       )}
+
       <aside
-        aria-label="Primary platform navigation"
+        aria-label="Primary Navigation"
         className={cn(
-          'bg-white text-slate-800 border-r border-slate-200 transition-all duration-200 flex flex-col justify-between shrink-0 overflow-y-auto',
-          'fixed inset-y-0 left-0 z-50 md:static md:translate-x-0',
+          'bg-white border-r border-[#E5B8B7] flex flex-col shrink-0 transition-all duration-200 z-40',
+          'fixed md:static inset-y-0 left-0 top-14 md:top-0 h-[calc(100vh-3.5rem)] md:h-auto',
           mobileNavOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-          sidebarCollapsed ? 'md:w-14 w-64' : 'w-64'
+          sidebarCollapsed ? 'w-16' : 'w-64'
         )}
       >
-        <div className="py-3 px-2 space-y-1">
+        <div className="flex-1 overflow-y-auto py-2 px-2 space-y-1">
           {NAV_GROUPS.map((group) => {
             const Icon = group.icon;
             const isOpen = !!openGroups[group.id];
@@ -224,7 +212,7 @@ export function Sidebar() {
                   type="button"
                   onClick={() => (sidebarCollapsed ? undefined : toggleGroup(group.id))}
                   title={group.label}
-                  className="w-full flex items-center justify-between px-2 py-1.5 rounded text-xs font-bold text-[#64748B] hover:bg-[#F1F5F9] transition-colors"
+                  className="w-full flex items-center justify-between px-2 py-1.5 rounded text-xs font-bold text-[#64748B] hover:bg-[#FFE5DE]/40 transition-colors"
                 >
                   <span className="flex items-center gap-2 min-w-0">
                     <Icon className={cn('w-4 h-4 shrink-0', group.accent || 'text-gov-navy')} />
@@ -274,9 +262,9 @@ export function Sidebar() {
         </div>
 
         {!sidebarCollapsed && (
-          <div className="p-3 border-t border-slate-200 bg-slate-50 text-[10px] text-slate-500">
-            <div className="font-semibold text-gov-navy mb-0.5">MoWCD Operations Portal</div>
-            <div>DPDP 2023 • PWDVA • JJ Act • POCSO</div>
+          <div className="p-2.5 border-t border-[#E5B8B7] bg-[#FFE5DE]/20 text-[10px] text-slate-600">
+            <div className="font-semibold text-[#7D2A42]">Zero-PII • Human-in-Loop</div>
+            <div>12-Group Governance Nav</div>
           </div>
         )}
       </aside>

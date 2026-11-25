@@ -19,6 +19,14 @@ import { EvidenceLibraryPage } from '@/pages/EvidenceLibraryPage';
 import { KnowledgeAssistantPage } from '@/pages/KnowledgeAssistantPage';
 import { GovernancePage } from '@/pages/GovernancePage';
 import { AuditPage } from '@/pages/AuditPage';
+import { Matter360Page } from '@/pages/Matter360Page';
+import { ConvergencePage } from '@/pages/ConvergencePage';
+import { Dependency360Page } from '@/pages/Dependency360Page';
+import { OwnershipPage } from '@/pages/OwnershipPage';
+import { FinancePage } from '@/pages/FinancePage';
+import { NgoCommunityPage } from '@/pages/NgoCommunityPage';
+import { ExcellencePage } from '@/pages/ExcellencePage';
+import { RoleDashboardsPage } from '@/pages/RoleDashboardsPage';
 
 export function App() {
   return (
@@ -46,6 +54,14 @@ export function App() {
           <Route path="/evidence" element={<EvidenceLibraryPage />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/audit" element={<AuditPage />} />
+          <Route path="/matter-360" element={<Matter360Page />} />
+          <Route path="/convergence" element={<ConvergencePage />} />
+          <Route path="/dependencies" element={<Dependency360Page />} />
+          <Route path="/ownership" element={<OwnershipPage />} />
+          <Route path="/finance" element={<FinancePage />} />
+          <Route path="/ngo-community" element={<NgoCommunityPage />} />
+          <Route path="/excellence" element={<ExcellencePage />} />
+          <Route path="/dashboards" element={<RoleDashboardsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppLayout>
