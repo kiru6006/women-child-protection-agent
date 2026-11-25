@@ -9,6 +9,15 @@ export type UserRole =
   | 'DLSA_LAWYER'
   | 'AUDITOR';
 
+export const ROLE_LABELS: Record<UserRole, string> = {
+  DISTRICT_COLLECTOR: 'District Magistrate / Collector',
+  WCD_SECRETARY: 'Joint Secretary (WCD)',
+  OSC_ADMIN: 'One Stop Centre Lead (Sakhi)',
+  PROTECTION_OFFICER: 'Protection Officer (PWDVA)',
+  DLSA_LAWYER: 'DLSA Legal Aid Panel',
+  AUDITOR: 'CAG / Social Impact Auditor',
+};
+
 interface AppState {
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;

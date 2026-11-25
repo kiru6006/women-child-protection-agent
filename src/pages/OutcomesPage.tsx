@@ -7,37 +7,7 @@ import { OutcomeRecord } from '@/types';
 import { createOutcome, fetchOutcomes, verifyOutcome } from '@/services/api';
 import { useAppStore } from '@/store/appStore';
 import { AlertTriangle, CheckCircle2, FileSearch, PhoneCall, Plus } from 'lucide-react';
-
-interface GroundTruthCallback {
-  id: string;
-  caseToken: string;
-  channel: 'IVR_VOICE' | 'SMS_CODE';
-  code: '1_RECEIVED' | '2_DELAYED' | '3_NOT_RECEIVED';
-  reportedAt: string;
-  discrepancyFlag: boolean;
-  note: string;
-}
-
-const INITIAL_GROUND_TRUTH: GroundTruthCallback[] = [
-  {
-    id: 'GT-PAT-001',
-    caseToken: 'CASE-DV-2026-PAT-0842',
-    channel: 'IVR_VOICE',
-    code: '1_RECEIVED',
-    reportedAt: '2026-11-24 14:20',
-    discrepancyFlag: false,
-    note: 'Beneficiary pressed 1 (Support & DLSA counsel contact confirmed). Zero PII stored.',
-  },
-  {
-    id: 'GT-PAT-002',
-    caseToken: 'CASE-POSH-2026-PAT-0319',
-    channel: 'SMS_CODE',
-    code: '2_DELAYED',
-    reportedAt: '2026-11-24 16:05',
-    discrepancyFlag: true,
-    note: 'Paper status marked Completed, but callback code 2 indicates interim relief disbursement pending.',
-  },
-];
+import { GroundTruthCallback, INITIAL_GROUND_TRUTH } from '@/data/workflowSeedData';
 
 export function OutcomesPage() {
   const { currentRole } = useAppStore();

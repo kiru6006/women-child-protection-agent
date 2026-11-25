@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, CircleHelp, Contrast, MapPin, Menu, PanelLeft, PlayCircle, Search, Shield, Sparkles, User } from 'lucide-react';
-import { useAppStore, UserRole } from '@/store/appStore';
+import { ROLE_LABELS, useAppStore, type UserRole } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { governmentSchemes } from '@/data/platformData';
 
@@ -26,15 +26,6 @@ export function Header() {
   const [openMenu, setOpenMenu] = useState<'search' | 'location' | 'role' | 'pii' | null>(null);
 
   const openAlertsCount = alerts.filter((a) => a.status !== 'RESOLVED' && a.status !== 'REJECTED').length;
-
-  const roleLabels: Record<UserRole, string> = {
-    DISTRICT_COLLECTOR: 'District Magistrate / Collector',
-    WCD_SECRETARY: 'Joint Secretary (WCD)',
-    OSC_ADMIN: 'One Stop Centre Lead (Sakhi)',
-    PROTECTION_OFFICER: 'Protection Officer (PWDVA)',
-    DLSA_LAWYER: 'DLSA Legal Aid Panel',
-    AUDITOR: 'CAG / Social Impact Auditor',
-  };
 
   const districtOptions = [
     { state: 'Bihar', district: 'Patna' },
@@ -283,15 +274,15 @@ export function Header() {
               type="button"
               onClick={() => setOpenMenu(openMenu === 'role' ? null : 'role')}
               className={iconBtn}
-              aria-label={`User Role: ${roleLabels[currentRole]}`}
+              aria-label={`User Role: ${ROLE_LABELS[currentRole]}`}
             >
               <User className="w-4 h-4 text-[#FFC0CB]" />
-              <span className={tooltipCls}>Profile: {roleLabels[currentRole]}</span>
+              <span className={tooltipCls}>Profile: {ROLE_LABELS[currentRole]}</span>
             </button>
             {openMenu === 'role' && (
               <div className="absolute right-0 mt-1.5 w-64 bg-white text-slate-900 rounded-md shadow-lg border border-[#C98A87] p-1.5 z-50 space-y-1 text-xs">
                 <div className="px-2 py-1 text-[10px] font-bold uppercase text-[#7D2A42]">Active Official Role</div>
-                {Object.entries(roleLabels).map(([roleKey, label]) => (
+                {Object.entries(ROLE_LABELS).map(([roleKey, label]) => (
                   <button
                     key={roleKey}
                     type="button"

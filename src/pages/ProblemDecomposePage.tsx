@@ -3,79 +3,14 @@ import { Link } from 'react-router-dom';
 import { Card } from '@/components/common/Card';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Plus, Layers } from 'lucide-react';
-
-interface ProblemComponent {
-  id: string;
-  gapType: string;
-  observedCondition: string;
-  expectedResponse: string;
-  evidenceRef: string;
-  possibleExplanation: string;
-  competentAuthority: string;
-  correctiveAction: string;
-  dependencies: string;
-  resourceReq: string;
-  expectedOutcome: string;
-}
-
-const INITIAL_COMPONENTS: ProblemComponent[] = [
-  {
-    id: 'CMP-01',
-    gapType: 'Capacity Gap',
-    observedCondition: '64% OSC survivors drop out before DLSA court filing due to 12km travel distance',
-    expectedResponse: 'NALSA Sec. 12 Free Legal Aid accessible at Sakhi OSC',
-    evidenceRef: 'MoWCD/SAMBAL/OSC/2025/REP-84',
-    possibleExplanation: 'No co-located panel advocate desk at OSC',
-    competentAuthority: 'Secretary, DLSA Patna',
-    correctiveAction: 'Deploy 2 panel advocates 3 days/week at Sakhi OSC',
-    dependencies: 'DLSA Panel Renewal (DEP-002)',
-    resourceReq: 'Rs. 1.2L annual honorarium',
-    expectedOutcome: 'Raise legal aid linkage from 36% to 85%',
-  },
-  {
-    id: 'CMP-02',
-    gapType: 'Process Gap',
-    observedCondition: 'Informal mediation preceding DIR Form 1 filing',
-    expectedResponse: 'Mandatory DIR Form 1 under PWDVA Sec. 9(1)(b)',
-    evidenceRef: 'DWPU/PAT/SRV-2026-04 (HYPOTHESIS)',
-    possibleExplanation: 'Counselling misunderstood as pre-FIR prerequisite',
-    competentAuthority: 'SP (Crime Against Women)',
-    correctiveAction: 'Issue station circular + audit DIR register',
-    dependencies: 'None (can proceed independently of litigation)',
-    resourceReq: 'Training circular only',
-    expectedOutcome: '100% DIR compliance at Mahila Cell',
-  },
-  {
-    id: 'CMP-03',
-    gapType: 'Financial Gap',
-    observedCondition: 'Balance Rs. 10,000 subsistence tranche delayed 11 days',
-    expectedResponse: '7-day PFMS batch disbursement post-sanction',
-    evidenceRef: 'WCD/PAT/FIN/2026-44',
-    possibleExplanation: 'Treasury DDO batch signature pending',
-    competentAuthority: 'District Treasury Officer',
-    correctiveAction: 'Clear PFMS batch UTR',
-    dependencies: 'DEP-001',
-    resourceReq: 'Rs. 10,000 approved balance',
-    expectedOutcome: 'Immediate shelter & livelihood stability',
-  },
-];
-
-const COMPONENT_TYPES = [
-  'Service Gap',
-  'Implementation Gap',
-  'Policy Gap',
-  'Access Gap',
-  'Coordination Gap',
-  'Capacity Gap',
-  'Financial Gap',
-  'Legal / Procedural Requirement',
-  'Resource Requirement',
-  'Data Gap',
-  'Rehabilitation Requirement',
-];
+import {
+  COMPONENT_TYPES,
+  INITIAL_PROBLEM_COMPONENTS,
+  ProblemComponent,
+} from '@/data/workflowSeedData';
 
 export function ProblemDecomposePage() {
-  const [components, setComponents] = useState<ProblemComponent[]>(INITIAL_COMPONENTS);
+  const [components, setComponents] = useState<ProblemComponent[]>(INITIAL_PROBLEM_COMPONENTS);
   const [showAdd, setShowAdd] = useState(false);
   const [gapType, setGapType] = useState(COMPONENT_TYPES[0]);
   const [observedCondition, setObservedCondition] = useState('');

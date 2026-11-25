@@ -7,28 +7,7 @@ import { useAppStore } from '@/store/appStore';
 import { useDemoStore } from '@/store/demoStore';
 import { AlertItem } from '@/data/platformData';
 import { Bell } from 'lucide-react';
-
-interface NotifItem {
-  id: string;
-  dedup_key: string;
-  target_role: string;
-  event_type: string;
-  message: string;
-  matter_id?: string;
-  created_at: string;
-}
-
-const SEED_NOTIFS: NotifItem[] = [
-  {
-    id: 'NTF-101',
-    dedup_key: 'ASSIGN:ACT-101:TREASURY_OFFICER',
-    target_role: 'TREASURY_OFFICER',
-    event_type: 'ACTION_ASSIGNED',
-    message: 'Action ACT-101 assigned: Approve Treasury PFMS Batch (Balance Rs. 10,000)',
-    matter_id: 'MTR-2026-W-001',
-    created_at: '2026-11-20T09:00:00Z',
-  },
-];
+import { NotifItem, SEED_NOTIFICATIONS } from '@/data/workflowSeedData';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
 
@@ -48,7 +27,7 @@ export function AlertsPage() {
   const [severityFilter, setSeverityFilter] = useState('ALL');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [statusFilter, setStatusFilter] = useState('ALL');
-  const [notifs, setNotifs] = useState<NotifItem[]>(SEED_NOTIFS);
+  const [notifs, setNotifs] = useState<NotifItem[]>(SEED_NOTIFICATIONS);
 
   useEffect(() => {
     fetch(`${API_BASE}/notifications`, { signal: AbortSignal.timeout(1200) })

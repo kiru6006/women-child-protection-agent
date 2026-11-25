@@ -4,6 +4,7 @@ import { Card } from '@/components/common/Card';
 import { PageHeader } from '@/components/common/PageHeader';
 import { DomainBadge } from '@/components/badges/DomainBadge';
 import { ShieldCheck, ArrowRight, HeartPulse, Scale, Home, Briefcase, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { INITIAL_CONTINUITY_CASES } from '@/data/workflowSeedData';
 
 const WOMEN_TABS = [
   { id: 'overview', label: 'Overview' },
@@ -16,25 +17,6 @@ const WOMEN_TABS = [
   { id: 'economic', label: 'Economic Empowerment' },
   { id: 'schemes', label: 'Schemes & Support' },
   { id: 'rehab', label: 'Rehabilitation' },
-];
-
-const INITIAL_CONTINUITY_CASES = [
-  {
-    token: 'CASE-DV-2026-PAT-0842',
-    consentStatus: 'GRANTED (Zero-PII Token)',
-    repeatStatements: 1,
-    paperBaseline: 4,
-    currentStageIndex: 2,
-    steps: ['OSC Intake', 'Medical 24h', 'PO DIR Filed', 'DLSA Legal Aid', 'Shakti Sadan'],
-  },
-  {
-    token: 'CASE-POSH-2026-PAT-0319',
-    consentStatus: 'GRANTED (Zero-PII Token)',
-    repeatStatements: 1,
-    paperBaseline: 3,
-    currentStageIndex: 3,
-    steps: ['IC Complaint', 'Interim Relief', 'District LC Review', '90-Day Inquiry', 'Closure'],
-  },
 ];
 
 export function WomenWorkspacePage() {

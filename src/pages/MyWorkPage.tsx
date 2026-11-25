@@ -5,75 +5,7 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { IndependentStatusChip } from '@/components/badges/IndependentStatusChip';
 import { useAppStore } from '@/store/appStore';
 import { CheckCircle2, AlertTriangle, Clock, Send, RotateCcw } from 'lucide-react';
-
-interface ActionRecord {
-  id: string;
-  matter_id: string;
-  title: string;
-  description: string;
-  responsible_department: string;
-  responsible_role: string;
-  accountable_authority: string;
-  coordinating_authority: string;
-  acknowledged: number;
-  required_deliverable: string;
-  timeline_date: string;
-  required_evidence: string;
-  completion_evidence_ref?: string | null;
-  dependency_ids: string[];
-  status: string;
-}
-
-const SEED_ACTIONS: ActionRecord[] = [
-  {
-    id: 'ACT-101',
-    matter_id: 'MTR-2026-W-001',
-    title: 'Approve Treasury PFMS Batch for Balance Rs. 10,000 Rehab Grant',
-    description: 'Clear pending PFMS batch for survivor subsistence grant.',
-    responsible_department: 'Finance & Treasury',
-    responsible_role: 'TREASURY_OFFICER',
-    accountable_authority: 'DISTRICT_COLLECTOR',
-    coordinating_authority: 'DISTRICT_COLLECTOR',
-    acknowledged: 0,
-    required_deliverable: 'Signed PFMS UTR batch',
-    timeline_date: '2026-11-30',
-    required_evidence: 'PFMS UTR Receipt',
-    dependency_ids: [],
-    status: 'ASSIGNED',
-  },
-  {
-    id: 'ACT-102',
-    matter_id: 'MTR-2026-W-001',
-    title: 'Disburse Balance Shelter Rehabilitation Kit & Log Receipt',
-    description: 'Complete balance tranche disbursement once DEP-001 resolves.',
-    responsible_department: 'Women & Child Development',
-    responsible_role: 'DWCD_OFFICER',
-    accountable_authority: 'DISTRICT_COLLECTOR',
-    coordinating_authority: 'DISTRICT_COLLECTOR',
-    acknowledged: 1,
-    required_deliverable: 'Disbursement acknowledgement',
-    timeline_date: '2026-12-03',
-    required_evidence: 'Bank Disbursement Voucher',
-    dependency_ids: ['DEP-001'],
-    status: 'WAITING_FOR_DEPENDENCY',
-  },
-  {
-    id: 'ACT-103',
-    matter_id: 'MTR-2026-W-002',
-    title: 'Publish Co-located DLSA Advocate Roster at Sakhi OSC Patna',
-    description: 'Deploy 2 panel advocates 3 days/week at Sakhi OSC.',
-    responsible_department: 'Legal Services Authority',
-    responsible_role: 'DLSA_LAWYER',
-    accountable_authority: 'DISTRICT_COLLECTOR',
-    coordinating_authority: 'DISTRICT_COLLECTOR',
-    acknowledged: 1,
-    required_deliverable: 'Signed December Advocate Roster',
-    timeline_date: '2026-12-01',
-    required_evidence: 'Signed DLSA Roster PDF',
-    dependency_ids: [],
-    status: 'IN_PROGRESS',
-  },
-];
+import { ActionRecord, SEED_ACTIONS } from '@/data/workflowSeedData';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
 

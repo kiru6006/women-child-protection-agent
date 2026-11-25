@@ -8,21 +8,7 @@ import { useAppStore } from '@/store/appStore';
 import { useGovernanceStore } from '@/store/governanceStore';
 import { useDemoStore } from '@/store/demoStore';
 import { CheckCircle2, RotateCcw, AlertTriangle } from 'lucide-react';
-
-const DECISION_QUEUES = [
-  { id: 'ALL', label: 'All Queues' },
-  { id: 'ADMINISTRATIVE', label: 'Administrative' },
-  { id: 'FINANCIAL', label: 'Financial' },
-  { id: 'COORDINATION', label: 'Coordination' },
-  { id: 'ESCALATED', label: 'Escalated' },
-  { id: 'OUTCOME_REVIEW', label: 'Outcome Review' },
-];
-
-const INITIAL_DECISIONS = [
-  { id: 'DEC-01', matterId: 'MTR-2026-W-001', queue: 'FINANCIAL', title: 'Fast-track Rs. 10,000 balance subsistence tranche', authority: 'District Collector, Patna', risk: 'Delayed shelter exit', benefit: 'Immediate livelihood kit', status: 'PENDING' },
-  { id: 'DEC-02', matterId: 'MTR-2026-W-002', queue: 'COORDINATION', title: 'Mandate 3-day/week DLSA Panel Roster at Sakhi OSC', authority: 'District Collector & DLSA Sec', risk: '64% legal drop-off continues', benefit: 'Raise linkage 36% → 85%', status: 'PENDING' },
-  { id: 'DEC-03', matterId: 'MTR-2026-W-003', queue: 'ESCALATED', title: 'Escalate Rs. 18.5L Shelter Release for High Court Deadline', authority: 'Principal Secretary, WCD', risk: 'Court non-compliance 2026-12-08', benefit: '50 compliant shelter beds', status: 'PENDING' },
-];
+import { DECISION_QUEUES, INITIAL_DECISIONS } from '@/data/workflowSeedData';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
 
