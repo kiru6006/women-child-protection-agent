@@ -2,7 +2,7 @@
 
 AI-assisted Government Protection, Policy, Service Delivery, Convergence and Accountability Platform for the **Ministry of Women & Child Development (MoWCD), Government of India**.
 
-**Navigation:** [1. Project Overview](#1-project-overview) · [2. Structure by Features](#2-structure-by-features) · [3. Repository Structure](#3-repository-structure) · [4. Documentation Index](#4-documentation-index) · [5. Quickstart](#5-local-development-quickstart)
+**Navigation:** [1. Project Overview](#1-project-overview) · [2. Structure by Features](#2-structure-by-features) · [3. Architecture & Repository Structure](#3-architecture--repository-structure) · [4. Documentation Index](#4-documentation-index) · [5. Quickstart](#5-local-development-quickstart)
 
 ---
 
@@ -74,7 +74,71 @@ WCD Protection Intelligence Platform
 
 ---
 
-## 3. Repository Structure
+## 3. Architecture & Repository Structure
+
+### Architecture Diagram
+
+Demo architecture: a static React app that works fully on its own with synthetic data, and optionally talks to a local FastAPI service. Dashed boxes are planned for a live pilot and are **not active** in the demo.
+
+```mermaid
+flowchart TB
+    subgraph Users["Users (demo role switcher)"]
+        U1["Minister / Secretary"]
+        U2["District Collector / WCD"]
+        U3["Police, Legal, Finance, NGO"]
+    end
+
+    subgraph FE["Frontend: React 19 + TypeScript SPA (GitHub Pages)"]
+        direction TB
+        UI["31 screens: Home, Command Centre, Matter 360, Convergence,<br/>Dependencies, Ownership, Finance, NGO, Outcomes, Help, Demo Flow"]
+        ASK["Ask AI assistant<br/>(rule-based, no generative AI)"]
+        STORE["State stores (Zustand)<br/>role, district, theme, governance data"]
+        SEED["Synthetic seed data<br/>(zero real PII)"]
+        PWA["Service worker<br/>(offline shell cache)"]
+        UI --> STORE
+        ASK --> STORE
+        STORE --> SEED
+    end
+
+    subgraph BE["Backend: FastAPI modular monolith (local)"]
+        direction TB
+        API["REST API /api/v1<br/>gaps, evidence, investigations, interventions,<br/>outcomes, matters, actions, dependencies, M17/M18"]
+        RULES["Rule engines<br/>gap + action state machines,<br/>dependency cycle check, human approval gates"]
+        PII["Zero-PII guard<br/>(Aadhaar / phone / email tripwire)"]
+        RAG["Bounded retrieval (RAG)<br/>cosine matching, 'DATA NOT AVAILABLE' fallback"]
+        AUDIT["Hash-chained audit log<br/>(SHA-256, tamper-evident)"]
+        API --> PII
+        API --> RULES
+        API --> RAG
+        API --> AUDIT
+    end
+
+    DB[("SQLite (demo)<br/>SQLAlchemy ORM + Alembic")]
+
+    subgraph PLANNED["Planned for live pilot (not active in demo)"]
+        direction TB
+        PG[("PostgreSQL + pgvector + RLS")]
+        LLM["Local LLM adapter"]
+        GOV["Government integrations:<br/>CCTNS, e-Courts, PFMS, SSO"]
+    end
+
+    Users --> UI
+    UI -- "fetch, falls back to seed data if offline" --> API
+    API --> DB
+    AUDIT --> DB
+    RAG -.-> LLM
+    DB -.-> PG
+    API -.-> GOV
+
+    classDef planned fill:#fff,stroke:#999,stroke-dasharray: 5 5,color:#555;
+    class PG,LLM,GOV planned;
+```
+
+**Request flow:** screen → state store → (optional) REST call → Zero-PII check → rule engine / human-approval gate → database write → audit-log entry. If the backend is unreachable the app switches to synthetic seed data and shows a "Demo mode" banner.
+
+**Design rules:** AI never approves, validates or certifies. Child protection (Domain B) is read-only (`403` on writes). All data is synthetic.
+
+### Repository Structure
 
 ```
 women-child-protection-agent/
